@@ -1,10 +1,6 @@
 import { QueryInterface, DataTypes } from 'sequelize';
 
-export async function up({
-  context,
-}: {
-  context: QueryInterface;
-}): Promise<void> {
+export async function up({ context }: { context: QueryInterface }): Promise<void> {
   await context.createTable('users', {
     id: {
       type: DataTypes.INTEGER,
@@ -13,11 +9,6 @@ export async function up({
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    username: {
-      type: DataTypes.STRING,
-      unique: true,
       allowNull: false,
     },
     email: {
@@ -51,11 +42,7 @@ export async function up({
   });
 }
 
-export async function down({
-  context,
-}: {
-  context: QueryInterface;
-}): Promise<void> {
+export async function down({ context }: { context: QueryInterface }): Promise<void> {
   await context.removeConstraint('sessions', 'sessions_ibfk_1');
   await context.dropTable('sessions');
   await context.dropTable('users');

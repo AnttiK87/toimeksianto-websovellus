@@ -1,0 +1,151 @@
+/* ===== PAGE BACKGROUND ===== */
+
+.LoginFormContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+}
+
+/* ===== CARD ===== */
+
+.LoginForm {
+  width: 100%;
+  max-width: 420px;
+  padding: 40px;
+
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(14px);
+
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  color: white;
+}
+
+/* ===== HEADINGS ===== */
+
+.LoginForm h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.LoginForm h2:first-child {
+  font-size: 18px;
+  opacity: 0.7;
+}
+
+.LoginForm h2:last-of-type {
+  margin-bottom: 30px;
+}
+
+/* ===== FORM ===== */
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+  opacity: 0.8;
+}
+
+/* ===== INPUTS ===== */
+
+.form__field {
+  width: 95%;
+  padding: 12px 14px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  background: rgba(255, 255, 255, 0.07);
+  color: white;
+
+  font-size: 15px;
+  outline: none;
+
+  transition: all 0.2s ease;
+}
+
+.form__field::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.form__field:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ===== BUTTON AREA ===== */
+
+.commentButtons {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+/* ===== BUTTONS ===== */
+
+.button-primary {
+  flex: 1;
+  padding: 12px;
+
+  border-radius: 10px;
+  border: none;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  color: white;
+}
+
+.button-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.4);
+}
+
+.button-primary:active {
+  transform: translateY(0);
+}
+
+/* secondary button */
+
+.delButton {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.delButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: none;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 480px) {
+  .LoginForm {
+    margin: 20px;
+    padding: 28px;
+  }
+}

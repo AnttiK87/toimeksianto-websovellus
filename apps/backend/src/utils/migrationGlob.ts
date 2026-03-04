@@ -17,7 +17,7 @@ export const getMigrationGlob = async (): Promise<string> => {
           'migrations',
           '*.ts',
         )
-      : getPath('apps', 'ak_photography_backend', 'migrations', '*.js');
+      : getPath('backend', 'src', 'migrations', '*.ts');
 
   const path = normalizeToUnixPath(pattern);
 

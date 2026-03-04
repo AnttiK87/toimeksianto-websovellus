@@ -14,8 +14,6 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare email: string;
   declare passwordHash: string;
   declare role: string;
-  declare lastLogin: CreationOptional<Date>;
-  declare loginTime: CreationOptional<Date>;
 }
 
 User.init(
@@ -58,16 +56,6 @@ User.init(
     passwordHash: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    lastLogin: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: null,
-    },
-    loginTime: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: null,
     },
   },
   {

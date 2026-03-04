@@ -20,9 +20,6 @@ router.post(
     const { email, password } = req.body;
 
     const user = await authenticateUser(email, password);
-
-    await user.update({ loginTime: new Date() });
-
     const token = generateToken(user);
 
     await setSession(user.id, token);
@@ -32,7 +29,6 @@ router.post(
       id: user.id,
       name: user.name,
       email: user.email,
-      lastLogin: user.lastLogin,
     });
   },
 );

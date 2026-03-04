@@ -16,8 +16,32 @@ export interface UserInfoUpdateInput {
   email: string;
 }
 
-export interface passwordChangeInput {
+export interface PasswordChangeInput {
   oldPassword: string;
   newPassword1: string;
   newPassword2: string;
+}
+
+export type User = {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  role: string;
+};
+
+export type UserUpdateResponse = {
+  message: string;
+  user: User;
+};
+
+export interface LoginResponse {
+  token: string;
+  id: number;
+  name: string;
+  email: string;
+}
+
+export interface LogoutResponse {
+  message: string;
 }
