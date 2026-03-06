@@ -8,8 +8,9 @@ type CheckboxFieldProps = {
 
 const CheckboxField: React.FC<CheckboxFieldProps> = ({ label, checked, onChange }) => {
   return (
-    <Form.Group>
+    <Form.Group className="formGroup">
       <Form.Check
+        className="form-checkbox"
         type="checkbox"
         label={label}
         checked={checked}

@@ -10,7 +10,7 @@ type DateFieldProps = {
 
 const DateField: React.FC<DateFieldProps> = ({ label, value, onChange, min, max }) => {
   return (
-    <Form.Group>
+    <Form.Group className="formGroup">
       <Form.Label>{label}: </Form.Label>
       <Form.Control
         type="date"

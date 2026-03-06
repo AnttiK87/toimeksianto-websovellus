@@ -1,4 +1,5 @@
 import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 type Option = {
   id: number;
@@ -8,9 +9,10 @@ type Option = {
 type SelectFieldProps = {
   label: string;
   options: Option[];
-  value: number | undefined;
-  onChange: (value: number | undefined) => void;
+  value: number | null;
+  onChange: (value: number | null) => void;
   placeholder?: string;
+  unit?: string;
 };
 
 const SelectField: React.FC<SelectFieldProps> = ({
@@ -19,19 +21,28 @@ const SelectField: React.FC<SelectFieldProps> = ({
   value,
   onChange,
   placeholder = '',
+  unit,
 }) => {
-  return (
-    <Form.Group>
-      <Form.Label>{label}</Form.Label>
-      <Form.Select value={value} onChange={(e) => onChange(Number(e.target.id))}>
-        <option value={undefined}>{placeholder}</option>
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value;
+    onChange(val === '' ? null : Number(val));
+  };
 
-        {options.map((opt) => (
-          <option key={opt.id} value={opt.id}>
-            {opt.label}
-          </option>
-        ))}
-      </Form.Select>
+  return (
+    <Form.Group className="formGroup">
+      <Form.Label>{label}: </Form.Label>
+      <InputGroup>
+        <Form.Select value={value ?? ''} onChange={handleChange}>
+          <option value="">{placeholder}</option>
+
+          {options.map((opt) => (
+            <option key={opt.id} value={opt.id}>
+              {opt.label}
+            </option>
+          ))}
+        </Form.Select>
+        {unit && <InputGroup.Text className="unit-text"> {unit}</InputGroup.Text>}
+      </InputGroup>
     </Form.Group>
   );
 };
