@@ -11,11 +11,15 @@
 }
 
 .formGroup {
-  height: 22px;
+  min-height: 22px;
   display: flex;
   align-items: center;
   gap: 2px;
   margin-bottom: 0.6rem;
+}
+
+.text-area-group {
+  align-items: flex-start;
 }
 
 .form-field {
@@ -88,7 +92,8 @@
 }
 
 .long-input {
-  width: 250px;
+  min-width: 250px;
+  width: auto;
 }
 
 .form-textarea {
@@ -138,6 +143,74 @@ h4 {
 .service-options {
   display: flex;
   flex-wrap: wrap;
+}
+
+.repair-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.repair-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 6px 10px;
+  border-bottom: 1px solid #bababa;
+}
+
+.bottom-divider {
+  margin-bottom: 0.5em;
+  border-bottom: 1px solid #bababa;
+}
+
+.repair-remove {
+  padding: 2px 8px;
+  font-size: 12px;
+}
+
+.button {
+  background: #e9ecef;
+  color: #333;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1em;
+}
+
+.button:hover {
+  background: #dcdfe3;
+}
+
+.button:active {
+  background: #333;
+  color: #e9ecef;
+}
+
+.button input[type='file'] {
+  display: none; /* Piilotetaan tiedoston valinta */
+}
+
+.buttons {
+  text-decoration: none;
+  display: flex;
+  gap: 0.8rem;
+  justify-content: flex-end;
+}
+
+.text-area {
+  display: block;
+  height: auto;
+  width: auto;
 }
 
 @media (max-width: 768px) {

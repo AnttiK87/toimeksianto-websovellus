@@ -40,35 +40,24 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser(state, action: PayloadAction<LoginResponse>) {
+    setUser(_state, action: PayloadAction<LoginResponse>) {
+      const user = action.payload;
+
+      localStorage.setItem('loggedAdminUser', JSON.stringify(user));
+
+      return user;
+    },
+
+    clearUser() {
+      localStorage.removeItem('loggedAdminUser');
+      return null;
+    },
+
+    updateUser(state, action) {
       if (state) {
-        state.id = action.payload.id;
-        state.token = action.payload.token;
         state.name = action.payload.name;
         state.email = action.payload.email;
         localStorage.setItem('loggedAdminUser', JSON.stringify(state));
-      } else {
-        initialState = {
-          id: action.payload.id,
-          token: action.payload.token,
-          name: action.payload.name,
-          email: action.payload.email,
-        };
-        localStorage.setItem('loggedAdminUser', JSON.stringify(initialState));
-      }
-    },
-    clearUser(state) {
-      state = null;
-      localStorage.removeItem('loggedAdminUser');
-    },
-    updateUser(state, action) {
-      const updatedUser = action.payload;
-      if (state) {
-        state.name = updatedUser.name;
-        state.email = updatedUser.email;
-        localStorage.setItem('loggedAdminUser', JSON.stringify(state));
-      } else {
-        throw new Error('User missing!');
       }
     },
   },
@@ -94,6 +83,7 @@ export const login = (content: LoginInput) => {
       );
     } catch (err: unknown) {
       const error = err as AxiosError;
+      console.log(error);
       handleError(error, dispatch);
     }
   };

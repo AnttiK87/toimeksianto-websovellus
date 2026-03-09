@@ -18,7 +18,7 @@ const TextAreaField: React.FC<TextAreaFieldProps> = ({
   custom,
 }) => {
   return (
-    <Form.Group className="formGroup">
+    <Form.Group className="formGroup text-area-group">
       <Form.Label>{label}: </Form.Label>
       <Form.Control
         className={custom}

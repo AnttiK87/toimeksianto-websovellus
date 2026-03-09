@@ -1,7 +1,11 @@
+import { useEffect } from 'react';
+
 import { ecarOpt, emissionStandard } from '../../utils/formOptions.js';
 
-import SelectField from './SelectField';
-import TextField from './TextField';
+import SelectField from '../uiComponents/SelectField.js';
+import TextField from '../uiComponents/TextField.js';
+
+import { resetElectric } from './formResetters.js';
 
 import type { UsedCarForm } from '@shared/index.js';
 
@@ -11,8 +15,12 @@ interface ElectricCarProps {
   handleChange: (field: keyof UsedCarForm, value: any) => void;
 }
 
-const ElectricCar: React.FC<ElectricCarProps> = ({ formData, handleChange, setFormData }) => {
-  const today = new Date().toISOString().split('T')[0];
+const ElectricCar: React.FC<ElectricCarProps> = ({ formData, setFormData }) => {
+  useEffect(() => {
+    if (formData.electric.type !== 1 && formData.electric.type !== 2) {
+      setFormData((prev) => resetElectric(prev));
+    }
+  }, [formData.electric.type]);
 
   return (
     <>

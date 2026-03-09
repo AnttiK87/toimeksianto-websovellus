@@ -1,8 +1,9 @@
+import { useState, useRef, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 type TextFieldProps = {
-  label: string;
+  label?: string;
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -10,6 +11,8 @@ type TextFieldProps = {
   unit?: string;
   custom?: string;
   customLabel?: string;
+  customFormGroup?: string;
+  required?: boolean;
 };
 
 const TextField: React.FC<TextFieldProps> = ({
@@ -21,18 +24,34 @@ const TextField: React.FC<TextFieldProps> = ({
   unit,
   custom,
   customLabel,
+  customFormGroup,
+  required,
 }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current && custom === 'long-input') {
+      // Lasketaan tekstin pituus + vähän paddingia
+      inputRef.current.style.width = `${Math.max(value.length + 1, 1)}ch`;
+    }
+  }, [value]);
+
   return (
-    <Form.Group className="formGroup">
-      <Form.Label className={customLabel}>{label}: </Form.Label>
+    <Form.Group className={`formGroup ${customFormGroup}`}>
+      <Form.Label className={customLabel}>
+        {label}
+        {label && ': '}
+      </Form.Label>
 
       <InputGroup>
         <Form.Control
+          ref={inputRef}
           type={type}
           value={value}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
           className={custom}
+          required={required}
         />
 
         {unit && <InputGroup.Text className="unit-text"> {unit}</InputGroup.Text>}

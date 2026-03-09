@@ -1,17 +1,18 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
+import path from 'path';
 
-// https://vite.dev/config/
 export default defineConfig({
+  root: path.resolve(__dirname), // frontendin juurihakemisto
   plugins: [react()],
+  build: {
+    outDir: path.resolve(__dirname, 'dist'), // tämä luo dist kansioon frontendin juureen
+    emptyOutDir: true, // tyhjentää dist kansion ennen buildia
+  },
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
-      '/uploads': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:3001',
         changeOrigin: true,
       },
     },

@@ -29,6 +29,7 @@ export const initialUsedCarForm: UsedCarForm = {
   inspection: {
     date: '',
     needed: false,
+    inspection: null,
   },
 
   electric: {
@@ -46,21 +47,28 @@ export const initialUsedCarForm: UsedCarForm = {
     summer: '',
     winter: '',
     winterType: null,
-    balancingNeeded: false,
-    balancingWheels: null,
-    newTyres: false,
-    tyreType: null,
-    tyreSize: '',
-    usedChecked: false,
-    usedState: null,
-    storage: '',
-    usedTyre: '',
+    balancingNeeded: {
+      balancingNeeded: false,
+      balancingWheels: null,
+      repair: null,
+    },
+    newTyres: {
+      newTyres: false,
+      tyreType: null,
+      tyreSize: '',
+      usedChecked: false,
+      usedState: null,
+      storage: '',
+      usedTyre: '',
+      repair: null,
+    },
   },
 
   service: {
     needed: false,
     type: null,
     selected: [],
+    repair: null,
   },
 
   timing: {
@@ -69,20 +77,33 @@ export const initialUsedCarForm: UsedCarForm = {
     beltChangeTime: '',
     lastBeltChangeKm: '',
     lastBeltChangeTime: '',
-    beltChangeNeeded: null,
-    chainChangeNeeded: null,
+    beltChangeNeeded: false,
+    chainChangeNeeded: false,
+    repair: null,
   },
 
-  workshop: {
-    heater: null,
-    heaterRepair: null,
-    ac: null,
-    acRepair: null,
-    acService: null,
-    bulbChange: false,
-    bulbs: '',
-    wheelAlignment: false,
-    otherRepairs: '',
+  otherServiceWork: {
+    heater: {
+      heater: null,
+      heaterRepair: false,
+      repair: null,
+    },
+    ac: {
+      ac: null,
+      acRepair: false,
+      acService: null,
+      repair: null,
+    },
+    bulbChange: {
+      bulbChange: false,
+      bulbs: '',
+      repair: null,
+    },
+    wheelAlignment: {
+      wheelAlignment: false,
+      repair: null,
+    },
+    otherRepairs: [],
   },
 
   windshield: {
@@ -95,20 +116,29 @@ export const initialUsedCarForm: UsedCarForm = {
     damageDate: '',
     changeFee: '',
     feePayer: null,
+    repair: null,
   },
 
   damage: {
     damaged: false,
     description: '',
-    insuranceCompany: null,
     repairType: null,
+    insuranceCompany: null,
+    otherInsuranceCompany: '',
+    damageDate: '',
+    repairFee: '',
+    damageId: '',
+    feePayer: null,
     painter: null,
     disassembly: false,
+    repair: null,
   },
 
   bodyWarranty: {
     enabled: false,
     description: '',
     repairIsMade: false,
+    painter: null,
+    repair: null,
   },
 };

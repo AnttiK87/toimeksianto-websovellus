@@ -10,6 +10,7 @@ export const handleError = (
   dispatch: AppDispatch,
   navigate?: NavigateFunction,
 ): void => {
+  console.log();
   if (!isAxiosError(error)) {
     console.error('Unknown error:', error);
     dispatch(
@@ -27,20 +28,6 @@ export const handleError = (
   const status = error.response?.status;
   const data = error.response?.data;
 
-  console.error('Axios error occurred:', error);
-
-  const getLocalizedMessage = (): string => {
-    if (Array.isArray(data?.message)) {
-      return data.message
-        .map((msg: { field: string; message: string }) => `${msg.field}: ${msg.message}`)
-        .join('\n');
-    }
-    if (data?.message) {
-      return data.message;
-    }
-    return error.message || 'An error occurred.';
-  };
-
   if (status === 400 && Array.isArray(data?.details)) {
     const fieldErrors = data.details
       .map((e: { field: string; message: string }) => `${e.field}: ${e.message}`)
@@ -57,38 +44,26 @@ export const handleError = (
     );
     return;
   }
-  if (status === 401 && data.messages === 'Väärä käyttäjätunnus tai salasana.') {
+  if (status === 401) {
     localStorage.removeItem('loggedAdminUser');
     dispatch(clearUser());
     dispatch(
       showMessage(
         {
-          text: 'Väärä käyttäjätunnus tai salasana.',
-          type: 'error',
-        },
-        3,
-      ),
-    );
-  } else if (status === 401) {
-    localStorage.removeItem('loggedAdminUser');
-    dispatch(clearUser());
-    dispatch(
-      showMessage(
-        {
-          text: 'Kirjaudu uudelleen sisään.',
+          text: data.message,
           type: 'error',
         },
         3,
       ),
     );
     if (navigate) {
-      navigate('/kirjaudu');
+      navigate('/');
     }
   } else {
     dispatch(
       showMessage(
         {
-          text: getLocalizedMessage(),
+          text: data.message,
           type: 'error',
         },
         3,

@@ -1,9 +1,9 @@
 import { salesMen } from '../../utils/formOptions.js';
 
-import DateField from './DateField';
-import SelectField from './SelectField';
-import TextField from './TextField';
-import CheckboxField from './CheckboxField';
+import DateField from '../uiComponents/DateField.js';
+import SelectField from '../uiComponents/SelectField.js';
+import TextField from '../uiComponents/TextField.js';
+import CheckboxField from '../uiComponents/CheckboxField.js';
 
 import type { UsedCarForm } from '@shared/index.js';
 
@@ -60,7 +60,7 @@ const BasinInfo: React.FC<BasinInfoProps> = ({ formData, handleChange, setFormDa
           label="Ajomäärä"
           value={formData.car.mileage}
           onChange={(v) => setFormData((prev) => ({ ...prev, car: { ...prev.car, mileage: v } }))}
-          unit="tkm"
+          unit="km"
         />
 
         <DateField
@@ -97,7 +97,7 @@ const BasinInfo: React.FC<BasinInfoProps> = ({ formData, handleChange, setFormDa
         <DateField
           label="Seuraava katsastus"
           value={formData.inspection.date}
-          max={today}
+          min={today}
           onChange={(v) =>
             setFormData((prev) => ({
               ...prev,

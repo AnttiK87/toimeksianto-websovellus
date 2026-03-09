@@ -5,20 +5,18 @@ import { Form } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../reducers/store.js';
 
+import TextField from '../uiComponents/TextField.js';
+import Button from '../uiComponents/Button.js';
+
+import amLogo from '../../assets/am-logo.png';
+
 import './LoginForm.css';
 
 import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
-  const userInStore = useSelector((state: RootState) => state.user);
-  const userInLocalStorage = localStorage.getItem('loggedAdminUser');
-
-  const user = userInStore
-    ? userInStore
-    : userInLocalStorage
-      ? JSON.parse(userInLocalStorage)
-      : null;
+  const user = useSelector((state: RootState) => state.user);
 
   const navigate = useNavigate();
 
@@ -26,10 +24,10 @@ const LoginForm = () => {
     if (user) {
       navigate('/toimeksiannot');
     }
-  }, [user, navigate]);
+  }, [user]);
 
-  const [email, setEmail] = useState<string | undefined>(undefined);
-  const [password, setPassword] = useState<string | undefined>(undefined);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   const reset = () => {
     setPassword('');
@@ -47,43 +45,35 @@ const LoginForm = () => {
   return (
     <div className="LoginFormContainer">
       <div className="LoginForm">
-        <h2>Autoliike Miettinen toimeksianto sovellus</h2>
-        <h2>Kirjaudu sisään</h2>
+        <img src={amLogo} alt="Autoliike Miettinen" />
+        <h1 className="login-subtitle">Toimeksianto sovellus</h1>
+        <h2 className="login-login-title">Kirjaudu sisään</h2>
 
         <Form onSubmit={loginToSystem}>
-          <Form.Group className="form-group">
-            <Form.Label htmlFor="username">Sähköposti: </Form.Label>
-            <Form.Control
-              autoComplete="username"
-              id="username"
-              data-testid="username"
-              className="form__field loginUsername"
-              type="text"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="form-group">
-            <Form.Label htmlFor="password">Salasana: </Form.Label>
-            <Form.Control
-              autoComplete="current-password"
-              id="password"
-              data-testid="password"
-              className="form__field loginPassword"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              required
-            />
-          </Form.Group>
-          <div className="commentButtons">
-            <button className="button-primary" type="submit">
-              Kirjaudu sisään
-            </button>
-            <button className="button-primary  delButton" type="button" onClick={() => reset()}>
+          <TextField
+            value={email}
+            placeholder="Sähköpostiosoite"
+            onChange={setEmail}
+            custom="login-input"
+            customFormGroup="login-form-group"
+            required={true}
+          />
+          <TextField
+            type="password"
+            value={password}
+            placeholder="Salasana"
+            onChange={setPassword}
+            custom="login-input"
+            customFormGroup="login-form-group"
+            required={true}
+          />
+          <div className="form-section-title buttons">
+            <Button variant="danger" type="button" onClick={() => reset()}>
               Tyhjennä
-            </button>
+            </Button>
+            <Button variant="primary" type="submit">
+              Kirjaudu
+            </Button>
           </div>
         </Form>
       </div>

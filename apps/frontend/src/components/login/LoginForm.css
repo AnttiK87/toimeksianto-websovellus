@@ -1,151 +1,57 @@
-/* ===== PAGE BACKGROUND ===== */
-
 .LoginFormContainer {
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 
-  background: linear-gradient(135deg, #0f172a, #1e293b);
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    sans-serif;
+  background: linear-gradient(135deg, #2a4c41, #6fc6aa);
 }
-
-/* ===== CARD ===== */
 
 .LoginForm {
-  width: 100%;
-  max-width: 420px;
-  padding: 40px;
+  background: rgb(255, 255, 255);
+  padding: 40px 50px;
+  border-radius: 10px;
 
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(14px);
+  width: 380px;
+  max-width: 65%;
+  max-height: 75%;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-
-  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
-/* ===== HEADINGS ===== */
+.LoginForm h1 {
+  font-size: 20px;
+  text-align: center;
+  font-weight: 400;
+  margin: 0;
+  text-transform: uppercase;
+  color: #2c3e50;
+}
 
 .LoginForm h2 {
-  text-align: center;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-
-.LoginForm h2:first-child {
   font-size: 18px;
-  opacity: 0.7;
+  text-align: center;
+  font-weight: 400;
+  margin: 10px 0;
+  margin-bottom: 5px;
+  color: #2c3e50;
 }
 
-.LoginForm h2:last-of-type {
-  margin-bottom: 30px;
-}
-
-/* ===== FORM ===== */
-
-.form-group {
-  margin-bottom: 18px;
-}
-
-.form-group label {
-  display: block;
-  font-size: 14px;
-  margin-bottom: 6px;
-  opacity: 0.8;
-}
-
-/* ===== INPUTS ===== */
-
-.form__field {
-  width: 95%;
-  padding: 12px 14px;
-
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-
-  background: rgba(255, 255, 255, 0.07);
-  color: white;
-
-  font-size: 15px;
-  outline: none;
-
-  transition: all 0.2s ease;
-}
-
-.form__field::placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-.form__field:focus {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
-  background: rgba(255, 255, 255, 0.1);
-}
-
-/* ===== BUTTON AREA ===== */
-
-.commentButtons {
+.form-section-title.buttons {
   display: flex;
-  gap: 10px;
-  margin-top: 25px;
+  margin-top: 20px;
 }
 
-/* ===== BUTTONS ===== */
-
-.button-primary {
-  flex: 1;
-  padding: 12px;
-
-  border-radius: 10px;
-  border: none;
-
-  font-size: 15px;
-  font-weight: 600;
-
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  background: linear-gradient(135deg, #38bdf8, #6366f1);
-  color: white;
+.login-input {
+  width: 100% !important;
+  height: 25px !important;
+  padding: 5px !important;
 }
 
-.button-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.4);
-}
-
-.button-primary:active {
-  transform: translateY(0);
-}
-
-/* secondary button */
-
-.delButton {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.delButton:hover {
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: none;
-}
-
-/* ===== RESPONSIVE ===== */
-
-@media (max-width: 480px) {
-  .LoginForm {
-    margin: 20px;
-    padding: 28px;
-  }
+.login-form-group {
+  flex-direction: column;
 }
