@@ -8,7 +8,7 @@ import { handleUserInfoChange } from '../middleware/validateUpdateInput.js';
 import { userFinder } from '../middleware/finders.js';
 import { validatePasswordChange, validateNewUserInput } from '../middleware/validateInput.js';
 
-import { UserInput, UserInfoUpdateInput, passwordChangeInput } from '@shared/index.js';
+import { UserInput, UserInfoUpdateInput, PasswordChangeInput } from '@shared/index.js';
 
 import models from '../models/index.js';
 const { User } = models;
@@ -71,7 +71,7 @@ router.put(
   tokenExtractor,
   userExtractor,
   validatePasswordChange,
-  async (req: Request<object, object, passwordChangeInput>, res: Response) => {
+  async (req: Request<object, object, PasswordChangeInput>, res: Response) => {
     const updatedUser = await req.user.save();
     res.status(200).json({
       messageFi: 'Salasana vaihdettu!',

@@ -17,9 +17,8 @@ const router = express.Router();
 router.delete('/', tokenExtractor, userExtractor, async (req: Request, res: Response) => {
   const user: User = req.user;
   await deleteSessionByUserId(user.id);
-  await user.update({ lastLogin: user.loginTime });
 
-  res.status(200).json({ message: 'Logged out successfully' });
+  res.status(200).json({ message: 'Kirjauduttu ulos!' });
 });
 
 export default router;

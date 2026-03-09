@@ -16,7 +16,7 @@ export const validatePasswordChange = async (req: Request, _res: Response, next:
 
   const passwordCorrect = await bcrypt.compare(oldPassword, user.passwordHash);
   if (!passwordCorrect) {
-    throw new AppError({ en: 'Invalid old password' }, 401);
+    throw new AppError('Salasana on väärin', 401);
   }
 
   passwordSchema.parse({ oldPassword, newPassword1, newPassword2 });

@@ -29,7 +29,7 @@ export const tokenExtractor: RequestHandler = async (
 
 export const verifyToken = async (authorization: string): Promise<DecodedToken> => {
   if (!authorization || !authorization.toLowerCase().startsWith('bearer ')) {
-    throw new AppError({ en: 'Token missing' }, 401);
+    throw new AppError('Token puuttuu', 401);
   }
 
   const token = authorization.substring(7);
@@ -37,7 +37,7 @@ export const verifyToken = async (authorization: string): Promise<DecodedToken> 
   const session = await getSessionByToken(token);
 
   if (!session) {
-    throw new AppError({ en: 'You are not logged in' }, 401);
+    throw new AppError('Et ole kirjautunut sisään!', 401);
   }
 
   try {
@@ -48,8 +48,8 @@ export const verifyToken = async (authorization: string): Promise<DecodedToken> 
 
     if (err.name === 'TokenExpiredError') {
       await Sessions.destroy({ where: { activeToken: token } });
-      throw new AppError({ en: 'Token expired' }, 401);
+      throw new AppError('Token on vanhentunut', 401);
     }
-    throw new AppError({ en: 'Invalid token' }, 401);
+    throw new AppError('Väärä token', 401);
   }
 };

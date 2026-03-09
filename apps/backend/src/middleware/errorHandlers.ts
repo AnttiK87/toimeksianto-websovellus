@@ -4,6 +4,9 @@ import { ValidationError, UniqueConstraintError, DatabaseError } from 'sequelize
 import { ZodError } from 'zod';
 import { AppError } from '../errors/AppError.js';
 
+export const asyncHandler = (fn: Function) => (req: Request, res: Response, next: NextFunction) =>
+  Promise.resolve(fn(req, res, next)).catch(next);
+
 // Middleware for handling unknown endpoints
 // This function is used to catch requests to endpoints that do not exist.
 export const unknownEndpoint = (_req: Request, res: Response): void => {
@@ -21,16 +24,17 @@ export const errorHandler = (
   next: NextFunction,
 ): void => {
   if (error instanceof AppError) {
+    console.log(error);
     res.status(error.statusCode).json({
       status: 'error',
-      messages: error.messages,
+      message: error.message,
     });
     return;
   } else if (error instanceof ZodError) {
     res.status(400).json({
       status: 'error',
       error: 'Validation error',
-      messages: error.errors.map((e) => ({
+      message: error.errors.map((e) => ({
         field: e.path.join('.'),
         message: e.message,
       })),
@@ -44,11 +48,11 @@ export const errorHandler = (
     });
     return;
   } else if (error instanceof ValidationError) {
-    const messages = error.errors.map((err) => err.message);
+    const message = error.errors.map((err) => err.message);
     res.status(400).json({
       status: 'error',
       error: 'Validation error',
-      messages,
+      message,
     });
     return;
   } else if (error instanceof DatabaseError) {

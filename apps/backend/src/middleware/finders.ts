@@ -8,7 +8,7 @@ export const userFinder = async (req: Request, _res: Response, next: NextFunctio
   const user = await User.findByPk(Number(id));
 
   if (!user) {
-    return next(new AppError({ en: 'User not found' }, 404));
+    return next(new AppError('Käyttäjää ei löytynyt!', 404));
   }
 
   req.user = user;

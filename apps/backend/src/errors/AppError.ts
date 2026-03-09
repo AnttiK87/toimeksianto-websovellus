@@ -9,16 +9,12 @@
 export class AppError extends Error {
   public statusCode: number;
   public isOperational: boolean;
-  public messages: { fi?: string; en?: string };
+  public message: string;
 
-  constructor(
-    messages: { fi?: string; en?: string },
-    statusCode = 500,
-    isOperational = false,
-  ) {
-    super(messages.en || messages.fi || 'Unknown error');
+  constructor(message: string, statusCode = 500, isOperational = false) {
+    super(message || 'Unknown error');
     this.name = 'AppError';
-    this.messages = messages;
+    this.message = message;
     this.statusCode = statusCode;
     this.isOperational = isOperational;
   }

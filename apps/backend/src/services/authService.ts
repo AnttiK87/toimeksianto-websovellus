@@ -16,7 +16,7 @@ export const authenticateUser = async (email: string, password: string) => {
     : false;
 
   if (!user || !passwordCorrect) {
-    throw new AppError({ en: 'invalid email or password' }, 401);
+    throw new AppError('Väärä käyttäjätunnus tai salasana.', 401);
   }
 
   return user;

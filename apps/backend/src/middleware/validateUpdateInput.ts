@@ -17,7 +17,7 @@ export const handleUserInfoChange = (req: Request, _res: Response, next: NextFun
   if (email !== req.user.email) changes.email = email;
 
   if (Object.keys(changes).length === 0) {
-    throw new AppError({ fi: 'Et muuttanut tietoja', en: 'No changes provided' }, 400);
+    throw new AppError('Et muuttanut tietoja', 400);
   }
 
   Object.assign(req.user, changes);

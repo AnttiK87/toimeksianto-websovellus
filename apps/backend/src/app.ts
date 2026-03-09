@@ -1,4 +1,5 @@
 import express from 'express';
+import multer from 'multer';
 import cors from 'cors';
 
 import { connectToDatabase } from './utils/db.js';
@@ -8,25 +9,24 @@ import { getPath } from './utils/pathUtils.js';
 import usersRouter from './controllers/users.js';
 import loginRouter from './controllers/login.js';
 import logoutRouter from './controllers/logout.js';
+import parseVehiclePdf from './controllers/vehicleData.js';
+import assignmentRouter from './controllers/assignments.js';
 
 import { unknownEndpoint, errorHandler } from './middleware/errorHandlers.js';
 
 const app = express();
+const upload = multer();
 
 app.use(cors());
 app.use(express.json());
 
-const isProduction = process.env.NODE_ENV === 'production';
-const isTest = process.env.NODE_ENV === 'test';
-const distPath = isProduction
-  ? 'public_html/dist'
-  : isTest
-    ? '../public_html/dist'
-    : 'backend/public_html/dist';
+const distPath = 'demo.akphotography.fi/dist';
 
 app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/logout', logoutRouter);
+app.use('/api/parse-vehicle-data', upload.single('file'), parseVehiclePdf);
+app.use('/api/assignments', assignmentRouter);
 
 await connectToDatabase();
 await createDefaultUser();
