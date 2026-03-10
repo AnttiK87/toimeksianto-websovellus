@@ -181,3 +181,66 @@ export interface AssignmentResponse {
   data: UsedCarForm | null;
   message: string;
 }
+
+export interface PaintForm {
+  id?: number;
+  assignmentId?: number;
+  date: string;
+  regNum: string;
+  front: {
+    bumberLeft: boolean;
+    bumberMiddle: boolean;
+    bumberRight: boolean;
+    bonnet: boolean;
+    mirrorLeft: boolean;
+    mirrorRight: boolean;
+    description: string;
+  };
+  rear: {
+    bumberLeft: boolean;
+    bumberMiddle: boolean;
+    bumberRight: boolean;
+    rearlid: boolean;
+    backLeft: boolean;
+    backRight: boolean;
+    description: string;
+  };
+  top: {
+    roofLeft: boolean;
+    roofMiddle: boolean;
+    roofRight: boolean;
+    bonnet: boolean;
+    rearlidTop: boolean;
+    rearFenderLeft: boolean;
+    rearFenderRight: boolean;
+    frontFenderLeft: boolean;
+    frontFenderRight: boolean;
+    description: string;
+  };
+  left: {
+    frontBumber: boolean;
+    rearBumber: boolean;
+    roofRight: boolean;
+    rearFender: boolean;
+    frontFender: boolean;
+    rearDoor: boolean;
+    frontDoor: boolean;
+    sillMiddle: boolean;
+    sillFront: boolean;
+    sillRear: boolean;
+    description: string;
+  };
+  right: {
+    frontBumber: boolean;
+    rearBumber: boolean;
+    roofRight: boolean;
+    rearFender: boolean;
+    frontFender: boolean;
+    rearDoor: boolean;
+    frontDoor: boolean;
+    sillMiddle: boolean;
+    sillFront: boolean;
+    sillRear: boolean;
+    description: string;
+  };
+}

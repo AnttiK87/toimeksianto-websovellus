@@ -44,7 +44,6 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
     if (edit && assignment) {
       setFormData(assignment);
     }
-    console.log(formData);
   }, [edit, assignment]);
 
   const handleChange = (field: keyof UsedCarForm, value: any) => {

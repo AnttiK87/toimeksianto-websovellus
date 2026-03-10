@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
     "migration:down": "tsx src/utils/rollback.ts"
   },
   "dependencies": {

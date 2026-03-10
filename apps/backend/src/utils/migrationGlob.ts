@@ -8,8 +8,12 @@ const normalizeToUnixPath = (p: string) => p.replace(/\\/g, '/');
 // and return the glob pattern for Umzug
 export const getMigrationGlob = async (): Promise<string> => {
   const env = process.env.NODE_ENV;
-  const pattern = getPath('apps', 'demo_toimeksianto_backend', 'migrations', '*.js');
-
+  console.log('env.', env);
+  const pattern =
+    env === 'development'
+      ? getPath('backend', 'src', 'migrations', '*.ts')
+      : getPath('apps', 'demo_toimeksianto_backend', 'migrations', '*.js');
+  console.log('pattern.', pattern);
   const path = normalizeToUnixPath(pattern);
 
   const files = await fg(path, { onlyFiles: true });

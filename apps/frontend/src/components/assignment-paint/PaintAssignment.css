@@ -1,0 +1,53 @@
+.car-top-container {
+  position: relative;
+  width: 200px;
+  height: auto;
+}
+
+.car-image {
+  width: 100%;
+  display: block;
+}
+
+.paint-checkbox {
+  transform: translate(-50%, -50%);
+  margin: 0;
+  width: 18px;
+  height: 18px;
+}
+
+/* piilotetaan bootstrapin default checkbox */
+.paint-checkbox .form-check-input {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+
+  background-color: #bdbdbd; /* harmaa */
+  border: 2px solid white;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+}
+
+.paint-checkbox .form-check-input:checked {
+  background-color: #e53935;
+  transform: scale(1.15);
+  border: 2px solid rgb(0, 0, 0);
+
+  box-shadow:
+    0 0 0 2px rgb(0, 0, 0),
+    0 0 8px rgba(229, 57, 53, 0.7);
+}
+
+.paint-checkbox .form-check-input:hover {
+  transform: scale(1.2);
+}
+
+.paint-checkbox .form-check-label {
+  display: none;
+}

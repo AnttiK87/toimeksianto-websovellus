@@ -4,7 +4,7 @@ import { showMessage } from './messageReducer.js';
 import { handleError } from '../utils/handleError.js';
 import type { AppDispatch } from './store';
 import type { AxiosError } from 'axios';
-import type { UsedCarForm, AssignmentResponse } from '@shared/index.js';
+import type { UsedCarForm, AssignmentResponse, PaintForm } from '@shared/index.js';
 
 interface AssignmentState {
   allAssignments: UsedCarForm[];
@@ -101,6 +101,52 @@ export const editAssignment = (formData: UsedCarForm) => {
         dispatch(updateAssignment(response.data));
       }
 
+      dispatch(
+        showMessage(
+          {
+            text: 'Toimeksianto päivitetty onnistuneesti!',
+            type: 'success',
+          },
+          5,
+        ),
+      );
+      dispatch(setLoading(false));
+    } catch (err: unknown) {
+      const error = err as AxiosError;
+      dispatch(setError(error.message));
+      dispatch(setLoading(false));
+      handleError(error, dispatch);
+    }
+  };
+};
+
+export const submitPaintAssignment = (formData: PaintForm) => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      dispatch(
+        showMessage(
+          {
+            text: 'Toimeksianto tallennettu onnistuneesti!',
+            type: 'success',
+          },
+          5,
+        ),
+      );
+      dispatch(setLoading(false));
+    } catch (err: unknown) {
+      const error = err as AxiosError;
+      dispatch(setError(error.message));
+      dispatch(setLoading(false));
+      handleError(error, dispatch);
+    }
+  };
+};
+
+export const updatePaintAssignment = (formData: PaintForm) => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
       dispatch(
         showMessage(
           {
