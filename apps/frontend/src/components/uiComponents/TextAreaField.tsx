@@ -7,6 +7,7 @@ type TextAreaFieldProps = {
   rows?: number;
   placeholder?: string;
   custom?: string;
+  customGroup?: string;
 };
 
 const TextAreaField: React.FC<TextAreaFieldProps> = ({
@@ -16,9 +17,10 @@ const TextAreaField: React.FC<TextAreaFieldProps> = ({
   rows = 3,
   placeholder,
   custom,
+  customGroup,
 }) => {
   return (
-    <Form.Group className="formGroup text-area-group">
+    <Form.Group className={`formGroup text-area-group ${customGroup}`}>
       <Form.Label>{label}: </Form.Label>
       <Form.Control
         className={custom}

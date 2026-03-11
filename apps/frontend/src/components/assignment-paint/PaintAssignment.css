@@ -1,7 +1,33 @@
+.car-text-container {
+  display: flex;
+  margin: 1em 0;
+  align-items: center;
+}
+
+.front-and-rear {
+  display: flex;
+}
+
+.paint-area {
+  width: 80%;
+}
+
+.paint-description {
+  flex-direction: column;
+  margin-left: 2em;
+  width: 100%;
+}
+
 .car-top-container {
   position: relative;
-  width: 200px;
-  height: auto;
+  height: fit-content;
+  width: 1000px;
+}
+
+.car-front-container {
+  position: relative;
+  height: fit-content;
+  width: 300px;
 }
 
 .car-image {

@@ -5,36 +5,35 @@ import TextAreaField from '../uiComponents/TextAreaField.js';
 
 import type { PaintForm } from '@shared/index.js';
 
-import carTopImage from '../../assets/carTopImage.png';
+import carRearImage from '../../assets/carRearImage.png';
 
-interface CarTopProps {
+interface CarRearProps {
   formData: PaintForm;
   setFormData: React.Dispatch<React.SetStateAction<PaintForm>>;
 }
 
-const CarTop: React.FC<CarTopProps> = ({ formData, setFormData }) => {
-  const topFields: {
-    key: keyof PaintForm['top'];
+const CarRear: React.FC<CarRearProps> = ({ formData, setFormData }) => {
+  const rearFields: {
+    key: keyof PaintForm['rear'];
     label: string;
     x: string;
     y: string;
   }[] = [
-    { key: 'roofLeft', label: 'Kattopaarre vasen', x: '60%', y: '77%' },
-    { key: 'roofMiddle', label: 'Katto pelti', x: '60%', y: '50%' },
-    { key: 'roofRight', label: 'Kattopaarre oikea', x: '60%', y: '23%' },
-    { key: 'bonnet', label: 'Konepelti', x: '10%', y: '50%' },
-    { key: 'rearlidTop', label: 'Takaluukun yläosa', x: '87%', y: '50%' },
-    { key: 'rearFenderLeft', label: 'Vasemman takalokasuojan yläosa', x: '90%', y: '83%' },
-    { key: 'rearFenderRight', label: 'Oikean takalokasuojan yläosa', x: '90%', y: '17%' },
-    { key: 'frontFenderLeft', label: 'Vasemman etulokasuoja yläosa', x: '20%', y: '92%' },
-    { key: 'frontFenderRight', label: 'Oikean etulokasuoja yläosa', x: '20%', y: '8%' },
+    { key: 'bumberLeft', label: 'Takapuskurin vasen kulma', x: '10%', y: '60%' },
+    { key: 'bumberMiddle', label: 'Takapuskuri', x: '50%', y: '68%' },
+    { key: 'bumberRight', label: 'Takapuskurin oikea kulma', x: '90%', y: '60%' },
+
+    { key: 'rearlid', label: 'Takaluukun keskiosa', x: '50%', y: '35%' },
+
+    { key: 'backLeft', label: 'Takaluukun alaosa', x: '50%', y: '53%' },
+    { key: 'backRight', label: 'Takaluukun yläosa', x: '50%', y: '8%' },
   ];
 
-  const updateTop = (field: keyof PaintForm['top'], value: boolean) => {
-    const label = topFields.find((f) => f.key === field)?.label;
+  const updateTop = (field: keyof PaintForm['rear'], value: boolean) => {
+    const label = rearFields.find((f) => f.key === field)?.label;
 
     setFormData((prev) => {
-      let description = prev.top.description || '';
+      let description = prev.rear.description || '';
 
       if (label) {
         if (value) {
@@ -53,8 +52,8 @@ const CarTop: React.FC<CarTopProps> = ({ formData, setFormData }) => {
 
       return {
         ...prev,
-        top: {
-          ...prev.top,
+        rear: {
+          ...prev.rear,
           [field]: value,
           description,
         },
@@ -64,13 +63,13 @@ const CarTop: React.FC<CarTopProps> = ({ formData, setFormData }) => {
   return (
     <>
       <div className="car-text-container">
-        <div className="car-top-container">
-          <img src={carTopImage} className="car-image" />
+        <div className="car-front-container">
+          <img src={carRearImage} className="car-image" />
 
-          {topFields.map(({ key, label, x, y }) => (
+          {rearFields.map(({ key, label, x, y }) => (
             <CheckboxPaint
               key={key}
-              checked={formData.top[key] as boolean}
+              checked={formData.rear[key] as boolean}
               onChange={(v) => updateTop(key, v)}
               x={x}
               y={y}
@@ -79,11 +78,11 @@ const CarTop: React.FC<CarTopProps> = ({ formData, setFormData }) => {
         </div>
         <TextAreaField
           label="Vaurion kuvaus"
-          value={formData.top.description}
+          value={formData.rear.description}
           onChange={(v) =>
             setFormData((prev) => ({
               ...prev,
-              top: { ...prev.top, description: v },
+              rear: { ...prev.rear, description: v },
             }))
           }
           rows={6}
@@ -95,4 +94,4 @@ const CarTop: React.FC<CarTopProps> = ({ formData, setFormData }) => {
   );
 };
 
-export default CarTop;
+export default CarRear;

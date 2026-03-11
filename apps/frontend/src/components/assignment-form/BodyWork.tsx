@@ -281,7 +281,6 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, setFormData }) => {
                     damage: { ...prev.damage, damageId: v },
                   }))
                 }
-                unit="€"
               />
               <SelectField
                 label="Omavastuun maksaja"
