@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import type { UsedCarForm } from '@shared/index.js';
+import type { UsedCarForm, Step } from '@shared/index.js';
 import { initialUsedCarForm } from './initialUsedCarForm.js';
 
 import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../hooks/useRedux.js';
 import type { AppDispatch } from '../../reducers/store.js';
-import { submitAssignment, editAssignment } from '../../reducers/assignmentReducer.js';
+import {
+  submitAssignment,
+  editAssignment,
+  fetchPaintAssignment,
+  setSavedAssignment,
+} from '../../reducers/assignmentReducer.js';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../reducers/store.js';
 
@@ -17,6 +23,7 @@ import Service from './Service.js';
 import Tyres from './Tyres.js';
 import OtherService from './OtherService.js';
 import BodyWork from './BodyWork.js';
+import PaintAssignment from '../assignment-paint/PaintAssignment';
 
 import Button from '../uiComponents/Button.js';
 
@@ -32,6 +39,10 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
   const navigate = useNavigate();
   const [formData, setFormData] = useState<UsedCarForm>(initialUsedCarForm);
 
+  const paint = formData.damage.damaged || formData.bodyWarranty.enabled;
+
+  const [step, setStep] = useState<Step>('form');
+
   const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
@@ -40,9 +51,20 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
     }
   }, [user]);
 
+  const savedAssignment = useAppSelector((state) => state.assignment.savedAssignment);
+  const paintAssignment = useAppSelector((state) => state.assignment.paintAssignment);
+
   useEffect(() => {
     if (edit && assignment) {
       setFormData(assignment);
+      dispatch(setSavedAssignment(assignment));
+
+      console.log(assignment.damage.damaged, assignment.bodyWarranty.enabled, assignment.id);
+
+      if ((assignment.damage.damaged || assignment.bodyWarranty.enabled) && assignment.id) {
+        dispatch(fetchPaintAssignment(assignment.id));
+        console.log(paintAssignment);
+      }
     }
   }, [edit, assignment]);
 
@@ -64,14 +86,39 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
     if (!formData) return;
 
     await dispatch(submitAssignment(formData));
-    navigate('/toimeksiannot');
+
+    if (formData.bodyWarranty.enabled || formData.damage.damaged) {
+      setStep('paint');
+    } else {
+      navigate('/toimeksiannot');
+    }
   };
 
   const handleEdit = async () => {
     if (!formData) return;
     await dispatch(editAssignment(formData));
-    if (setEdit) setEdit(false);
+    if (
+      (formData.bodyWarranty.enabled &&
+        assignment?.bodyWarranty.enabled !== formData.bodyWarranty.enabled) ||
+      (formData.damage.damaged && assignment?.damage.damaged !== formData.damage.damaged)
+    ) {
+      setStep('paint');
+    } else {
+      if (setEdit) setEdit(false);
+    }
   };
+
+  if (paint && step === 'paint' && savedAssignment.id) {
+    return (
+      <PaintAssignment
+        paintAssignment={paintAssignment}
+        regNro={savedAssignment.car.regNum}
+        assignmentId={savedAssignment.id}
+        edit={edit}
+        setEdit={setEdit}
+      />
+    );
+  }
 
   return (
     <form className="form-container" onSubmit={handleSubmit}>
@@ -90,7 +137,7 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
           </Button>
           {!edit && (
             <Button variant="primary" type="submit">
-              Lähetä toimeksianto
+              {paint ? 'Tallenna ja siirry maalaus lomakkelle' : 'Tallenna toimeksianto'}
             </Button>
           )}
           {edit && setEdit && (
@@ -99,8 +146,13 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
                 Peruuta
               </Button>
               <Button variant="primary" type="button" onClick={() => handleEdit()}>
-                Muokkaa toimeksiantoa
+                Tallenna muutokset
               </Button>
+              {paintAssignment.id && (
+                <Button variant="primary" type="button" onClick={() => setStep('paint')}>
+                  Muokkaa maalauslomaketta
+                </Button>
+              )}
             </>
           )}
         </div>

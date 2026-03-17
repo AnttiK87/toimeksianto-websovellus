@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { UsedCarForm, AssignmentResponse } from '@shared/index.js';
+import type { UsedCarForm, AssignmentResponse, PaintForm, BasicResponse } from '@shared/index.js';
 
 const baseUrl = '/api/assignments';
 
@@ -23,4 +23,30 @@ const update = async (content: UsedCarForm): Promise<AssignmentResponse> => {
   return response.data;
 };
 
-export default { getAllAssignments, getAssignmentByRegNro, newAssignment, update };
+const getPaintAssignmentById = async (assignmentId: number): Promise<PaintForm> => {
+  const response = await axios.get<PaintForm>(`${baseUrl}/paint/${assignmentId}`);
+  return response.data;
+};
+
+const newPaintAssignment = async (formData: PaintForm): Promise<BasicResponse> => {
+  const response = await axios.post<BasicResponse>(`${baseUrl}/paint`, formData);
+  return response.data;
+};
+
+const updatePaint = async (content: PaintForm): Promise<BasicResponse> => {
+  const response = await axios.put<BasicResponse>(
+    `${baseUrl}/paint/${content.assignmentId}`,
+    content,
+  );
+  return response.data;
+};
+
+export default {
+  getAllAssignments,
+  getAssignmentByRegNro,
+  newAssignment,
+  update,
+  getPaintAssignmentById,
+  newPaintAssignment,
+  updatePaint,
+};

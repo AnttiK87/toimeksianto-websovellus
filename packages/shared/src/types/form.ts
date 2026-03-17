@@ -7,6 +7,7 @@ export interface UsedCarForm {
   car: {
     makeAndModel: string;
     regNum: string;
+    vin: string;
     mileage: string;
     regDate: string;
   };
@@ -126,7 +127,6 @@ export interface UsedCarForm {
     repairFee: string;
     damageId: string;
     feePayer: number | null;
-    description: string;
     insuranceCompany: number | null;
     otherInsuranceCompany: string;
     painter: number | null;
@@ -136,7 +136,6 @@ export interface UsedCarForm {
 
   bodyWarranty: {
     enabled: boolean;
-    description: string;
     repairIsMade: boolean;
     repair: Repair | null;
     painter: number | null;
@@ -156,9 +155,7 @@ export interface Inspection {
 
 export interface OtherRepair {
   otherRepair: string;
-  reservation: string;
-  workorder: string;
-  ready: boolean;
+  repair: Repair | null;
 }
 
 export interface VehiclePdfData {
@@ -178,14 +175,22 @@ export interface VehiclePdfData {
 }
 
 export interface AssignmentResponse {
-  data: UsedCarForm | null;
+  data: UsedCarForm | undefined;
+  message: string;
+}
+
+export interface PaintAssignmentResponse {
+  data: PaintForm | undefined;
+  message: string;
+}
+
+export interface BasicResponse {
   message: string;
 }
 
 export interface PaintForm {
   id?: number;
   assignmentId?: number;
-  date: string;
   regNum: string;
   front: {
     bumberLeft: boolean;
@@ -244,3 +249,5 @@ export interface PaintForm {
     description: string;
   };
 }
+
+export type Step = 'form' | 'paint';

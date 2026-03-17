@@ -63,7 +63,7 @@ const CarTop: React.FC<CarTopProps> = ({ formData, setFormData }) => {
   };
   return (
     <>
-      <div className="car-text-container">
+      <div className="car-text-container-top">
         <div className="car-top-container">
           <img src={carTopImage} className="car-image" />
 
@@ -86,9 +86,9 @@ const CarTop: React.FC<CarTopProps> = ({ formData, setFormData }) => {
               top: { ...prev.top, description: v },
             }))
           }
-          rows={6}
-          custom="text-area paint-area"
-          customGroup="paint-description"
+          rows={5}
+          custom="text-area paint-area-top"
+          customGroup="paint-description-top"
         />
       </div>
     </>

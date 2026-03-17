@@ -3,7 +3,7 @@ import models from '../models/index.js';
 import { asyncHandler } from '../middleware/errorHandlers.js';
 import { AppError } from '../errors/AppError.js';
 
-const { UsedCarForm } = models;
+const { UsedCarAssignment, PaintAssignment } = models;
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ const router = express.Router();
 router.get(
   '/',
   asyncHandler(async (_req: Request, res: Response) => {
-    const assignments = await UsedCarForm.findAll({});
+    const assignments = await UsedCarAssignment.findAll({});
     res.json(assignments);
   }),
 );
@@ -23,7 +23,7 @@ router.post(
     const formData = req.body;
 
     // Luo uusi toimeksianto
-    const newAssignment = await UsedCarForm.create(formData);
+    const newAssignment = await UsedCarAssignment.create(formData);
 
     res.status(201).json({ data: newAssignment, message: 'toimeksianto lisätty' });
   }),
@@ -38,9 +38,7 @@ router.put(
 
     const formData = req.body;
 
-    console.log(formData);
-
-    const assignment = await UsedCarForm.findByPk(id);
+    const assignment = await UsedCarAssignment.findByPk(id);
     if (!assignment) {
       throw new AppError('Assignment not found', 404);
     }
@@ -50,6 +48,58 @@ router.put(
     res.status(200).json({
       data: updatedAssignment,
       message: 'Toimeksianto päivitetty onnistuneesti',
+    });
+  }),
+);
+
+// GET /api/assignments/paint/:id
+router.get(
+  '/paint/:id',
+  asyncHandler(async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    if (isNaN(id)) throw new AppError('Invalid ID', 400);
+
+    const assignment = await PaintAssignment.findOne({
+      where: { assignmentId: id },
+    });
+
+    res.json(assignment);
+  }),
+);
+
+// POST /api/assignments/paint
+router.post(
+  '/paint',
+  asyncHandler(async (req: Request, res: Response) => {
+    const formData = req.body;
+
+    await PaintAssignment.create(formData);
+
+    res.status(201).json({ message: 'Maalaustoimeksianto lisätty' });
+  }),
+);
+
+// PUT /api/assignments/paint/:id
+router.put(
+  'paint/:id',
+  asyncHandler(async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    console.log('tässä: ', id);
+    if (isNaN(id)) throw new AppError('Invalid ID', 400);
+
+    const formData = req.body;
+
+    const assignment = await PaintAssignment.findOne({
+      where: { assignmentId: id },
+    });
+    if (!assignment) {
+      throw new AppError('Assignment not found', 404);
+    }
+
+    await assignment.update(formData);
+
+    res.status(200).json({
+      message: 'Maalaustoimeksianto päivitetty onnistuneesti',
     });
   }),
 );

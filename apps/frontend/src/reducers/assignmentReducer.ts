@@ -4,16 +4,22 @@ import { showMessage } from './messageReducer.js';
 import { handleError } from '../utils/handleError.js';
 import type { AppDispatch } from './store';
 import type { AxiosError } from 'axios';
+import { initialUsedCarForm } from '../components/assignment-form/initialUsedCarForm.js';
+import { initialPaintForm } from '../components/assignment-paint/initialPaintForm.js';
 import type { UsedCarForm, AssignmentResponse, PaintForm } from '@shared/index.js';
 
 interface AssignmentState {
   allAssignments: UsedCarForm[];
+  savedAssignment: UsedCarForm;
+  paintAssignment: PaintForm;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: AssignmentState = {
   allAssignments: [],
+  savedAssignment: initialUsedCarForm,
+  paintAssignment: initialPaintForm,
   loading: false,
   error: null,
 };
@@ -24,6 +30,12 @@ const assignmentSlice = createSlice({
   reducers: {
     setAssignments(state, action: PayloadAction<UsedCarForm[]>) {
       state.allAssignments = action.payload;
+    },
+    setSavedAssignment(state, action: PayloadAction<UsedCarForm>) {
+      state.savedAssignment = action.payload;
+    },
+    setPaintAssignment(state, action: PayloadAction<PaintForm>) {
+      state.paintAssignment = action.payload;
     },
     appendAssignment(state, action: PayloadAction<UsedCarForm>) {
       state.allAssignments.push(action.payload);
@@ -43,10 +55,16 @@ const assignmentSlice = createSlice({
   },
 });
 
-export const { setAssignments, appendAssignment, updateAssignment, setLoading, setError } =
-  assignmentSlice.actions;
+export const {
+  setAssignments,
+  setSavedAssignment,
+  appendAssignment,
+  updateAssignment,
+  setLoading,
+  setError,
+  setPaintAssignment,
+} = assignmentSlice.actions;
 
-// Hae kaikki lomakkeet
 export const fetchAllAssignments = () => {
   return async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
@@ -63,7 +81,22 @@ export const fetchAllAssignments = () => {
   };
 };
 
-// Lähetä uusi lomake
+export const fetchPaintAssignment = (id: number) => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const data = await assignmentService.getPaintAssignmentById(id);
+      if (data) dispatch(setPaintAssignment(data));
+      dispatch(setLoading(false));
+    } catch (err: unknown) {
+      const error = err as AxiosError;
+      dispatch(setError(error.message));
+      dispatch(setLoading(false));
+      handleError(error, dispatch);
+    }
+  };
+};
+
 export const submitAssignment = (formData: UsedCarForm) => {
   return async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
@@ -71,6 +104,7 @@ export const submitAssignment = (formData: UsedCarForm) => {
       const response: AssignmentResponse = await assignmentService.newAssignment(formData);
       if (response.data) {
         dispatch(appendAssignment(response.data));
+        dispatch(setSavedAssignment(response.data));
       }
 
       dispatch(
@@ -83,6 +117,7 @@ export const submitAssignment = (formData: UsedCarForm) => {
         ),
       );
       dispatch(setLoading(false));
+      return response.data;
     } catch (err: unknown) {
       const error = err as AxiosError;
       dispatch(setError(error.message));
@@ -99,17 +134,22 @@ export const editAssignment = (formData: UsedCarForm) => {
       const response: AssignmentResponse = await assignmentService.update(formData);
       if (response.data) {
         dispatch(updateAssignment(response.data));
+        dispatch(setSavedAssignment(response.data));
       }
-
-      dispatch(
-        showMessage(
-          {
-            text: 'Toimeksianto päivitetty onnistuneesti!',
-            type: 'success',
-          },
-          5,
-        ),
-      );
+      if (
+        response.data?.bodyWarranty.enabled === false ||
+        response.data?.damage.damaged === false
+      ) {
+        dispatch(
+          showMessage(
+            {
+              text: 'Toimeksianto päivitetty onnistuneesti!',
+              type: 'success',
+            },
+            5,
+          ),
+        );
+      }
       dispatch(setLoading(false));
     } catch (err: unknown) {
       const error = err as AxiosError;
@@ -124,15 +164,7 @@ export const submitPaintAssignment = (formData: PaintForm) => {
   return async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
-      dispatch(
-        showMessage(
-          {
-            text: 'Toimeksianto tallennettu onnistuneesti!',
-            type: 'success',
-          },
-          5,
-        ),
-      );
+      await assignmentService.newPaintAssignment(formData);
       dispatch(setLoading(false));
     } catch (err: unknown) {
       const error = err as AxiosError;
@@ -147,15 +179,7 @@ export const updatePaintAssignment = (formData: PaintForm) => {
   return async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
-      dispatch(
-        showMessage(
-          {
-            text: 'Toimeksianto päivitetty onnistuneesti!',
-            type: 'success',
-          },
-          5,
-        ),
-      );
+      await assignmentService.updatePaint(formData);
       dispatch(setLoading(false));
     } catch (err: unknown) {
       const error = err as AxiosError;

@@ -1,4 +1,3 @@
-import { showMessage } from '../../reducers/messageReducer.js';
 import type { UsedCarForm } from '@shared/index.js';
 
 interface VehiclePdfUploadProps {
@@ -40,6 +39,7 @@ const VehiclePdfUpload: React.FC<VehiclePdfUploadProps> = ({ formData, setFormDa
           ...prev.car,
           makeAndModel: data.model,
           regNum: data.regNumber,
+          vin: data.vin,
           mileage: data.mileage,
           regDate: isoString(data.firstRegistration),
         },

@@ -6,7 +6,7 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "cross-env NODE_ENV=production node index.js",
-    "migration:down": "tsx src/utils/rollback.ts"
+    "migration:down": "cross-env NODE_ENV=development tsx src/utils/rollback.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

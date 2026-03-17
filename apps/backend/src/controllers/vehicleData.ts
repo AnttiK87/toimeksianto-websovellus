@@ -18,6 +18,8 @@ router.post('/', async (req: Request, res: Response) => {
 
     const regNumber = text.match(/Rek\.nro:\s*([A-Z0-9-]+)/)?.[1] || '';
 
+    const vin = text.match(/Alustanumero:\s*([A-Z0-9-]+)/)?.[1] || '';
+
     const mileage = text.match(/Ajomäärä:\s*(\d+)/)?.[1] || '';
 
     const inspectionInterval = text.match(/Seuraava katsastus:\s*([^\n]+)/)?.[1] || '';
@@ -31,6 +33,7 @@ router.post('/', async (req: Request, res: Response) => {
 
     return res.json({
       regNumber,
+      vin,
       mileage,
       firstRegistration,
       nextInspection,

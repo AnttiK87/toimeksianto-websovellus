@@ -10,6 +10,7 @@ export const initialUsedCarForm: UsedCarForm = {
   car: {
     makeAndModel: '',
     regNum: '',
+    vin: '',
     mileage: '',
     regDate: '',
   },

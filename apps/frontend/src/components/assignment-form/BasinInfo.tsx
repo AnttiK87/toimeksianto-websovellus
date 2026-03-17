@@ -49,13 +49,24 @@ const BasinInfo: React.FC<BasinInfoProps> = ({ formData, handleChange, setFormDa
           setFormData((prev) => ({ ...prev, car: { ...prev.car, makeAndModel: v } }))
         }
         custom="long-input"
+        required
       />
       <div className="same-row">
         <TextField
           label="Rek.nro"
+          required
           value={formData.car.regNum}
           onChange={(v) => setFormData((prev) => ({ ...prev, car: { ...prev.car, regNum: v } }))}
         />
+        <TextField
+          label="Alustanro"
+          required
+          custom="tyres-input-width-2"
+          value={formData.car.vin}
+          onChange={(v) => setFormData((prev) => ({ ...prev, car: { ...prev.car, vin: v } }))}
+        />
+      </div>
+      <div className="same-row">
         <TextField
           label="Ajomäärä"
           value={formData.car.mileage}

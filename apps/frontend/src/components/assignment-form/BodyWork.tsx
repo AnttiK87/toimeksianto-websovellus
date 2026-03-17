@@ -211,20 +211,6 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, setFormData }) => {
             }
             unit="työnä"
           />
-          {formData.damage.repairType && (
-            <TextAreaField
-              label="Vaurion kuvaus"
-              value={formData.damage.description}
-              onChange={(v) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  damage: { ...prev.damage, description: v },
-                }))
-              }
-              rows={4}
-              custom="text-area"
-            />
-          )}
           {formData.damage.repairType === 1 && (
             <div>
               <SelectField
@@ -336,18 +322,6 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, setFormData }) => {
       />
       {formData.bodyWarranty.enabled && (
         <div>
-          <TextAreaField
-            label="Vaurion kuvaus"
-            value={formData.bodyWarranty.description}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                bodyWarranty: { ...prev.bodyWarranty, description: v },
-              }))
-            }
-            rows={4}
-            custom="text-area"
-          />
           <CheckboxField
             label="Korjataan joka tapauksessa"
             checked={formData.bodyWarranty.repairIsMade}

@@ -1,7 +1,24 @@
 .car-text-container {
   display: flex;
-  margin: 1em 0;
+  margin-bottom: 1em;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  margin-bottom: 2em;
+}
+
+.car-text-container-top {
+  display: flex;
+  margin-bottom: 0;
   align-items: center;
+  align-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.left-and-front {
+  display: flex;
 }
 
 .front-and-rear {
@@ -9,29 +26,53 @@
 }
 
 .paint-area {
-  width: 80%;
+  width: 250px !important;
+  font-size: large;
+  resize: none;
+}
+
+.paint-area-top {
+  width: 300px !important;
+  font-size: large;
+  resize: none;
 }
 
 .paint-description {
   flex-direction: column;
-  margin-left: 2em;
+  width: fit-content;
+  font-size: 20px;
+}
+
+.paint-description-top {
+  flex-direction: column;
+}
+
+.car-side-container {
+  position: relative;
+  height: fit-content;
   width: 100%;
+}
+
+.car-front-container {
+  position: relative;
+  height: 154px;
+  width: fit-content;
 }
 
 .car-top-container {
   position: relative;
   height: fit-content;
-  width: 1000px;
-}
-
-.car-front-container {
-  position: relative;
-  height: fit-content;
-  width: 300px;
+  width: 66%;
 }
 
 .car-image {
   width: 100%;
+  display: block;
+}
+
+.car-image-front {
+  width: auto;
+  height: 100%;
   display: block;
 }
 
@@ -57,23 +98,77 @@
   cursor: pointer;
   transition: all 0.2s ease;
 
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
 }
 
 .paint-checkbox .form-check-input:checked {
-  background-color: #e53935;
-  transform: scale(1.15);
-  border: 2px solid rgb(0, 0, 0);
+  background-color: #ececec;
+  transform: scale(1.25);
+  border: 3px solid rgb(208, 0, 0);
+}
 
-  box-shadow:
-    0 0 0 2px rgb(0, 0, 0),
-    0 0 8px rgba(229, 57, 53, 0.7);
+.paint-checkbox .form-check-input:checked::after {
+  content: '✖';
+  color: rgb(208, 0, 0);
+  font-size: 17px;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
 }
 
 .paint-checkbox .form-check-input:hover {
-  transform: scale(1.2);
+  transform: scale(1.4);
 }
 
 .paint-checkbox .form-check-label {
   display: none;
+}
+
+.a4-page {
+  width: 210mm;
+  height: 297mm;
+
+  margin: 20px auto;
+  background: white;
+
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.form-container.paint {
+  margin: 0 !important;
+  height: 100%;
+}
+
+.paint-headers {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.buttons {
+  padding-right: 2em;
+}
+
+@media print {
+  body {
+    margin: 0;
+  }
+
+  .a4-page {
+    box-shadow: none;
+  }
+
+  .form-container.paint {
+    padding-top: 0;
+  }
+
+  @page {
+    size: A4;
+    margin: 8mm;
+  }
 }

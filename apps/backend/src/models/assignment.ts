@@ -1,62 +1,48 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../utils/db.js';
+import type { UsedCarForm } from '@shared/index.js';
 
-interface UsedCarFormAttributes {
+type UsedCarFormDB = Omit<UsedCarForm, 'id'> & {
   id: number;
-  date: string;
-  salesMan: number | null;
-  assigneer: string;
+};
 
-  car: object; // { makeAndModel, regNum, mileage, regDate }
-  warranty: object;
-  serviceHistory: object;
-  inspection: object;
-  electric: object;
-  tyres: object;
-  service: object;
-  timing: object;
-  otherServiceWork: object;
-  windshield: object;
-  damage: object;
-  bodyWarranty: object;
-
+interface UsedCarFormAttributes extends UsedCarFormDB {
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-// id ei ole pakollinen create-vaiheessa
 interface UsedCarFormCreationAttributes extends Optional<UsedCarFormAttributes, 'id'> {}
 
-class UsedCarForm
+class UsedCarAssignment
   extends Model<UsedCarFormAttributes, UsedCarFormCreationAttributes>
   implements UsedCarFormAttributes
 {
-  public id!: number;
-  public date!: string;
-  public salesMan!: number | null;
-  public assigneer!: string;
+  declare id: number;
+  declare date: string;
+  declare salesMan: number | null;
+  declare assigneer: string;
 
-  public car!: object;
-  public warranty!: object;
-  public serviceHistory!: object;
-  public inspection!: object;
-  public electric!: object;
-  public tyres!: object;
-  public service!: object;
-  public timing!: object;
-  public otherServiceWork!: object;
-  public windshield!: object;
-  public damage!: object;
-  public bodyWarranty!: object;
+  declare car: UsedCarForm['car'];
+  declare warranty: UsedCarForm['warranty'];
+  declare serviceHistory: UsedCarForm['serviceHistory'];
+  declare inspection: UsedCarForm['inspection'];
+  declare electric: UsedCarForm['electric'];
+  declare tyres: UsedCarForm['tyres'];
+  declare service: UsedCarForm['service'];
+  declare timing: UsedCarForm['timing'];
+  declare otherServiceWork: UsedCarForm['otherServiceWork'];
+  declare windshield: UsedCarForm['windshield'];
+  declare damage: UsedCarForm['damage'];
+  declare bodyWarranty: UsedCarForm['bodyWarranty'];
 
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  declare readonly createdAt: Date;
+  declare readonly updatedAt: Date;
 }
 
-UsedCarForm.init(
+UsedCarAssignment.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
@@ -127,4 +113,4 @@ UsedCarForm.init(
   },
 );
 
-export default UsedCarForm;
+export default UsedCarAssignment;

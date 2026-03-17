@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import CheckboxPaint from '../uiComponents/CheckboxPaint.js';
 import TextAreaField from '../uiComponents/TextAreaField.js';
 
@@ -20,7 +18,7 @@ const CarFront: React.FC<CarFrontProps> = ({ formData, setFormData }) => {
     y: string;
   }[] = [
     { key: 'bumberLeft', label: 'Etupuskurin vasen kulma', x: '85%', y: '65%' },
-    { key: 'bumberMiddle', label: 'Etupuskuri', x: '50%', y: '72%' },
+    { key: 'bumberMiddle', label: 'Koko etupuskuri', x: '50%', y: '72%' },
     { key: 'bumberRight', label: 'Etupuskurin oikea kulma', x: '15%', y: '65%' },
 
     { key: 'bonnet', label: 'Konepelti', x: '50%', y: '40%' },
@@ -64,7 +62,7 @@ const CarFront: React.FC<CarFrontProps> = ({ formData, setFormData }) => {
     <>
       <div className="car-text-container">
         <div className="car-front-container">
-          <img src={carFrontImage} className="car-image" />
+          <img src={carFrontImage} className="car-image-front" />
 
           {frontFields.map(({ key, label, x, y }) => (
             <CheckboxPaint
@@ -85,7 +83,7 @@ const CarFront: React.FC<CarFrontProps> = ({ formData, setFormData }) => {
               front: { ...prev.front, description: v },
             }))
           }
-          rows={6}
+          rows={5}
           custom="text-area paint-area"
           customGroup="paint-description"
         />

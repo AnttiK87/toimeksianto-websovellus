@@ -20,7 +20,7 @@ const CarRear: React.FC<CarRearProps> = ({ formData, setFormData }) => {
     y: string;
   }[] = [
     { key: 'bumberLeft', label: 'Takapuskurin vasen kulma', x: '10%', y: '60%' },
-    { key: 'bumberMiddle', label: 'Takapuskuri', x: '50%', y: '68%' },
+    { key: 'bumberMiddle', label: 'Koko takapuskuri', x: '50%', y: '68%' },
     { key: 'bumberRight', label: 'Takapuskurin oikea kulma', x: '90%', y: '60%' },
 
     { key: 'rearlid', label: 'Takaluukun keskiosa', x: '50%', y: '35%' },
@@ -64,7 +64,7 @@ const CarRear: React.FC<CarRearProps> = ({ formData, setFormData }) => {
     <>
       <div className="car-text-container">
         <div className="car-front-container">
-          <img src={carRearImage} className="car-image" />
+          <img src={carRearImage} className="car-image-front" />
 
           {rearFields.map(({ key, label, x, y }) => (
             <CheckboxPaint
@@ -85,7 +85,7 @@ const CarRear: React.FC<CarRearProps> = ({ formData, setFormData }) => {
               rear: { ...prev.rear, description: v },
             }))
           }
-          rows={6}
+          rows={5}
           custom="text-area paint-area"
           customGroup="paint-description"
         />

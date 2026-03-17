@@ -21,7 +21,6 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
     <Form.Group className="formGroup">
       <Form.Check
         className={`form-checkbox ${custom}`}
-        style={{ position: 'absolute', left: x, top: y }}
         type="checkbox"
         label={label}
         checked={checked}

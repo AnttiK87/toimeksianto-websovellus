@@ -14,20 +14,31 @@ import CarRight from './CarRight.js';
 import CarFront from './CarFront.js';
 import CarRear from './CarRear.js';
 
-import TextField from '../uiComponents/TextField.js';
 import Button from '../uiComponents/Button.js';
 
 import './PaintAssignment.css';
 
 interface PaintAssignmentProps {
+  paintAssignment: PaintForm;
   regNro: string;
+  assignmentId: number;
   edit?: boolean;
   setEdit?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const PaintAssignment: React.FC<PaintAssignmentProps> = ({ regNro, edit, setEdit }) => {
+const PaintAssignment: React.FC<PaintAssignmentProps> = ({
+  paintAssignment,
+  assignmentId,
+  regNro,
+  edit,
+  setEdit,
+}) => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<PaintForm>(initialPaintForm);
+  const [formData, setFormData] = useState<PaintForm>({
+    ...paintAssignment,
+    regNum: regNro,
+    assignmentId: assignmentId,
+  });
 
   const resetForm = () => {
     const confirmed = window.confirm('Haluatko varmasti tyhjentää lomakkeen?');
@@ -38,45 +49,71 @@ const PaintAssignment: React.FC<PaintAssignmentProps> = ({ regNro, edit, setEdit
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmitForm = async (e?: React.SyntheticEvent<HTMLFormElement>) => {
+    e?.preventDefault();
     if (!formData) return;
 
-    if (!edit) {
-      await dispatch(submitPaintAssignment(formData));
-    } else {
-      await dispatch(updatePaintAssignment(formData));
-    }
+    await dispatch(submitPaintAssignment(formData));
+
+    window.print();
 
     navigate('/toimeksiannot');
   };
 
+  const handleEdit = async (e?: React.SyntheticEvent<HTMLFormElement>) => {
+    e?.preventDefault();
+    if (!formData) return;
+
+    await dispatch(updatePaintAssignment(formData));
+
+    window.print();
+
+    navigate('/toimeksiannot');
+    setEdit && setEdit(false);
+  };
+
   return (
-    <form className="form-container" onSubmit={handleSubmit}>
-      <h1 className="text-2xl font-bold">Maalaus-lomake</h1>
-      <TextField
-        label="Rek.nro"
-        value={regNro}
-        onChange={(v) => setFormData((prev) => ({ ...prev, regNum: v }))}
-      />
-      <CarTop formData={formData} setFormData={setFormData} />
-      <CarLeft formData={formData} setFormData={setFormData} />
-      <CarRight formData={formData} setFormData={setFormData} />
-      <div className="front-and-rear">
-        <CarFront formData={formData} setFormData={setFormData} />
-        <CarRear formData={formData} setFormData={setFormData} />
+    <div>
+      <div className="a4-page">
+        <form className="form-container paint" onSubmit={handleSubmitForm}>
+          <div className="paint-headers">
+            <h1 className="text-2xl font-bold">Maalauslomake</h1>
+            <h2>Rekisteritunnus: {regNro}</h2>
+          </div>
+          <div className="left-and-front">
+            <CarLeft formData={formData} setFormData={setFormData} />
+            <CarRear formData={formData} setFormData={setFormData} />
+          </div>
+          <div className="left-and-front">
+            <CarRight formData={formData} setFormData={setFormData} />
+            <CarFront formData={formData} setFormData={setFormData} />
+          </div>
+          <CarTop formData={formData} setFormData={setFormData} />
+        </form>
       </div>
-      <div>
+      <div className="no-print">
         <div className="form-section-title buttons">
           <Button variant="danger" type="button" onClick={resetForm}>
             Tyhjennä lomake
           </Button>
-          <Button variant="primary" type="submit">
-            Tallenna ja tulosta lomake
-          </Button>
+          {!edit && (
+            <Button variant="primary" type="button" onClick={() => handleSubmitForm()}>
+              Tallenna ja tulosta lomake
+            </Button>
+          )}{' '}
+          {edit && setEdit && (
+            <>
+              <Button variant="danger" type="button" onClick={() => setEdit(false)}>
+                Peruuta
+              </Button>
+              <Button variant="primary" type="button" onClick={() => handleEdit()}>
+                Tallenna muutokset
+              </Button>
+            </>
+          )}
         </div>
       </div>
-    </form>
+    </div>
   );
 };
 

@@ -32,7 +32,7 @@ const CarLeft: React.FC<CarLeftProps> = ({ formData, setFormData }) => {
     { key: 'rearFender', label: 'Vasen takalokasuoja', x: '80%', y: '45%' },
     { key: 'rearBumber', label: 'Takapuskurin vasen kulma', x: '90%', y: '70%' },
 
-    { key: 'roofRight', label: 'Katon sivu', x: '60%', y: '5%' },
+    { key: 'roofRight', label: 'vasen kattopaarre', x: '60%', y: '5%' },
   ];
 
   const updateTop = (field: keyof PaintForm['left'], value: boolean) => {
@@ -69,7 +69,7 @@ const CarLeft: React.FC<CarLeftProps> = ({ formData, setFormData }) => {
   return (
     <>
       <div className="car-text-container">
-        <div className="car-top-container">
+        <div className="car-side-container">
           <img src={carLeftImage} className="car-image" />
 
           {leftFields.map(({ key, label, x, y }) => (
@@ -91,7 +91,7 @@ const CarLeft: React.FC<CarLeftProps> = ({ formData, setFormData }) => {
               left: { ...prev.left, description: v },
             }))
           }
-          rows={6}
+          rows={5}
           custom="text-area paint-area"
           customGroup="paint-description"
         />
