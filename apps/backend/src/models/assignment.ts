@@ -21,6 +21,9 @@ class UsedCarAssignment
   declare date: string;
   declare salesMan: number | null;
   declare assigneer: string;
+  declare location: number | null;
+  declare sold: boolean;
+  declare handOverDate: string;
 
   declare car: UsedCarForm['car'];
   declare warranty: UsedCarForm['warranty'];
@@ -55,6 +58,18 @@ UsedCarAssignment.init(
       allowNull: true,
     },
     assigneer: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    location: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    sold: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    handOverDate: {
       type: DataTypes.STRING,
       allowNull: false,
     },

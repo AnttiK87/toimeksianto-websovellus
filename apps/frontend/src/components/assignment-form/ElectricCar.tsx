@@ -12,7 +12,6 @@ import type { UsedCarForm } from '@shared/index.js';
 interface ElectricCarProps {
   formData: UsedCarForm;
   setFormData: React.Dispatch<React.SetStateAction<UsedCarForm>>;
-  handleChange: (field: keyof UsedCarForm, value: any) => void;
 }
 
 const ElectricCar: React.FC<ElectricCarProps> = ({ formData, setFormData }) => {

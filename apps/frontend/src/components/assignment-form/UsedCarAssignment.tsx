@@ -68,10 +68,6 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
     }
   }, [edit, assignment]);
 
-  const handleChange = (field: keyof UsedCarForm, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
   const resetForm = () => {
     const confirmed = window.confirm('Haluatko varmasti tyhjentää lomakkeen?');
     if (confirmed) {
@@ -108,6 +104,12 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
     }
   };
 
+  const handleEditAndPaint = async () => {
+    if (!formData) return;
+    await dispatch(editAssignment(formData));
+    setStep('paint');
+  };
+
   if (paint && step === 'paint' && savedAssignment.id) {
     return (
       <PaintAssignment
@@ -125,12 +127,12 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
       <h1 className="text-2xl font-bold">Toimeksianto-lomake</h1>
       <div>
         <VehiclePdfUpload formData={formData} setFormData={setFormData} />
-        <BasinInfo formData={formData} handleChange={handleChange} setFormData={setFormData} />
-        <ElectricCar formData={formData} handleChange={handleChange} setFormData={setFormData} />
-        <Tyres formData={formData} handleChange={handleChange} setFormData={setFormData} />
-        <Service formData={formData} handleChange={handleChange} setFormData={setFormData} />
-        <OtherService formData={formData} handleChange={handleChange} setFormData={setFormData} />
-        <BodyWork formData={formData} handleChange={handleChange} setFormData={setFormData} />
+        <BasinInfo formData={formData} setFormData={setFormData} />
+        <ElectricCar formData={formData} setFormData={setFormData} />
+        <Tyres formData={formData} setFormData={setFormData} />
+        <Service formData={formData} setFormData={setFormData} />
+        <OtherService formData={formData} setFormData={setFormData} />
+        <BodyWork formData={formData} setFormData={setFormData} />
         <div className="form-section-title buttons">
           <Button variant="danger" type="button" onClick={resetForm}>
             Tyhjennä lomake
@@ -149,7 +151,7 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
                 Tallenna muutokset
               </Button>
               {paintAssignment.id && (
-                <Button variant="primary" type="button" onClick={() => setStep('paint')}>
+                <Button variant="primary" type="button" onClick={() => handleEditAndPaint()}>
                   Muokkaa maalauslomaketta
                 </Button>
               )}

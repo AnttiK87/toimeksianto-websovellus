@@ -12,7 +12,7 @@ const OtherRepairsList = ({ repairs, onRemove }: Props) => {
   return (
     <ul className="repair-list">
       {repairs.map((job, index) => (
-        <li key={index} className="repair-item">
+        <li key={job.id} className="repair-item">
           <span>{job.otherRepair}</span>
 
           <Button variant="danger" className="repair-remove" onClick={() => onRemove(index)}>

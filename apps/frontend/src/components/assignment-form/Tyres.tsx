@@ -13,7 +13,6 @@ import type { UsedCarForm } from '@shared/index.js';
 interface TyresProps {
   formData: UsedCarForm;
   setFormData: React.Dispatch<React.SetStateAction<UsedCarForm>>;
-  handleChange: (field: keyof UsedCarForm, value: any) => void;
 }
 
 const Tyres: React.FC<TyresProps> = ({ formData, setFormData }) => {

@@ -12,7 +12,6 @@ import DateField from '../uiComponents/DateField.js';
 import SelectField from '../uiComponents/SelectField.js';
 import TextField from '../uiComponents/TextField.js';
 import CheckboxField from '../uiComponents/CheckboxField.js';
-import TextAreaField from '../uiComponents/TextAreaField.js';
 
 import {
   resetWindshield,
@@ -31,7 +30,6 @@ import type { UsedCarForm } from '@shared/index.js';
 interface BodyWorkProps {
   formData: UsedCarForm;
   setFormData: React.Dispatch<React.SetStateAction<UsedCarForm>>;
-  handleChange: (field: keyof UsedCarForm, value: any) => void;
 }
 
 const BodyWork: React.FC<BodyWorkProps> = ({ formData, setFormData }) => {

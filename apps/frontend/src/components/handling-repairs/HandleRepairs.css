@@ -1,0 +1,16 @@
+.handle-repair-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px;
+}
+
+.handle-repair-card {
+  width: 900px;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  padding: 2em;
+}
+
+.noMargin {
+  margin: 0;
+}

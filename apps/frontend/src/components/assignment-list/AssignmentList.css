@@ -1,18 +1,20 @@
 .assignment-container {
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  margin: 40px;
 }
 
 .assignment-card {
   width: 900px;
   border-radius: 10px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  padding: 2em;
 }
 
 .assignment-title {
   margin-bottom: 20px;
   font-weight: 600;
+  margin-left: 20px;
 }
 
 .table-message {
@@ -30,4 +32,22 @@
 
 .table-hover tbody tr:hover {
   background-color: #f5f7fa;
+}
+
+th {
+  text-align: start;
+}
+
+th,
+td {
+  padding: 10px;
+  max-width: 280px;
+
+  overflow: hidden;
+  white-space: nowrap; /* estää rivinvaihdon */
+  text-overflow: ellipsis; /* lisää ... loppuun */
+}
+
+.centerItem {
+  text-align: center;
 }

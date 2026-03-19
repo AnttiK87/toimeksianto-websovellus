@@ -20,7 +20,7 @@ const CarTop: React.FC<CarTopProps> = ({ formData, setFormData }) => {
     y: string;
   }[] = [
     { key: 'roofLeft', label: 'Kattopaarre vasen', x: '60%', y: '77%' },
-    { key: 'roofMiddle', label: 'Katto pelti', x: '60%', y: '50%' },
+    { key: 'roofMiddle', label: 'Kattopelti', x: '60%', y: '50%' },
     { key: 'roofRight', label: 'Kattopaarre oikea', x: '60%', y: '23%' },
     { key: 'bonnet', label: 'Konepelti', x: '10%', y: '50%' },
     { key: 'rearlidTop', label: 'Takaluukun yläosa', x: '87%', y: '50%' },

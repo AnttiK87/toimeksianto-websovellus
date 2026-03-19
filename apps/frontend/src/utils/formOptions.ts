@@ -4,6 +4,16 @@ export const salesMen = [
   { id: 3, label: 'Jaakko' },
 ];
 
+export const locations = [
+  { id: 1, label: 'Takapihalla' },
+  { id: 2, label: 'Myyntihallissa' },
+  { id: 3, label: 'Ulkona myyntirivissä' },
+  { id: 4, label: 'Nurmiparkissa' },
+  { id: 5, label: 'Fiksissä' },
+  { id: 6, label: 'Maalarilla' },
+  { id: 7, label: 'Asiakkaalla' },
+];
+
 export const ecarOpt = [
   { id: 1, label: 'Sähköauto' },
   { id: 2, label: 'Plug-in hybridi' },

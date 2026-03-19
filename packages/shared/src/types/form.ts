@@ -3,6 +3,9 @@ export interface UsedCarForm {
   date: string;
   salesMan: number | null;
   assigneer: string;
+  location: number | null;
+  sold: boolean;
+  handOverDate: string;
 
   car: {
     makeAndModel: string;
@@ -27,7 +30,7 @@ export interface UsedCarForm {
   inspection: {
     date: string;
     needed: boolean;
-    inspection: Inspection | null;
+    inspection: Repair | null;
   };
 
   electric: {
@@ -142,18 +145,22 @@ export interface UsedCarForm {
   };
 }
 
+export type RepairCategory = 'general' | 'tyres' | 'body';
+
+export type CategorizedRepair = {
+  name: string;
+  repair: Repair | null;
+  category: RepairCategory;
+};
+
 export interface Repair {
   reservation: string;
   workorder: string;
   ready: boolean;
 }
 
-export interface Inspection {
-  reservation: string;
-  ready: boolean;
-}
-
 export interface OtherRepair {
+  id: string;
   otherRepair: string;
   repair: Repair | null;
 }
@@ -251,3 +258,11 @@ export interface PaintForm {
 }
 
 export type Step = 'form' | 'paint';
+
+export interface StatsGeneral {
+  total: number;
+  handled: number;
+  ready: number;
+  pending: number;
+  progress: number;
+}

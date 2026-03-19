@@ -8,8 +8,8 @@ const getAllAssignments = async (): Promise<UsedCarForm[]> => {
   return response.data;
 };
 
-const getAssignmentByRegNro = async (regNro: string): Promise<UsedCarForm> => {
-  const response = await axios.get<UsedCarForm>(`${baseUrl}/${regNro}`);
+const getAssignmentById = async (id: Number): Promise<UsedCarForm> => {
+  const response = await axios.get<UsedCarForm>(`${baseUrl}/${id}`);
   return response.data;
 };
 
@@ -34,6 +34,7 @@ const newPaintAssignment = async (formData: PaintForm): Promise<BasicResponse> =
 };
 
 const updatePaint = async (content: PaintForm): Promise<BasicResponse> => {
+  console.log('update');
   const response = await axios.put<BasicResponse>(
     `${baseUrl}/paint/${content.assignmentId}`,
     content,
@@ -43,7 +44,7 @@ const updatePaint = async (content: PaintForm): Promise<BasicResponse> => {
 
 export default {
   getAllAssignments,
-  getAssignmentByRegNro,
+  getAssignmentById,
   newAssignment,
   update,
   getPaintAssignmentById,

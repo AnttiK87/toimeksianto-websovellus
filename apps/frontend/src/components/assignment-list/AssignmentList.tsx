@@ -3,6 +3,8 @@ import Table from 'react-bootstrap/Table';
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
 
+import { locations } from '../../utils/formOptions.js';
+
 import UsedCarAssignment from '../assignment-form/UsedCarAssignment';
 import { initialUsedCarForm } from '../assignment-form/initialUsedCarForm.js';
 
@@ -13,6 +15,8 @@ import type { RootState } from '../../reducers/store.js';
 
 import type { UsedCarForm } from '@shared/index.js';
 import { useNavigate } from 'react-router-dom';
+
+import TableRow from './TableRow.js';
 
 import './AssignmentList.css';
 
@@ -53,6 +57,10 @@ const AssignmentList = () => {
     setEdit(true);
   };
 
+  const editRepairs = (id: number | undefined) => {
+    navigate(`/assignments/${id}`);
+  };
+
   if (edit) {
     return <UsedCarAssignment assignment={selected} edit={edit} setEdit={setEdit} />;
   }
@@ -63,11 +71,16 @@ const AssignmentList = () => {
         <Card.Body>
           <h2 className="assignment-title">Toimeksiannot</h2>
 
-          <Table hover responsive="lg" striped>
+          <Table hover>
             <thead>
               <tr>
                 <th>Rek.nro</th>
                 <th>Merkki ja malli</th>
+                <th>Sijainti</th>
+                <th className="centerItem">Käsitelty</th>
+                <th className="centerItem">Valmiit</th>
+                <th className="centerItem">Korjaukset</th>
+                <th className="centerItem">Muokkaa</th>
               </tr>
             </thead>
 
@@ -99,10 +112,14 @@ const AssignmentList = () => {
               {!isLoading &&
                 !isError &&
                 allAssignments.map((assignment, index) => (
-                  <tr key={index} onClick={() => editAssignment(assignment)}>
-                    <td>{assignment.car.regNum}</td>
-                    <td>{assignment.car.makeAndModel}</td>
-                  </tr>
+                  <>
+                    <TableRow
+                      index={index}
+                      assignment={assignment}
+                      editAssignment={editAssignment}
+                      editRepair={editRepairs}
+                    />
+                  </>
                 ))}
             </tbody>
           </Table>

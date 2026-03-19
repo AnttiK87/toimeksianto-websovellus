@@ -13,6 +13,7 @@ type TextFieldProps = {
   customLabel?: string;
   customFormGroup?: string;
   required?: boolean;
+  enterFunction?: () => void;
 };
 
 const TextField: React.FC<TextFieldProps> = ({
@@ -26,6 +27,7 @@ const TextField: React.FC<TextFieldProps> = ({
   customLabel,
   customFormGroup,
   required,
+  enterFunction,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -50,6 +52,12 @@ const TextField: React.FC<TextFieldProps> = ({
           value={value}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              if (enterFunction) enterFunction();
+            }
+          }}
           className={custom}
           required={required}
         />

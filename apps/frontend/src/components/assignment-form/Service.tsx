@@ -14,7 +14,6 @@ import type { UsedCarForm } from '@shared/index.js';
 interface ServiceProps {
   formData: UsedCarForm;
   setFormData: React.Dispatch<React.SetStateAction<UsedCarForm>>;
-  handleChange: (field: keyof UsedCarForm, value: any) => void;
 }
 
 const Service: React.FC<ServiceProps> = ({ formData, setFormData }) => {

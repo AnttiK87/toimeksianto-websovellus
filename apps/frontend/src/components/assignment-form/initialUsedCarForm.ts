@@ -6,6 +6,9 @@ export const initialUsedCarForm: UsedCarForm = {
   date: today,
   salesMan: null,
   assigneer: '',
+  location: null,
+  sold: false,
+  handOverDate: '',
 
   car: {
     makeAndModel: '',
@@ -122,7 +125,6 @@ export const initialUsedCarForm: UsedCarForm = {
 
   damage: {
     damaged: false,
-    description: '',
     repairType: null,
     insuranceCompany: null,
     otherInsuranceCompany: '',
@@ -137,7 +139,6 @@ export const initialUsedCarForm: UsedCarForm = {
 
   bodyWarranty: {
     enabled: false,
-    description: '',
     repairIsMade: false,
     painter: null,
     repair: null,

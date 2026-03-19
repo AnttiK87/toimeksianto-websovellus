@@ -1,4 +1,6 @@
-import { salesMen } from '../../utils/formOptions.js';
+import { useEffect } from 'react';
+
+import { salesMen, locations } from '../../utils/formOptions.js';
 
 import DateField from '../uiComponents/DateField.js';
 import SelectField from '../uiComponents/SelectField.js';
@@ -10,35 +12,49 @@ import type { UsedCarForm } from '@shared/index.js';
 interface BasinInfoProps {
   formData: UsedCarForm;
   setFormData: React.Dispatch<React.SetStateAction<UsedCarForm>>;
-  handleChange: (field: keyof UsedCarForm, value: any) => void;
 }
 
-const BasinInfo: React.FC<BasinInfoProps> = ({ formData, handleChange, setFormData }) => {
+const BasinInfo: React.FC<BasinInfoProps> = ({ formData, setFormData }) => {
   const today = new Date().toISOString().split('T')[0];
+
+  useEffect(() => {
+    if (!formData.sold && formData.location === 7) {
+      setFormData((prev) => ({
+        ...prev,
+        location: null,
+      }));
+    }
+  }, [formData.sold]);
 
   return (
     <>
-      {/* Päiväys ja myyjä */}
       <div className="same-row">
         <DateField
           label="Toimeksiannon päiväys"
           value={formData.date}
-          onChange={(v) => handleChange('date', v)}
-        />
-        <SelectField
-          label="Myyjä"
-          options={salesMen}
-          value={formData.salesMan}
-          onChange={(v) => handleChange('salesMan', v)}
+          onChange={(v) => setFormData((prev) => ({ ...prev, date: v }))}
         />
         <TextField
           label="Toimeksiannon tekijä"
           value={formData.assigneer}
-          onChange={(v) => handleChange('assigneer', v)}
+          onChange={(v) => setFormData((prev) => ({ ...prev, assigneer: v }))}
           custom="tyres-input-width-2"
         />
       </div>
-
+      <div className="same-row">
+        <SelectField
+          label="Myyjä"
+          options={salesMen}
+          value={formData.salesMan}
+          onChange={(v) => setFormData((prev) => ({ ...prev, salesMan: v }))}
+        />
+        <SelectField
+          label="Ajoneuvon sijainti"
+          options={locations}
+          value={formData.location}
+          onChange={(v) => setFormData((prev) => ({ ...prev, location: v }))}
+        />
+      </div>
       {/* Perustiedot */}
       <h2 className="form-section-title">Ajoneuvon perustiedot:</h2>
 

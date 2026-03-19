@@ -11,6 +11,7 @@ import type { UsedCarForm, AssignmentResponse, PaintForm } from '@shared/index.j
 interface AssignmentState {
   allAssignments: UsedCarForm[];
   savedAssignment: UsedCarForm;
+  selectedAssignment: UsedCarForm;
   paintAssignment: PaintForm;
   loading: boolean;
   error: string | null;
@@ -19,6 +20,7 @@ interface AssignmentState {
 const initialState: AssignmentState = {
   allAssignments: [],
   savedAssignment: initialUsedCarForm,
+  selectedAssignment: initialUsedCarForm,
   paintAssignment: initialPaintForm,
   loading: false,
   error: null,
@@ -33,6 +35,9 @@ const assignmentSlice = createSlice({
     },
     setSavedAssignment(state, action: PayloadAction<UsedCarForm>) {
       state.savedAssignment = action.payload;
+    },
+    setAssignment(state, action: PayloadAction<UsedCarForm>) {
+      state.selectedAssignment = action.payload;
     },
     setPaintAssignment(state, action: PayloadAction<PaintForm>) {
       state.paintAssignment = action.payload;
@@ -63,6 +68,7 @@ export const {
   setLoading,
   setError,
   setPaintAssignment,
+  setAssignment,
 } = assignmentSlice.actions;
 
 export const fetchAllAssignments = () => {
@@ -71,6 +77,22 @@ export const fetchAllAssignments = () => {
     try {
       const data = await assignmentService.getAllAssignments();
       if (data.length > 0) dispatch(setAssignments(data));
+      dispatch(setLoading(false));
+    } catch (err: unknown) {
+      const error = err as AxiosError;
+      dispatch(setError(error.message));
+      dispatch(setLoading(false));
+      handleError(error, dispatch);
+    }
+  };
+};
+
+export const fetchAssignment = (id: number) => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const data = await assignmentService.getAssignmentById(id);
+      if (data) dispatch(setAssignment(data));
       dispatch(setLoading(false));
     } catch (err: unknown) {
       const error = err as AxiosError;

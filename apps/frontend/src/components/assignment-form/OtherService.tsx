@@ -15,7 +15,6 @@ import type { UsedCarForm } from '@shared/index.js';
 interface OtherServiceProps {
   formData: UsedCarForm;
   setFormData: React.Dispatch<React.SetStateAction<UsedCarForm>>;
-  handleChange: (field: keyof UsedCarForm, value: any) => void;
 }
 
 const OtherService: React.FC<OtherServiceProps> = ({ formData, setFormData }) => {
@@ -30,7 +29,11 @@ const OtherService: React.FC<OtherServiceProps> = ({ formData, setFormData }) =>
         ...prev.otherServiceWork,
         otherRepairs: [
           ...prev.otherServiceWork.otherRepairs,
-          { otherRepair: otherJob, reservation: '', workorder: '', ready: false },
+          {
+            id: crypto.randomUUID(),
+            otherRepair: otherJob,
+            repair: null,
+          },
         ],
       },
     }));
@@ -186,6 +189,7 @@ const OtherService: React.FC<OtherServiceProps> = ({ formData, setFormData }) =>
         label="Muuta korjattavaa"
         value={otherJob}
         onChange={(v) => setOtherJob(v)}
+        enterFunction={addRepair}
         custom="long-input"
       />
       <Button variant="secondary" type="button" onClick={addRepair}>

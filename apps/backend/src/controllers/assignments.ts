@@ -16,6 +16,21 @@ router.get(
   }),
 );
 
+// GET /api/assignments/:id
+router.get(
+  '/:id',
+  asyncHandler(async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    if (isNaN(id)) throw new AppError('Invalid ID', 400);
+
+    const assignment = await UsedCarAssignment.findOne({
+      where: { id: id },
+    });
+
+    res.json(assignment);
+  }),
+);
+
 // POST /api/assignments
 router.post(
   '/',
@@ -34,6 +49,7 @@ router.put(
   '/:id',
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
+    console.log('tässä: ', id);
     if (isNaN(id)) throw new AppError('Invalid ID', 400);
 
     const formData = req.body;
@@ -81,7 +97,7 @@ router.post(
 
 // PUT /api/assignments/paint/:id
 router.put(
-  'paint/:id',
+  '/paint/:id',
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     console.log('tässä: ', id);
