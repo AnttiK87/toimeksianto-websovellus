@@ -1,6 +1,6 @@
 const today = new Date().toISOString().split('T')[0];
 
-import type { UsedCarForm } from '@shared/index.js';
+import type { UsedCarForm } from '@shared/dist/index';
 
 export const initialUsedCarForm: UsedCarForm = {
   date: today,
@@ -9,11 +9,12 @@ export const initialUsedCarForm: UsedCarForm = {
   location: null,
   sold: false,
   handOverDate: '',
+  regNum: '',
+  vin: '',
 
   car: {
     makeAndModel: '',
-    regNum: '',
-    vin: '',
+
     mileage: '',
     regDate: '',
   },

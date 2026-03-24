@@ -5,8 +5,11 @@
     "rootDir": "src",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "@shared/*": ["../../shared/*"]
+    }
   },
   "references": [{ "path": "../../packages/shared" }],
-  "include": ["src"]
+  "include": ["src", "../../shared"]
 }

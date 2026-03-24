@@ -1,6 +1,6 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../utils/db.js';
-import type { PaintForm } from '@shared/index.js';
+import type { PaintForm } from '../../../../packages/shared/src/dist/index.js';
 
 interface PaintAssignmentAttributes {
   id: number;

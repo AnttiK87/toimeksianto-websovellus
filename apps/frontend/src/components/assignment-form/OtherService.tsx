@@ -10,46 +10,41 @@ import OtherRepairsList from './OtherRepairsList.js';
 
 import { resetHeater, resetAc, resetBulbChange } from './formResetters';
 
-import type { UsedCarForm } from '@shared/index.js';
+import type { UsedCarForm } from '@shared/dist/index.js';
 
 interface OtherServiceProps {
   formData: UsedCarForm;
+  handleChange: (path: string, value: unknown) => void;
   setFormData: React.Dispatch<React.SetStateAction<UsedCarForm>>;
 }
 
-const OtherService: React.FC<OtherServiceProps> = ({ formData, setFormData }) => {
+const OtherService: React.FC<OtherServiceProps> = ({ formData, handleChange, setFormData }) => {
   const [otherJob, setOtherJob] = useState<string>('');
 
   const addRepair = () => {
     if (otherJob === '') return;
 
-    setFormData((prev) => ({
-      ...prev,
-      otherServiceWork: {
-        ...prev.otherServiceWork,
-        otherRepairs: [
-          ...prev.otherServiceWork.otherRepairs,
-          {
-            id: crypto.randomUUID(),
-            otherRepair: otherJob,
-            repair: null,
-          },
-        ],
-      },
-    }));
+    const newRepair = {
+      id: crypto.randomUUID(),
+      otherRepair: otherJob,
+      repair: null,
+    };
+
+    // Patch: lisätään uusi elementti arrayhin
+    handleChange(`otherServiceWork.otherRepairs`, [
+      ...(formData.otherServiceWork.otherRepairs || []),
+      newRepair,
+    ]);
 
     setOtherJob('');
   };
 
   const removeRepair = (index: number) => {
     console.log('Removing repair at index:', index);
-    setFormData((prev) => ({
-      ...prev,
-      otherServiceWork: {
-        ...prev.otherServiceWork,
-        otherRepairs: prev.otherServiceWork.otherRepairs.filter((_, i) => i !== index),
-      },
-    }));
+
+    const updatedRepairs = formData.otherServiceWork.otherRepairs.filter((_, i) => i !== index);
+
+    handleChange(`otherServiceWork.otherRepairs`, updatedRepairs);
   };
 
   useEffect(() => {
@@ -72,30 +67,14 @@ const OtherService: React.FC<OtherServiceProps> = ({ formData, setFormData }) =>
         label="Toimiiko lisälämmitin"
         options={yesOrNo}
         value={formData.otherServiceWork.heater.heater}
-        onChange={(v) =>
-          setFormData((prev) => ({
-            ...prev,
-            otherServiceWork: {
-              ...prev.otherServiceWork,
-              heater: { ...prev.otherServiceWork.heater, heater: v },
-            },
-          }))
-        }
+        onChange={(v) => handleChange('otherServiceWork.heater.heater', v)}
       />
       {formData.otherServiceWork.heater.heater === 2 && (
         <div className="bottom-divider">
           <CheckboxField
             label="Korjataan"
             checked={formData.otherServiceWork.heater.heaterRepair}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                otherServiceWork: {
-                  ...prev.otherServiceWork,
-                  heater: { ...prev.otherServiceWork.heater, heaterRepair: v },
-                },
-              }))
-            }
+            onChange={(v) => handleChange('otherServiceWork.heater.heaterRepair', v)}
           />
         </div>
       )}
@@ -103,87 +82,39 @@ const OtherService: React.FC<OtherServiceProps> = ({ formData, setFormData }) =>
         label="Toimiiko ilmastointi"
         options={yesOrNo}
         value={formData.otherServiceWork.ac.ac}
-        onChange={(v) =>
-          setFormData((prev) => ({
-            ...prev,
-            otherServiceWork: {
-              ...prev.otherServiceWork,
-              ac: { ...prev.otherServiceWork.ac, ac: v },
-            },
-          }))
-        }
+        onChange={(v) => handleChange('otherServiceWork.ac.ac', v)}
       />
       {formData.otherServiceWork.ac.ac === 2 && (
         <div className="bottom-divider">
           <CheckboxField
             label="Korjataan"
             checked={formData.otherServiceWork.ac.acRepair}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                otherServiceWork: {
-                  ...prev.otherServiceWork,
-                  ac: { ...prev.otherServiceWork.ac, acRepair: v },
-                },
-              }))
-            }
+            onChange={(v) => handleChange('otherServiceWork.ac.acRepair', v)}
           />
           <SelectField
             label="Ilmastointihuolto on jo tehty"
             options={yesOrNo}
             value={formData.otherServiceWork.ac.acService}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                otherServiceWork: {
-                  ...prev.otherServiceWork,
-                  ac: { ...prev.otherServiceWork.ac, acService: v },
-                },
-              }))
-            }
+            onChange={(v) => handleChange('otherServiceWork.ac.acService', v)}
           />
         </div>
       )}
       <CheckboxField
         label="Korjaamossa vaihdettavia polttimoita"
         checked={formData.otherServiceWork.bulbChange.bulbChange}
-        onChange={(v) =>
-          setFormData((prev) => ({
-            ...prev,
-            otherServiceWork: {
-              ...prev.otherServiceWork,
-              bulbChange: { ...prev.otherServiceWork.bulbChange, bulbChange: v },
-            },
-          }))
-        }
+        onChange={(v) => handleChange('otherServiceWork.bulbChange.bulbChange', v)}
       />
       {formData.otherServiceWork.bulbChange.bulbChange && (
         <TextField
           label="Mikä/mitkä"
           value={formData.otherServiceWork.bulbChange.bulbs}
-          onChange={(v) =>
-            setFormData((prev) => ({
-              ...prev,
-              otherServiceWork: {
-                ...prev.otherServiceWork,
-                bulbChange: { ...prev.otherServiceWork.bulbChange, bulbs: v },
-              },
-            }))
-          }
+          onChange={(v) => handleChange('otherServiceWork.bulbChange.bulbs', v)}
         />
       )}
       <CheckboxField
         label="Pyöränkulmien tarkastus ja säätö tehtävä"
         checked={formData.otherServiceWork.wheelAlignment.wheelAlignment}
-        onChange={(v) =>
-          setFormData((prev) => ({
-            ...prev,
-            otherServiceWork: {
-              ...prev.otherServiceWork,
-              wheelAlignment: { ...prev.otherServiceWork.wheelAlignment, wheelAlignment: v },
-            },
-          }))
-        }
+        onChange={(v) => handleChange('otherServiceWork.wheelAlignment.wheelAlignment', v)}
       />
       <TextField
         label="Muuta korjattavaa"

@@ -9,14 +9,15 @@ import CheckboxField from '../uiComponents/CheckboxField.js';
 
 import { resetService, resetServiceSelected, resetTiming } from './formResetters';
 
-import type { UsedCarForm } from '@shared/index.js';
+import type { UsedCarForm } from '@shared/dist/index.js';
 
 interface ServiceProps {
   formData: UsedCarForm;
+  handleChange: (path: string, value: unknown) => void;
   setFormData: React.Dispatch<React.SetStateAction<UsedCarForm>>;
 }
 
-const Service: React.FC<ServiceProps> = ({ formData, setFormData }) => {
+const Service: React.FC<ServiceProps> = ({ formData, handleChange, setFormData }) => {
   const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
@@ -39,12 +40,7 @@ const Service: React.FC<ServiceProps> = ({ formData, setFormData }) => {
         <TextField
           label="Edellinen huolto suoritettu"
           value={formData.serviceHistory.lastService}
-          onChange={(v) =>
-            setFormData((prev) => ({
-              ...prev,
-              serviceHistory: { ...prev.serviceHistory, lastService: v },
-            }))
-          }
+          onChange={(v) => handleChange('serviceHistory.lastService', v)}
           unit="tkm"
           custom="tyres-input-width"
         />
@@ -52,24 +48,14 @@ const Service: React.FC<ServiceProps> = ({ formData, setFormData }) => {
           label="ja pvm"
           max={today}
           value={formData.serviceHistory.lastServiceDate}
-          onChange={(v) =>
-            setFormData((prev) => ({
-              ...prev,
-              serviceHistory: { ...prev.serviceHistory, lastServiceDate: v },
-            }))
-          }
+          onChange={(v) => handleChange('serviceHistory.lastServiceDate', v)}
         />
       </div>
       <div className="same-row no-gap">
         <TextField
           label="Seuraava huolto"
           value={formData.serviceHistory.nextService}
-          onChange={(v) =>
-            setFormData((prev) => ({
-              ...prev,
-              serviceHistory: { ...prev.serviceHistory, nextService: v },
-            }))
-          }
+          onChange={(v) => handleChange('serviceHistory.nextService', v)}
           unit="tkm"
           custom="tyres-input-width"
         />
@@ -77,23 +63,13 @@ const Service: React.FC<ServiceProps> = ({ formData, setFormData }) => {
           label="tai"
           value={formData.serviceHistory.nextServiceDate}
           min={today}
-          onChange={(v) =>
-            setFormData((prev) => ({
-              ...prev,
-              serviceHistory: { ...prev.serviceHistory, nextServiceDate: v },
-            }))
-          }
+          onChange={(v) => handleChange('serviceHistory.nextServiceDate', v)}
         />
       </div>
       <CheckboxField
         label="Autolle tehtävä huolto"
         checked={formData.service.needed}
-        onChange={(v) =>
-          setFormData((prev) => ({
-            ...prev,
-            service: { ...prev.service, needed: v },
-          }))
-        }
+        onChange={(v) => handleChange('service.needed', v)}
       />
       {formData.service.needed && (
         <div>
@@ -101,12 +77,7 @@ const Service: React.FC<ServiceProps> = ({ formData, setFormData }) => {
             label="Huolto suoritetaan"
             options={serviceTypes}
             value={formData.service.type}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                service: { ...prev.service, type: v },
-              }))
-            }
+            onChange={(v) => handleChange('service.type', v)}
             unit="mukaisesti."
           />
           {formData.service.type === 2 && (
@@ -116,17 +87,7 @@ const Service: React.FC<ServiceProps> = ({ formData, setFormData }) => {
                   key={service}
                   label={service}
                   checked={formData.service.selected.includes(service)}
-                  onChange={(checked) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      service: {
-                        ...prev.service,
-                        selected: checked
-                          ? [...prev.service.selected, service]
-                          : prev.service.selected.filter((s) => s !== service),
-                      },
-                    }))
-                  }
+                  onChange={(v) => handleChange('service.selected.includes(service)', v)}
                 />
               ))}
             </div>
@@ -138,12 +99,7 @@ const Service: React.FC<ServiceProps> = ({ formData, setFormData }) => {
         label="Jakopää"
         options={engineTimingTypes}
         value={formData.timing.type}
-        onChange={(v) =>
-          setFormData((prev) => ({
-            ...prev,
-            timing: { ...prev.timing, type: v },
-          }))
-        }
+        onChange={(v) => handleChange('timing.type', v)}
       />
       {formData.timing.type === 1 && (
         <div>
@@ -151,24 +107,14 @@ const Service: React.FC<ServiceProps> = ({ formData, setFormData }) => {
             <TextField
               label="Vaihtoväli"
               value={formData.timing.beltChangeKm}
-              onChange={(v) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  timing: { ...prev.timing, beltChangeKm: v },
-                }))
-              }
+              onChange={(v) => handleChange('timing.beltChangeKm', v)}
               unit="tkm"
               custom="tyres-input-width"
             />
             <TextField
               label="tai"
               value={formData.timing.beltChangeTime}
-              onChange={(v) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  timing: { ...prev.timing, beltChangeTime: v },
-                }))
-              }
+              onChange={(v) => handleChange('timing.beltChangeTime', v)}
               unit="vuotta"
               custom="tyres-input-width"
             />
@@ -177,35 +123,20 @@ const Service: React.FC<ServiceProps> = ({ formData, setFormData }) => {
             <TextField
               label="Vaihdettu"
               value={formData.timing.lastBeltChangeKm}
-              onChange={(v) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  timing: { ...prev.timing, lastBeltChangeKm: v },
-                }))
-              }
+              onChange={(v) => handleChange('timing.lastBeltChangeKm', v)}
               unit="tkm"
               custom="tyres-input-width"
             />
             <DateField
               label="ja pvm"
               value={formData.timing.lastBeltChangeTime}
-              onChange={(v) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  timing: { ...prev.timing, lastBeltChangeTime: v },
-                }))
-              }
+              onChange={(v) => handleChange('lastBeltChangeTime', v)}
             />
           </div>
           <CheckboxField
             label="Jakohinhan vaihto"
             checked={formData.timing.beltChangeNeeded}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                timing: { ...prev.timing, beltChangeNeeded: v },
-              }))
-            }
+            onChange={(v) => handleChange('timing.beltChangeNeeded', v)}
           />
         </div>
       )}
@@ -213,12 +144,7 @@ const Service: React.FC<ServiceProps> = ({ formData, setFormData }) => {
         <CheckboxField
           label="Jakoketjun vaihto"
           checked={formData.timing.chainChangeNeeded}
-          onChange={(v) =>
-            setFormData((prev) => ({
-              ...prev,
-              timing: { ...prev.timing, chainChangeNeeded: v },
-            }))
-          }
+          onChange={(v) => handleChange('timing.chainChangeNeeded', v)}
         />
       )}
     </>

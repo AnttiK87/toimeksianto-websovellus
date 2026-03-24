@@ -7,14 +7,15 @@ import TextField from '../uiComponents/TextField.js';
 
 import { resetElectric } from './formResetters.js';
 
-import type { UsedCarForm } from '@shared/index.js';
+import type { UsedCarForm } from '@shared/dist/index.js';
 
 interface ElectricCarProps {
   formData: UsedCarForm;
+  handleChange: (path: string, value: unknown) => void;
   setFormData: React.Dispatch<React.SetStateAction<UsedCarForm>>;
 }
 
-const ElectricCar: React.FC<ElectricCarProps> = ({ formData, setFormData }) => {
+const ElectricCar: React.FC<ElectricCarProps> = ({ formData, handleChange, setFormData }) => {
   useEffect(() => {
     if (formData.electric.type !== 1 && formData.electric.type !== 2) {
       setFormData((prev) => resetElectric(prev));
@@ -29,59 +30,34 @@ const ElectricCar: React.FC<ElectricCarProps> = ({ formData, setFormData }) => {
         label="Tyyppi"
         options={ecarOpt}
         value={formData.electric.type}
-        onChange={(v) =>
-          setFormData((prev) => ({
-            ...prev,
-            electric: { ...prev.electric, type: v },
-          }))
-        }
+        onChange={(v) => handleChange('electric.type', v)}
       />
       {(formData.electric.type === 1 || formData.electric.type === 2) && (
         <div>
           <TextField
             label="Latauskaapeli(t)"
             value={formData.electric.chargeCable}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                electric: { ...prev.electric, chargeCable: v },
-              }))
-            }
+            onChange={(v) => handleChange('electric.chargeCable', v)}
             custom="long-input"
           />
           <TextField
             label="Sisäisen AC laturin teho"
             value={formData.electric.acPower}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                electric: { ...prev.electric, acPower: v },
-              }))
-            }
+            onChange={(v) => handleChange('electric.acPower', v)}
             unit="kWh"
             customLabel="min-width"
           />
           <TextField
             label="DC pikalatausteho"
             value={formData.electric.dcPower}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                electric: { ...prev.electric, dcPower: v },
-              }))
-            }
+            onChange={(v) => handleChange('electric.dcPower', v)}
             unit="kWh"
             customLabel="min-width"
           />
           <TextField
             label="Toimintamatka sähköllä"
             value={formData.electric.range}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                electric: { ...prev.electric, range: v },
-              }))
-            }
+            onChange={(v) => handleChange('electric.range', v)}
             unit="km"
             customLabel="min-width"
           />
@@ -90,34 +66,19 @@ const ElectricCar: React.FC<ElectricCarProps> = ({ formData, setFormData }) => {
             label="Mittaustapa"
             options={emissionStandard}
             value={formData.electric.standard}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                electric: { ...prev.electric, standard: v },
-              }))
-            }
+            onChange={(v) => handleChange('electric.standard', v)}
           />
           <TextField
             label="Brutto"
             value={formData.electric.capacityGross}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                electric: { ...prev.electric, capacityGross: v },
-              }))
-            }
+            onChange={(v) => handleChange('electric.capacityGross', v)}
             unit="kWh"
             customLabel="electric-width"
           />
           <TextField
             label="Netto"
             value={formData.electric.capacityNet}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                electric: { ...prev.electric, capacityNet: v },
-              }))
-            }
+            onChange={(v) => handleChange('electric.capacityNet', v)}
             unit="kWh"
             customLabel="electric-width"
           />

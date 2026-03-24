@@ -1,5 +1,5 @@
 import Button from '../uiComponents/Button.js';
-import type { OtherRepair } from '@shared/index.js';
+import type { OtherRepair } from '@shared/dist/index.js';
 
 interface Props {
   repairs: OtherRepair[];

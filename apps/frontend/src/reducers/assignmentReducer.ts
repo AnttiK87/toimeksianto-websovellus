@@ -6,7 +6,12 @@ import type { AppDispatch } from './store';
 import type { AxiosError } from 'axios';
 import { initialUsedCarForm } from '../components/assignment-form/initialUsedCarForm.js';
 import { initialPaintForm } from '../components/assignment-paint/initialPaintForm.js';
-import type { UsedCarForm, AssignmentResponse, PaintForm } from '@shared/index.js';
+import type {
+  UsedCarForm,
+  AssignmentResponse,
+  PaintForm,
+  RepairPatch,
+} from '@shared/dist/index.js';
 
 interface AssignmentState {
   allAssignments: UsedCarForm[];
@@ -202,6 +207,26 @@ export const updatePaintAssignment = (formData: PaintForm) => {
     dispatch(setLoading(true));
     try {
       await assignmentService.updatePaint(formData);
+      dispatch(setLoading(false));
+    } catch (err: unknown) {
+      const error = err as AxiosError;
+      dispatch(setError(error.message));
+      dispatch(setLoading(false));
+      handleError(error, dispatch);
+    }
+  };
+};
+
+export const editRepairs = (id: number, patch: RepairPatch[]) => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await assignmentService.editRepairs(id, patch);
+      if (response.data) {
+        //console.log(response.data);
+        dispatch(updateAssignment(response.data));
+        dispatch(setAssignment(response.data));
+      }
       dispatch(setLoading(false));
     } catch (err: unknown) {
       const error = err as AxiosError;

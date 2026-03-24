@@ -13,7 +13,7 @@ import type {
   LoginResponse,
   UserInfoUpdateInput,
   LoginInput,
-} from '@shared/index.js';
+} from '@shared/dist/index.js';
 
 const storedUser = localStorage.getItem('loggedAdminUser');
 let parsedUser: LoginResponse | null = null;

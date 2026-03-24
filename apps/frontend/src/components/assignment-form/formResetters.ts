@@ -1,5 +1,5 @@
 // formResetters.ts
-import type { UsedCarForm } from '@shared/index.js';
+import type { UsedCarForm } from '@shared/dist/index.js';
 
 export const resetTyres = (form: UsedCarForm) => ({
   ...form,

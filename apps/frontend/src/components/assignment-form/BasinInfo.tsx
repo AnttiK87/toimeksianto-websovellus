@@ -7,37 +7,27 @@ import SelectField from '../uiComponents/SelectField.js';
 import TextField from '../uiComponents/TextField.js';
 import CheckboxField from '../uiComponents/CheckboxField.js';
 
-import type { UsedCarForm } from '@shared/index.js';
+import type { UsedCarForm } from '@shared/dist/index.js';
 
 interface BasinInfoProps {
   formData: UsedCarForm;
-  setFormData: React.Dispatch<React.SetStateAction<UsedCarForm>>;
+  handleChange: (path: string, value: unknown) => void;
 }
 
-const BasinInfo: React.FC<BasinInfoProps> = ({ formData, setFormData }) => {
+const BasinInfo: React.FC<BasinInfoProps> = ({ formData, handleChange }) => {
   const today = new Date().toISOString().split('T')[0];
-
-  useEffect(() => {
-    if (!formData.sold && formData.location === 7) {
-      setFormData((prev) => ({
-        ...prev,
-        location: null,
-      }));
-    }
-  }, [formData.sold]);
-
   return (
     <>
       <div className="same-row">
         <DateField
           label="Toimeksiannon päiväys"
           value={formData.date}
-          onChange={(v) => setFormData((prev) => ({ ...prev, date: v }))}
+          onChange={(v) => handleChange('date', v)}
         />
         <TextField
           label="Toimeksiannon tekijä"
           value={formData.assigneer}
-          onChange={(v) => setFormData((prev) => ({ ...prev, assigneer: v }))}
+          onChange={(v) => handleChange('assigneer', v)}
           custom="tyres-input-width-2"
         />
       </div>
@@ -46,13 +36,13 @@ const BasinInfo: React.FC<BasinInfoProps> = ({ formData, setFormData }) => {
           label="Myyjä"
           options={salesMen}
           value={formData.salesMan}
-          onChange={(v) => setFormData((prev) => ({ ...prev, salesMan: v }))}
+          onChange={(v) => handleChange('salesMan', v)}
         />
         <SelectField
           label="Ajoneuvon sijainti"
           options={locations}
           value={formData.location}
-          onChange={(v) => setFormData((prev) => ({ ...prev, location: v }))}
+          onChange={(v) => handleChange('location', v)}
         />
       </div>
       {/* Perustiedot */}
@@ -61,9 +51,7 @@ const BasinInfo: React.FC<BasinInfoProps> = ({ formData, setFormData }) => {
       <TextField
         label="Merkki ja malli"
         value={formData.car.makeAndModel}
-        onChange={(v) =>
-          setFormData((prev) => ({ ...prev, car: { ...prev.car, makeAndModel: v } }))
-        }
+        onChange={(v) => handleChange('car.makeAndModel', v)}
         custom="long-input"
         required
       />
@@ -71,22 +59,22 @@ const BasinInfo: React.FC<BasinInfoProps> = ({ formData, setFormData }) => {
         <TextField
           label="Rek.nro"
           required
-          value={formData.car.regNum}
-          onChange={(v) => setFormData((prev) => ({ ...prev, car: { ...prev.car, regNum: v } }))}
+          value={formData.regNum}
+          onChange={(v) => handleChange('regNum', v)}
         />
         <TextField
           label="Alustanro"
           required
           custom="tyres-input-width-2"
-          value={formData.car.vin}
-          onChange={(v) => setFormData((prev) => ({ ...prev, car: { ...prev.car, vin: v } }))}
+          value={formData.vin}
+          onChange={(v) => handleChange('vin', v)}
         />
       </div>
       <div className="same-row">
         <TextField
           label="Ajomäärä"
           value={formData.car.mileage}
-          onChange={(v) => setFormData((prev) => ({ ...prev, car: { ...prev.car, mileage: v } }))}
+          onChange={(v) => handleChange('car.mileage', v)}
           unit="km"
         />
 
@@ -94,7 +82,7 @@ const BasinInfo: React.FC<BasinInfoProps> = ({ formData, setFormData }) => {
           label="Rek.pvm"
           value={formData.car.regDate}
           max={today}
-          onChange={(v) => setFormData((prev) => ({ ...prev, car: { ...prev.car, regDate: v } }))}
+          onChange={(v) => handleChange('car.regDate', v)}
         />
       </div>
       {/* Takuu */}
@@ -103,18 +91,14 @@ const BasinInfo: React.FC<BasinInfoProps> = ({ formData, setFormData }) => {
         <CheckboxField
           label="Tehdastakuu voimassa"
           checked={formData.warranty.enabled}
-          onChange={(v) =>
-            setFormData((prev) => ({ ...prev, warranty: { ...prev.warranty, enabled: v } }))
-          }
+          onChange={(v) => handleChange('warranty.enabled', v)}
         />
         {formData.warranty.enabled && (
           <DateField
             label="asti"
             value={formData.warranty.until}
             min={today}
-            onChange={(v) =>
-              setFormData((prev) => ({ ...prev, warranty: { ...prev.warranty, until: v } }))
-            }
+            onChange={(v) => handleChange('warranty.until', v)}
           />
         )}
       </div>
@@ -125,22 +109,12 @@ const BasinInfo: React.FC<BasinInfoProps> = ({ formData, setFormData }) => {
           label="Seuraava katsastus"
           value={formData.inspection.date}
           min={today}
-          onChange={(v) =>
-            setFormData((prev) => ({
-              ...prev,
-              inspection: { ...prev.inspection, date: v },
-            }))
-          }
+          onChange={(v) => handleChange('inspection.date', v)}
         />
         <CheckboxField
           label="Katsastettava"
           checked={formData.inspection.needed}
-          onChange={(v) =>
-            setFormData((prev) => ({
-              ...prev,
-              inspection: { ...prev.inspection, needed: v },
-            }))
-          }
+          onChange={(v) => handleChange('inspection.needed', v)}
         />
       </div>
     </>

@@ -25,14 +25,15 @@ import {
   resetBodyWarrantyPainter,
 } from './formResetters';
 
-import type { UsedCarForm } from '@shared/index.js';
+import type { UsedCarForm } from '@shared/dist/index.js';
 
 interface BodyWorkProps {
   formData: UsedCarForm;
+  handleChange: (path: string, value: unknown) => void;
   setFormData: React.Dispatch<React.SetStateAction<UsedCarForm>>;
 }
 
-const BodyWork: React.FC<BodyWorkProps> = ({ formData, setFormData }) => {
+const BodyWork: React.FC<BodyWorkProps> = ({ formData, handleChange, setFormData }) => {
   const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
@@ -79,12 +80,7 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, setFormData }) => {
       <CheckboxField
         label="Tuulilasi vaihdettava"
         checked={formData.windshield.change}
-        onChange={(v) =>
-          setFormData((prev) => ({
-            ...prev,
-            windshield: { ...prev.windshield, change: v },
-          }))
-        }
+        onChange={(v) => handleChange('windshield.change', v)}
       />
       {formData.windshield.change && (
         <div className="bottom-divider">
@@ -92,34 +88,19 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, setFormData }) => {
             label="Vaihdetaan"
             options={windshWorkshops}
             value={formData.windshield.workshop}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                windshield: { ...prev.windshield, workshop: v },
-              }))
-            }
+            onChange={(v) => handleChange('windshield.workshop', v)}
           />
           {formData.windshield.workshop === 2 && (
             <TextField
               label="Missä"
               value={formData.windshield.subcontractor}
-              onChange={(v) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  windshield: { ...prev.windshield, subcontractor: v },
-                }))
-              }
+              onChange={(v) => handleChange('windshield.subcontractor', v)}
             />
           )}
           <CheckboxField
             label="Lasivakuutus"
             checked={formData.windshield.insurance}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                windshield: { ...prev.windshield, insurance: v },
-              }))
-            }
+            onChange={(v) => handleChange('windshield.insurance', v)}
           />
           {formData.windshield.insurance && (
             <div>
@@ -127,57 +108,32 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, setFormData }) => {
                 label="Vakuutusyhtiö"
                 options={insuranceCompanies}
                 value={formData.windshield.insuranceCompany}
-                onChange={(v) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    windshield: { ...prev.windshield, insuranceCompany: v },
-                  }))
-                }
+                onChange={(v) => handleChange('windshield.insuranceCompany', v)}
               />
               {formData.windshield.insuranceCompany === 8 && (
                 <TextField
                   label="Mikä"
                   value={formData.windshield.otherInsuranceCompany}
-                  onChange={(v) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      windshield: { ...prev.windshield, otherInsuranceCompany: v },
-                    }))
-                  }
+                  onChange={(v) => handleChange('windshield.otherInsuranceCompany', v)}
                 />
               )}
               <DateField
                 label="Vahinkopäivä"
                 value={formData.windshield.damageDate}
                 max={today}
-                onChange={(v) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    windshield: { ...prev.windshield, damageDate: v },
-                  }))
-                }
+                onChange={(v) => handleChange('windshield.damageDate', v)}
               />
               <TextField
                 label="Omavastuu"
                 value={formData.windshield.changeFee}
-                onChange={(v) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    windshield: { ...prev.windshield, changeFee: v },
-                  }))
-                }
+                onChange={(v) => handleChange('windshield.changeFee', v)}
                 unit="€"
               />
               <SelectField
                 label="Omavastuun maksaja"
                 options={payers}
                 value={formData.windshield.feePayer}
-                onChange={(v) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    windshield: { ...prev.windshield, feePayer: v },
-                  }))
-                }
+                onChange={(v) => handleChange('windshield.feePayer', v)}
               />
             </div>
           )}
@@ -188,12 +144,7 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, setFormData }) => {
       <CheckboxField
         label="Autossa maalattavaa tai vaurioikorjaus"
         checked={formData.damage.damaged}
-        onChange={(v) =>
-          setFormData((prev) => ({
-            ...prev,
-            damage: { ...prev.damage, damaged: v },
-          }))
-        }
+        onChange={(v) => handleChange('damage.damaged', v)}
       />
       {formData.damage.damaged && (
         <div className="bottom-divider">
@@ -201,12 +152,7 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, setFormData }) => {
             label="Korjataan"
             options={repairTypes}
             value={formData.damage.repairType}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                damage: { ...prev.damage, repairType: v },
-              }))
-            }
+            onChange={(v) => handleChange('damage.repairType', v)}
             unit="työnä"
           />
           {formData.damage.repairType === 1 && (
@@ -215,67 +161,37 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, setFormData }) => {
                 label="Vakuutusyhtiö"
                 options={insuranceCompanies}
                 value={formData.damage.insuranceCompany}
-                onChange={(v) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    damage: { ...prev.damage, insuranceCompany: v },
-                  }))
-                }
+                onChange={(v) => handleChange('damage.insuranceCompany', v)}
               />
               {formData.damage.insuranceCompany === 8 && (
                 <TextField
                   label="Mikä"
                   value={formData.damage.otherInsuranceCompany}
-                  onChange={(v) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      damage: { ...prev.damage, otherInsuranceCompany: v },
-                    }))
-                  }
+                  onChange={(v) => handleChange('damage.otherInsuranceCompany', v)}
                 />
               )}
               <DateField
                 label="Vahinkopäivä"
                 value={formData.damage.damageDate}
                 max={today}
-                onChange={(v) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    damage: { ...prev.damage, damageDate: v },
-                  }))
-                }
+                onChange={(v) => handleChange('damage.damageDate', v)}
               />
               <TextField
                 label="Omavastuu"
                 value={formData.damage.repairFee}
-                onChange={(v) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    damage: { ...prev.damage, repairFee: v },
-                  }))
-                }
+                onChange={(v) => handleChange('damage.repairFee', v)}
                 unit="€"
               />
               <TextField
                 label="Vahinkotunnus"
                 value={formData.damage.damageId}
-                onChange={(v) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    damage: { ...prev.damage, damageId: v },
-                  }))
-                }
+                onChange={(v) => handleChange('damage.damageId', v)}
               />
               <SelectField
                 label="Omavastuun maksaja"
                 options={payers}
                 value={formData.damage.feePayer}
-                onChange={(v) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    damage: { ...prev.damage, feePayer: v },
-                  }))
-                }
+                onChange={(v) => handleChange('damage.feePayer', v)}
               />
             </div>
           )}
@@ -285,22 +201,12 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, setFormData }) => {
                 label="Maalaamo"
                 options={painters}
                 value={formData.damage.painter}
-                onChange={(v) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    damage: { ...prev.damage, painter: v },
-                  }))
-                }
+                onChange={(v) => handleChange('damage.painter', v)}
               />
               <CheckboxField
                 label="Osia purettava omassa korjaamossa"
                 checked={formData.damage.disassembly}
-                onChange={(v) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    damage: { ...prev.damage, disassembly: v },
-                  }))
-                }
+                onChange={(v) => handleChange('damage.disassembly', v)}
               />
             </div>
           )}
@@ -311,36 +217,21 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, setFormData }) => {
       <CheckboxField
         label="Koritakuu kyselytehtävä"
         checked={formData.bodyWarranty.enabled}
-        onChange={(v) =>
-          setFormData((prev) => ({
-            ...prev,
-            bodyWarranty: { ...prev.bodyWarranty, enabled: v },
-          }))
-        }
+        onChange={(v) => handleChange('bodyWarranty.enabled', v)}
       />
       {formData.bodyWarranty.enabled && (
         <div>
           <CheckboxField
             label="Korjataan joka tapauksessa"
             checked={formData.bodyWarranty.repairIsMade}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                bodyWarranty: { ...prev.bodyWarranty, repairIsMade: v },
-              }))
-            }
+            onChange={(v) => handleChange('bodyWarranty.repairIsMade', v)}
           />
           {formData.bodyWarranty.repairIsMade && (
             <SelectField
               label="Maalaamo"
               options={painters}
               value={formData.bodyWarranty.painter}
-              onChange={(v) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  bodyWarranty: { ...prev.bodyWarranty, painter: v },
-                }))
-              }
+              onChange={(v) => handleChange('bodyWarranty.painter', v)}
             />
           )}
         </div>

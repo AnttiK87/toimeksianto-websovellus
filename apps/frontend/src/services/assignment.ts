@@ -1,5 +1,11 @@
 import axios from 'axios';
-import type { UsedCarForm, AssignmentResponse, PaintForm, BasicResponse } from '@shared/index.js';
+import type {
+  UsedCarForm,
+  AssignmentResponse,
+  PaintForm,
+  BasicResponse,
+  RepairPatch,
+} from '@shared/dist/index';
 
 const baseUrl = '/api/assignments';
 
@@ -34,11 +40,15 @@ const newPaintAssignment = async (formData: PaintForm): Promise<BasicResponse> =
 };
 
 const updatePaint = async (content: PaintForm): Promise<BasicResponse> => {
-  console.log('update');
   const response = await axios.put<BasicResponse>(
     `${baseUrl}/paint/${content.assignmentId}`,
     content,
   );
+  return response.data;
+};
+
+const editRepairs = async (id: number, patch: RepairPatch[]): Promise<AssignmentResponse> => {
+  const response = await axios.patch<AssignmentResponse>(`${baseUrl}/repairs/${id}`, patch);
   return response.data;
 };
 
@@ -50,4 +60,5 @@ export default {
   getPaintAssignmentById,
   newPaintAssignment,
   updatePaint,
+  editRepairs,
 };

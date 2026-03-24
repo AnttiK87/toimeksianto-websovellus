@@ -3,8 +3,6 @@ import Table from 'react-bootstrap/Table';
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
 
-import { locations } from '../../utils/formOptions.js';
-
 import UsedCarAssignment from '../assignment-form/UsedCarAssignment';
 import { initialUsedCarForm } from '../assignment-form/initialUsedCarForm.js';
 
@@ -13,7 +11,7 @@ import { fetchAllAssignments } from '../../reducers/assignmentReducer.js';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../reducers/store.js';
 
-import type { UsedCarForm } from '@shared/index.js';
+import type { UsedCarForm } from '@shared/dist/index.js';
 import { useNavigate } from 'react-router-dom';
 
 import TableRow from './TableRow.js';
@@ -58,7 +56,7 @@ const AssignmentList = () => {
   };
 
   const editRepairs = (id: number | undefined) => {
-    navigate(`/assignments/${id}`);
+    navigate(`/toimeksiannot/${id}`);
   };
 
   if (edit) {

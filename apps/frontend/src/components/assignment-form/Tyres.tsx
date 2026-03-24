@@ -8,14 +8,15 @@ import CheckboxField from '../uiComponents/CheckboxField.js';
 
 import { resetTyres, resetBalancing, resetUsed, resetUsedState } from './formResetters';
 
-import type { UsedCarForm } from '@shared/index.js';
+import type { UsedCarForm } from '@shared/dist/index.js';
 
 interface TyresProps {
   formData: UsedCarForm;
+  handleChange: (path: string, value: unknown) => void;
   setFormData: React.Dispatch<React.SetStateAction<UsedCarForm>>;
 }
 
-const Tyres: React.FC<TyresProps> = ({ formData, setFormData }) => {
+const Tyres: React.FC<TyresProps> = ({ formData, handleChange, setFormData }) => {
   useEffect(() => {
     setFormData((prev) => resetTyres(prev));
   }, [formData.tyres.newTyres.newTyres]);
@@ -39,12 +40,7 @@ const Tyres: React.FC<TyresProps> = ({ formData, setFormData }) => {
       <TextField
         label="Kesä"
         value={formData.tyres.summer}
-        onChange={(v) =>
-          setFormData((prev) => ({
-            ...prev,
-            tyres: { ...prev.tyres, summer: v },
-          }))
-        }
+        onChange={(v) => handleChange('tyres.summer', v)}
         unit="mm"
         custom="tyres-input-width"
         customLabel="tyres-width"
@@ -53,12 +49,7 @@ const Tyres: React.FC<TyresProps> = ({ formData, setFormData }) => {
         <TextField
           label="Talvi"
           value={formData.tyres.winter}
-          onChange={(v) =>
-            setFormData((prev) => ({
-              ...prev,
-              tyres: { ...prev.tyres, winter: v },
-            }))
-          }
+          onChange={(v) => handleChange('tyres.winter', v)}
           unit="mm"
           custom="tyres-input-width"
           customLabel="tyres-width"
@@ -67,55 +58,28 @@ const Tyres: React.FC<TyresProps> = ({ formData, setFormData }) => {
           label="talvirenkaiden tyyppi"
           options={winterTyreTypes}
           value={formData.tyres.winterType}
-          onChange={(v) =>
-            setFormData((prev) => ({
-              ...prev,
-              tyres: { ...prev.tyres, winterType: v },
-            }))
-          }
+          onChange={(v) => handleChange('tyres.winterType', v)}
         />
       </div>
       <div className="same-row">
         <CheckboxField
           label="Renkaat tasapainotettava"
           checked={formData.tyres.balancingNeeded.balancingNeeded}
-          onChange={(v) =>
-            setFormData((prev) => ({
-              ...prev,
-              tyres: {
-                ...prev.tyres,
-                balancingNeeded: { ...prev.tyres.balancingNeeded, balancingNeeded: v },
-              },
-            }))
-          }
+          onChange={(v) => handleChange('tyres.balancingNeeded.balancingNeeded', v)}
         />
         {formData.tyres.balancingNeeded.balancingNeeded && (
           <SelectField
             label="Tasapainotettavat renkaat"
             options={tyreTypes}
             value={formData.tyres.balancingNeeded.balancingWheels}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                tyres: {
-                  ...prev.tyres,
-                  balancingNeeded: { ...prev.tyres.balancingNeeded, balancingWheels: v },
-                },
-              }))
-            }
+            onChange={(v) => handleChange('tyres.balancingNeeded.balancingWheels', v)}
           />
         )}
       </div>
       <CheckboxField
         label="Renkaat uusittava"
         checked={formData.tyres.newTyres.newTyres}
-        onChange={(v) =>
-          setFormData((prev) => ({
-            ...prev,
-
-            tyres: { ...prev.tyres, newTyres: { ...prev.tyres.newTyres, newTyres: v } },
-          }))
-        }
+        onChange={(v) => handleChange('tyres.newTyres.newTyres', v)}
       />
       {formData.tyres.newTyres.newTyres && (
         <div>
@@ -124,33 +88,18 @@ const Tyres: React.FC<TyresProps> = ({ formData, setFormData }) => {
               label="Uusittavat renkaat"
               options={tyreTypes}
               value={formData.tyres.newTyres.tyreType}
-              onChange={(v) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  tyres: { ...prev.tyres, newTyres: { ...prev.tyres.newTyres, tyreType: v } },
-                }))
-              }
+              onChange={(v) => handleChange('tyres.newTyres.tyreType', v)}
             />
             <TextField
               label="Rengaskoko"
               value={formData.tyres.newTyres.tyreSize}
-              onChange={(v) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  tyres: { ...prev.tyres, newTyres: { ...prev.tyres.newTyres, tyreSize: v } },
-                }))
-              }
+              onChange={(v) => handleChange('tyres.newTyres.tyreSize', v)}
             />
           </div>
           <CheckboxField
             label="Tarkastettu käytetyt"
             checked={formData.tyres.newTyres.usedChecked}
-            onChange={(v) =>
-              setFormData((prev) => ({
-                ...prev,
-                tyres: { ...prev.tyres, newTyres: { ...prev.tyres.newTyres, usedChecked: v } },
-              }))
-            }
+            onChange={(v) => handleChange('tyres.newTyres.usedChecked', v)}
           />
           {formData.tyres.newTyres.usedChecked && (
             <div>
@@ -158,12 +107,7 @@ const Tyres: React.FC<TyresProps> = ({ formData, setFormData }) => {
                 label="Varastossa"
                 options={usedTyres}
                 value={formData.tyres.newTyres.usedState}
-                onChange={(v) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    tyres: { ...prev.tyres, newTyres: { ...prev.tyres.newTyres, usedState: v } },
-                  }))
-                }
+                onChange={(v) => handleChange('tyres.newTyres.usedState', v)}
                 unit="sopivia käytettyjä renkaita"
               />
               {formData.tyres.newTyres.usedState === 2 && (
@@ -171,23 +115,13 @@ const Tyres: React.FC<TyresProps> = ({ formData, setFormData }) => {
                   <TextField
                     label="Varasto"
                     value={formData.tyres.newTyres.storage}
-                    onChange={(v) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        tyres: { ...prev.tyres, newTyres: { ...prev.tyres.newTyres, storage: v } },
-                      }))
-                    }
+                    onChange={(v) => handleChange('tyres.newTyres.storage', v)}
                     custom="tyres-input-width"
                   />
                   <TextField
                     label="Renkaat"
                     value={formData.tyres.newTyres.usedTyre}
-                    onChange={(v) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        tyres: { ...prev.tyres, newTyres: { ...prev.tyres.newTyres, usedTyre: v } },
-                      }))
-                    }
+                    onChange={(v) => handleChange('tyres.newTyres.usedTyre', v)}
                     custom="tyres-input-width-2"
                   />
                 </div>

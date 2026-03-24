@@ -5,7 +5,7 @@ import type {
   PasswordChangeInput,
   UserInfoUpdateInput,
   UserUpdateResponse,
-} from '@shared/index.js';
+} from '@shared/dist/index.js';
 
 const baseUrl = '/api/users';
 

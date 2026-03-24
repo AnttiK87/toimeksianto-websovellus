@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 
-import type { LoginInput } from '@shared/index.js';
+import type { LoginInput } from '../../../../packages/shared/src/dist/index.js';
 
 import { validateLoginInput } from '../middleware/validateInput.js';
 import { asyncHandler } from '../middleware/errorHandlers.js';

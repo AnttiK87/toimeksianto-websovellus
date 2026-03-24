@@ -1,4 +1,4 @@
-import { VehiclePdfData } from '@shared/types/form.js';
+import { VehiclePdfData } from '../../../../packages/shared/src/dist/index.js';
 import express, { Request, Response } from 'express';
 import { PDFParse } from 'pdf-parse';
 

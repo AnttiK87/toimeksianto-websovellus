@@ -8,7 +8,11 @@ import { handleUserInfoChange } from '../middleware/validateUpdateInput.js';
 import { userFinder } from '../middleware/finders.js';
 import { validatePasswordChange, validateNewUserInput } from '../middleware/validateInput.js';
 
-import { UserInput, UserInfoUpdateInput, PasswordChangeInput } from '@shared/index.js';
+import {
+  UserInput,
+  UserInfoUpdateInput,
+  PasswordChangeInput,
+} from '../../../../packages/shared/src/dist/index.js';
 
 import models from '../models/index.js';
 const { User } = models;

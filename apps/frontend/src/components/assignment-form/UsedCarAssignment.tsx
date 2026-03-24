@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import type { UsedCarForm, Step } from '@shared/index.js';
+import type { UsedCarForm, Step, editPatch } from '@shared/dist/index.js';
 import { initialUsedCarForm } from './initialUsedCarForm.js';
 
 import { useDispatch } from 'react-redux';
@@ -27,6 +27,8 @@ import PaintAssignment from '../assignment-paint/PaintAssignment';
 
 import Button from '../uiComponents/Button.js';
 
+import { applyPatchToObject } from '../../utils/handleChange.js';
+
 import './UsedCarAssignment.css';
 
 interface UsedCarAssignmentProps {
@@ -38,6 +40,7 @@ interface UsedCarAssignmentProps {
 const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit, setEdit }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<UsedCarForm>(initialUsedCarForm);
+  const [patches, setPatches] = useState<editPatch[]>([]);
 
   const paint = formData.damage.damaged || formData.bodyWarranty.enabled;
 
@@ -59,11 +62,8 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
       setFormData(assignment);
       dispatch(setSavedAssignment(assignment));
 
-      console.log(assignment.damage.damaged, assignment.bodyWarranty.enabled, assignment.id);
-
       if ((assignment.damage.damaged || assignment.bodyWarranty.enabled) && assignment.id) {
         dispatch(fetchPaintAssignment(assignment.id));
-        console.log(paintAssignment);
       }
     }
   }, [edit, assignment]);
@@ -90,6 +90,28 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
     }
   };
 
+  const handleChange = (path: string, value: unknown) => {
+    // CREATE MODE
+    if (!edit) {
+      setFormData((prev) => applyPatchToObject(prev, path, value));
+      return;
+    }
+
+    // EDIT MODE
+    setPatches((prev) => {
+      console.log(prev);
+      const index = prev.findIndex((p) => p.path === path);
+
+      console.log(index);
+
+      if (index === -1) return [...prev, { path, value }];
+
+      const next = [...prev];
+      next[index] = { path, value };
+      return next;
+    });
+  };
+
   const handleEdit = async () => {
     if (!formData) return;
     await dispatch(editAssignment(formData));
@@ -114,7 +136,7 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
     return (
       <PaintAssignment
         paintAssignment={paintAssignment}
-        regNro={savedAssignment.car.regNum}
+        regNro={savedAssignment.regNum}
         assignmentId={savedAssignment.id}
         edit={edit}
         setEdit={setEdit}
@@ -127,12 +149,12 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
       <h1 className="text-2xl font-bold">Toimeksianto-lomake</h1>
       <div>
         <VehiclePdfUpload formData={formData} setFormData={setFormData} />
-        <BasinInfo formData={formData} setFormData={setFormData} />
-        <ElectricCar formData={formData} setFormData={setFormData} />
-        <Tyres formData={formData} setFormData={setFormData} />
-        <Service formData={formData} setFormData={setFormData} />
-        <OtherService formData={formData} setFormData={setFormData} />
-        <BodyWork formData={formData} setFormData={setFormData} />
+        <BasinInfo formData={formData} handleChange={handleChange} />
+        <ElectricCar formData={formData} handleChange={handleChange} setFormData={setFormData} />
+        <Tyres formData={formData} handleChange={handleChange} setFormData={setFormData} />
+        <Service formData={formData} handleChange={handleChange} setFormData={setFormData} />
+        <OtherService formData={formData} handleChange={handleChange} setFormData={setFormData} />
+        <BodyWork formData={formData} handleChange={handleChange} setFormData={setFormData} />
         <div className="form-section-title buttons">
           <Button variant="danger" type="button" onClick={resetForm}>
             Tyhjennä lomake

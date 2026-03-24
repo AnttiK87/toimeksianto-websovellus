@@ -1,4 +1,4 @@
-import type { UsedCarForm, CategorizedRepair, Repair, RepairCategory } from '@shared/index.js';
+import type { UsedCarForm, CategorizedRepair, Repair, RepairCategory } from '@shared/dist/index';
 
 const pushIfRepair = (
   list: CategorizedRepair[],
@@ -6,30 +6,65 @@ const pushIfRepair = (
   workNeeded: boolean,
   repair: Repair | null,
   category: RepairCategory,
+  repairPath: string,
+  formId: number | undefined,
 ) => {
   if (!workNeeded) return;
+  if (!formId) return;
 
   list.push({
     name,
-    repair,
     category,
+    repair,
+    repairPath,
+    formId,
   });
 };
 
 export const collectRepairs = (form: UsedCarForm): CategorizedRepair[] => {
   const repairs: CategorizedRepair[] = [];
 
-  console.log('korjaus', form, repairs);
-
   /* ---------------- GENERAL ---------------- */
 
-  pushIfRepair(repairs, 'Katsastus', form.inspection.needed, form.inspection.inspection, 'general');
+  pushIfRepair(
+    repairs,
+    'Katsastus',
+    form.inspection.needed,
+    form.inspection.inspection,
+    'general',
+    'inspection.inspection',
+    form.id,
+  );
 
-  pushIfRepair(repairs, 'Huolto', form.service.needed, form.service.repair, 'general');
+  pushIfRepair(
+    repairs,
+    'Huolto',
+    form.service.needed,
+    form.service.repair,
+    'general',
+    'service.repair',
+    form.id,
+  );
 
-  pushIfRepair(repairs, 'Jakohihna', form.timing.beltChangeNeeded, form.timing.repair, 'general');
+  pushIfRepair(
+    repairs,
+    'Jakohihna',
+    form.timing.beltChangeNeeded,
+    form.timing.repair,
+    'general',
+    'timing.repair',
+    form.id,
+  );
 
-  pushIfRepair(repairs, 'Jakoketju', form.timing.chainChangeNeeded, form.timing.repair, 'general');
+  pushIfRepair(
+    repairs,
+    'Jakoketju',
+    form.timing.chainChangeNeeded,
+    form.timing.repair,
+    'general',
+    'timing.repair',
+    form.id,
+  );
 
   pushIfRepair(
     repairs,
@@ -37,6 +72,8 @@ export const collectRepairs = (form: UsedCarForm): CategorizedRepair[] => {
     form.otherServiceWork.heater.heaterRepair,
     form.otherServiceWork.heater.repair,
     'general',
+    'otherServiceWork.heater.repair',
+    form.id,
   );
 
   pushIfRepair(
@@ -45,6 +82,8 @@ export const collectRepairs = (form: UsedCarForm): CategorizedRepair[] => {
     form.otherServiceWork.ac.acRepair,
     form.otherServiceWork.ac.repair,
     'general',
+    'otherServiceWork.ac.repair',
+    form.id,
   );
 
   pushIfRepair(
@@ -53,6 +92,8 @@ export const collectRepairs = (form: UsedCarForm): CategorizedRepair[] => {
     form.otherServiceWork.bulbChange.bulbChange,
     form.otherServiceWork.bulbChange.repair,
     'general',
+    'otherServiceWork.bulbChange.repair',
+    form.id,
   );
 
   pushIfRepair(
@@ -61,6 +102,8 @@ export const collectRepairs = (form: UsedCarForm): CategorizedRepair[] => {
     form.otherServiceWork.wheelAlignment.wheelAlignment,
     form.otherServiceWork.wheelAlignment.repair,
     'general',
+    'otherServiceWork.wheelAlignment.repair',
+    form.id,
   );
 
   /* ---------------- TYRES ---------------- */
@@ -71,6 +114,8 @@ export const collectRepairs = (form: UsedCarForm): CategorizedRepair[] => {
     form.tyres.balancingNeeded.balancingNeeded,
     form.tyres.balancingNeeded.repair,
     'tyres',
+    'tyres.balancingNeeded.repair',
+    form.id,
   );
 
   pushIfRepair(
@@ -79,20 +124,54 @@ export const collectRepairs = (form: UsedCarForm): CategorizedRepair[] => {
     form.tyres.newTyres.newTyres,
     form.tyres.newTyres.repair,
     'tyres',
+    'tyres.newTyres.repair',
+    form.id,
   );
 
   /* ---------------- BODY ---------------- */
 
-  pushIfRepair(repairs, 'Tuulilasi', form.windshield.change, form.windshield.repair, 'body');
+  pushIfRepair(
+    repairs,
+    'Tuulilasi',
+    form.windshield.change,
+    form.windshield.repair,
+    'body',
+    'windshield.repair',
+    form.id,
+  );
 
-  pushIfRepair(repairs, 'Vauriokorjaus', form.damage.damaged, form.damage.repair, 'body');
+  pushIfRepair(
+    repairs,
+    'Vauriokorjaus',
+    form.damage.damaged,
+    form.damage.repair,
+    'body',
+    'damage.repair',
+    form.id,
+  );
 
-  pushIfRepair(repairs, 'Koritakuu', form.bodyWarranty.enabled, form.bodyWarranty.repair, 'body');
+  pushIfRepair(
+    repairs,
+    'Koritakuu',
+    form.bodyWarranty.enabled,
+    form.bodyWarranty.repair,
+    'body',
+    'bodyWarranty.repair',
+    form.id,
+  );
 
   /* ---------------- DYNAMIC ---------------- */
 
-  form.otherServiceWork.otherRepairs.forEach((r) => {
-    pushIfRepair(repairs, r.otherRepair, true, r.repair, 'general');
+  form.otherServiceWork.otherRepairs.forEach((r, index) => {
+    pushIfRepair(
+      repairs,
+      r.otherRepair,
+      true,
+      r.repair,
+      'general',
+      `otherServiceWork.otherRepairs[${index}].repair`,
+      form.id,
+    );
   });
 
   return repairs;

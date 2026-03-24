@@ -4,7 +4,7 @@ import { collectRepairs, getRepairStats, groupRepairsByCategory } from '../../ut
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWrench, faCar, faCircleDot, faPen } from '@fortawesome/free-solid-svg-icons';
 
-import type { UsedCarForm, StatsGeneral } from '@shared/index.js';
+import type { UsedCarForm, StatsGeneral } from '@shared/dist/index.js';
 
 interface TableRowProps {
   index: number;
@@ -46,7 +46,7 @@ const TableRow: React.FC<TableRowProps> = ({ index, assignment, editAssignment, 
 
   return (
     <tr key={index}>
-      <td>{assignment.car.regNum}</td>
+      <td>{assignment.regNum}</td>
       <td>{assignment.car.makeAndModel}</td>
       <td>{locations.find((l) => l.id === assignment.location)?.label ?? '-'}</td>
       <td className="centerItem">

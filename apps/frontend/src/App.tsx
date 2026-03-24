@@ -22,7 +22,7 @@ function App() {
         <Route path="/" element={<LoginForm />} />
         <Route path="/toimeksianto-lomake" element={<UsedCarAssignment />} />
         <Route path="/toimeksiannot" element={<AssignmentList />} />
-        <Route path="/assignments/:index" element={<HandleRepairs />} />
+        <Route path="/toimeksiannot/:index" element={<HandleRepairs />} />
       </Routes>
     </>
   );

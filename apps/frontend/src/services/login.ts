@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { LoginInput, LoginResponse, LogoutResponse } from '@shared/index.js';
+import type { LoginInput, LoginResponse, LogoutResponse } from '@shared/dist/index.js';
 
 const baseUrlLogin = '/api/login';
 const baseUrlLogout = '/api/logout';

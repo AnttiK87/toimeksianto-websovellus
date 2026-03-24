@@ -1,4 +1,4 @@
-import type { UsedCarForm } from '@shared/index.js';
+import type { UsedCarForm } from '@shared/dist/index.js';
 
 interface VehiclePdfUploadProps {
   formData: UsedCarForm;
@@ -35,11 +35,11 @@ const VehiclePdfUpload: React.FC<VehiclePdfUploadProps> = ({ formData, setFormDa
 
       setFormData((prev) => ({
         ...prev,
+        regNum: data.regNumber,
+        vin: data.vin,
         car: {
           ...prev.car,
           makeAndModel: data.model,
-          regNum: data.regNumber,
-          vin: data.vin,
           mileage: data.mileage,
           regDate: isoString(data.firstRegistration),
         },

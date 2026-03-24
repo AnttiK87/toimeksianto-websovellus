@@ -6,11 +6,11 @@ export interface UsedCarForm {
   location: number | null;
   sold: boolean;
   handOverDate: string;
+  regNum: string;
+  vin: string;
 
   car: {
     makeAndModel: string;
-    regNum: string;
-    vin: string;
     mileage: string;
     regDate: string;
   };
@@ -145,18 +145,20 @@ export interface UsedCarForm {
   };
 }
 
-export type RepairCategory = 'general' | 'tyres' | 'body';
-
-export type CategorizedRepair = {
-  name: string;
-  repair: Repair | null;
-  category: RepairCategory;
-};
-
 export interface Repair {
   reservation: string;
   workorder: string;
   ready: boolean;
+}
+
+export type RepairCategory = 'general' | 'tyres' | 'body';
+
+export interface CategorizedRepair {
+  name: string;
+  category: RepairCategory;
+  repair: Repair | null;
+  repairPath: string;
+  formId: number;
 }
 
 export interface OtherRepair {
@@ -265,4 +267,14 @@ export interface StatsGeneral {
   ready: number;
   pending: number;
   progress: number;
+}
+
+export interface RepairPatch {
+  path: string;
+  value: string | boolean;
+}
+
+export interface editPatch {
+  path: string;
+  value: any;
 }
