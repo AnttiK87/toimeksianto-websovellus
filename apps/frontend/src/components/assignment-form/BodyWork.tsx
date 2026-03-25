@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import {
   windshWorkshops,
   insuranceCompanies,
@@ -25,7 +23,9 @@ import {
   resetBodyWarrantyPainter,
 } from './formResetters';
 
-import type { UsedCarForm } from '@shared/dist/index.js';
+import { useUpdateEffect } from '../../hooks/useUpdateEffect.js';
+
+import type { UsedCarForm } from '../../../../../packages/shared/src/index.js';
 
 interface BodyWorkProps {
   formData: UsedCarForm;
@@ -36,40 +36,43 @@ interface BodyWorkProps {
 const BodyWork: React.FC<BodyWorkProps> = ({ formData, handleChange, setFormData }) => {
   const today = new Date().toISOString().split('T')[0];
 
-  useEffect(() => {
-    setFormData((prev) => resetWindshield(prev));
+  useUpdateEffect(() => {
+    if (formData.windshield.change === false) setFormData((prev) => resetWindshield(prev));
   }, [formData.windshield.change]);
 
-  useEffect(() => {
-    setFormData((prev) => resetSubcontractor(prev));
+  useUpdateEffect(() => {
+    if (formData.windshield.workshop === null || formData.windshield.workshop === 0)
+      setFormData((prev) => resetSubcontractor(prev));
   }, [formData.windshield.workshop]);
 
-  useEffect(() => {
-    setFormData((prev) => resetInsurance(prev));
+  useUpdateEffect(() => {
+    if (formData.windshield.insurance === false) setFormData((prev) => resetInsurance(prev));
   }, [formData.windshield.insurance]);
 
-  useEffect(() => {
-    setFormData((prev) => resetOtherInsurance(prev));
+  useUpdateEffect(() => {
+    if (formData.windshield.insuranceCompany != 7) setFormData((prev) => resetOtherInsurance(prev));
   }, [formData.windshield.insuranceCompany]);
 
-  useEffect(() => {
-    setFormData((prev) => resetDamage(prev));
+  useUpdateEffect(() => {
+    if (formData.damage.damaged === false) setFormData((prev) => resetDamage(prev));
   }, [formData.damage.damaged]);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     setFormData((prev) => resetDamageInsurance(prev));
   }, [formData.damage.repairType]);
 
-  useEffect(() => {
-    setFormData((prev) => resetDamageOtherInsurance(prev));
+  useUpdateEffect(() => {
+    if (formData.windshield.insuranceCompany != 7)
+      setFormData((prev) => resetDamageOtherInsurance(prev));
   }, [formData.damage.insuranceCompany]);
 
-  useEffect(() => {
-    setFormData((prev) => resetBodyWarranty(prev));
+  useUpdateEffect(() => {
+    if (formData.bodyWarranty.enabled === false) setFormData((prev) => resetBodyWarranty(prev));
   }, [formData.bodyWarranty.enabled]);
 
-  useEffect(() => {
-    setFormData((prev) => resetBodyWarrantyPainter(prev));
+  useUpdateEffect(() => {
+    if (formData.bodyWarranty.repairIsMade === false)
+      setFormData((prev) => resetBodyWarrantyPainter(prev));
   }, [formData.bodyWarranty.repairIsMade]);
 
   return (
@@ -84,13 +87,30 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, handleChange, setFormData
       />
       {formData.windshield.change && (
         <div className="bottom-divider">
+          <div className="same-row">
+            <CheckboxField
+              label="Kamera"
+              checked={formData.windshield.camera}
+              onChange={(v) => handleChange('windshield.camera', v)}
+            />
+            <CheckboxField
+              label="Lämmitettävä"
+              checked={formData.windshield.heated}
+              onChange={(v) => handleChange('windshield.heated', v)}
+            />
+            <CheckboxField
+              label="HUD"
+              checked={formData.windshield.hud}
+              onChange={(v) => handleChange('windshield.hud', v)}
+            />
+          </div>
           <SelectField
             label="Vaihdetaan"
             options={windshWorkshops}
             value={formData.windshield.workshop}
             onChange={(v) => handleChange('windshield.workshop', v)}
           />
-          {formData.windshield.workshop === 2 && (
+          {formData.windshield.workshop === 1 && (
             <TextField
               label="Missä"
               value={formData.windshield.subcontractor}
@@ -110,7 +130,7 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, handleChange, setFormData
                 value={formData.windshield.insuranceCompany}
                 onChange={(v) => handleChange('windshield.insuranceCompany', v)}
               />
-              {formData.windshield.insuranceCompany === 8 && (
+              {formData.windshield.insuranceCompany === 7 && (
                 <TextField
                   label="Mikä"
                   value={formData.windshield.otherInsuranceCompany}
@@ -155,7 +175,7 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, handleChange, setFormData
             onChange={(v) => handleChange('damage.repairType', v)}
             unit="työnä"
           />
-          {formData.damage.repairType === 1 && (
+          {formData.damage.repairType === 0 && (
             <div>
               <SelectField
                 label="Vakuutusyhtiö"
@@ -195,7 +215,7 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, handleChange, setFormData
               />
             </div>
           )}
-          {formData.damage.repairType === 2 && (
+          {formData.damage.repairType === 1 && (
             <div>
               <SelectField
                 label="Maalaamo"

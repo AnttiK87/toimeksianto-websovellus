@@ -5,7 +5,8 @@ import type {
   PaintForm,
   BasicResponse,
   RepairPatch,
-} from '@shared/dist/index';
+  editPatch,
+} from '../../../../packages/shared/src/index';
 
 const baseUrl = '/api/assignments';
 
@@ -24,8 +25,8 @@ const newAssignment = async (formData: UsedCarForm): Promise<AssignmentResponse>
   return response.data;
 };
 
-const update = async (content: UsedCarForm): Promise<AssignmentResponse> => {
-  const response = await axios.put<AssignmentResponse>(`${baseUrl}/${content.id}`, content);
+const update = async (id: number, patch: editPatch[]): Promise<AssignmentResponse> => {
+  const response = await axios.patch<AssignmentResponse>(`${baseUrl}/${id}`, patch);
   return response.data;
 };
 

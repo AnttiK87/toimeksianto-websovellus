@@ -46,21 +46,21 @@ router.post(
 );
 
 // PUT /api/assignments/:id
-router.put(
+router.patch(
   '/:id',
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    console.log('tässä: ', id);
+    const patches = req.body;
     if (isNaN(id)) throw new AppError('Invalid ID', 400);
 
-    const formData = req.body;
-
     const assignment = await UsedCarAssignment.findByPk(id);
-    if (!assignment) {
-      throw new AppError('Assignment not found', 404);
+    if (!assignment) throw new AppError('Assignment not found', 404);
+
+    for (const patch of patches) {
+      patchRepair(assignment, patch.path, patch.value);
     }
 
-    const updatedAssignment = await assignment.update(formData);
+    const updatedAssignment = await assignment.save();
 
     res.status(200).json({
       data: updatedAssignment,

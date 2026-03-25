@@ -12,7 +12,7 @@ import {
   UserInput,
   UserInfoUpdateInput,
   PasswordChangeInput,
-} from '../../../../packages/shared/src/dist/index.js';
+} from '../../../../packages/shared/src/index.js';
 
 import models from '../models/index.js';
 const { User } = models;

@@ -7,7 +7,9 @@ import TextField from '../uiComponents/TextField.js';
 
 import { resetElectric } from './formResetters.js';
 
-import type { UsedCarForm } from '@shared/dist/index.js';
+import { useUpdateEffect } from '../../hooks/useUpdateEffect.js';
+
+import type { UsedCarForm } from '../../../../../packages/shared/src/index.js';
 
 interface ElectricCarProps {
   formData: UsedCarForm;
@@ -16,10 +18,9 @@ interface ElectricCarProps {
 }
 
 const ElectricCar: React.FC<ElectricCarProps> = ({ formData, handleChange, setFormData }) => {
-  useEffect(() => {
-    if (formData.electric.type !== 1 && formData.electric.type !== 2) {
+  useUpdateEffect(() => {
+    if (formData.electric.type !== 0 && formData.electric.type !== 1)
       setFormData((prev) => resetElectric(prev));
-    }
   }, [formData.electric.type]);
 
   return (
@@ -32,7 +33,7 @@ const ElectricCar: React.FC<ElectricCarProps> = ({ formData, handleChange, setFo
         value={formData.electric.type}
         onChange={(v) => handleChange('electric.type', v)}
       />
-      {(formData.electric.type === 1 || formData.electric.type === 2) && (
+      {(formData.electric.type === 0 || formData.electric.type === 1) && (
         <div>
           <TextField
             label="Latauskaapeli(t)"

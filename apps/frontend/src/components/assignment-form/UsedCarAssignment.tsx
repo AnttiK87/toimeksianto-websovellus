@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import type { UsedCarForm, Step, editPatch } from '@shared/dist/index.js';
+import type { UsedCarForm, Step, editPatch } from '../../../../../packages/shared/src/index.js';
 import { initialUsedCarForm } from './initialUsedCarForm.js';
 
 import { useDispatch } from 'react-redux';
@@ -16,6 +16,9 @@ import {
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../reducers/store.js';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
+
 import VehiclePdfUpload from './VehiclePdfUpload.js';
 import BasinInfo from './BasinInfo.js';
 import ElectricCar from './ElectricCar.js';
@@ -27,7 +30,7 @@ import PaintAssignment from '../assignment-paint/PaintAssignment';
 
 import Button from '../uiComponents/Button.js';
 
-import { applyPatchToObject } from '../../utils/handleChange.js';
+import { applyPatchToObject, getValueFromObject } from '../../utils/handleChange.js';
 
 import './UsedCarAssignment.css';
 
@@ -68,6 +71,8 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
     }
   }, [edit, assignment]);
 
+  const [originalData] = useState(assignment);
+
   const resetForm = () => {
     const confirmed = window.confirm('Haluatko varmasti tyhjentää lomakkeen?');
     if (confirmed) {
@@ -89,50 +94,66 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
       navigate('/toimeksiannot');
     }
   };
-
   const handleChange = (path: string, value: unknown) => {
-    // CREATE MODE
-    if (!edit) {
-      setFormData((prev) => applyPatchToObject(prev, path, value));
-      return;
-    }
+    setFormData((prev) => applyPatchToObject(prev, path, value));
 
-    // EDIT MODE
+    if (!edit) return;
+
+    const originalValue = getValueFromObject(originalData, path);
+
     setPatches((prev) => {
-      console.log(prev);
+      if (originalValue === value) {
+        return prev.filter((p) => p.path !== path);
+      }
+
       const index = prev.findIndex((p) => p.path === path);
 
-      console.log(index);
-
-      if (index === -1) return [...prev, { path, value }];
+      if (index === -1) {
+        return [...prev, { path, value }];
+      }
 
       const next = [...prev];
       next[index] = { path, value };
       return next;
     });
   };
-
   const handleEdit = async () => {
-    if (!formData) return;
-    await dispatch(editAssignment(formData));
-    if (
-      (formData.bodyWarranty.enabled &&
-        assignment?.bodyWarranty.enabled !== formData.bodyWarranty.enabled) ||
-      (formData.damage.damaged && assignment?.damage.damaged !== formData.damage.damaged)
-    ) {
-      setStep('paint');
-    } else {
-      if (setEdit) setEdit(false);
-    }
+    if (patches.length === 0) return;
+    if (!assignment) return;
+    if (!assignment.id) return;
+
+    await dispatch(editAssignment(assignment.id, patches));
+    setPatches([]);
   };
 
   const handleEditAndPaint = async () => {
-    if (!formData) return;
-    await dispatch(editAssignment(formData));
-    setStep('paint');
+    if (!assignment) return;
+    if (!assignment.id) return;
+    if (patches.length === 0) setStep('paint');
+    else if (patches.length > 0 && setEdit) {
+      const confirmed = window.confirm(
+        'Sinulla on tallentamattomia muutoksia. Haluatko varmasti poistua?',
+      );
+      if (confirmed) {
+        setStep('paint');
+      }
+    }
   };
 
-  if (paint && step === 'paint' && savedAssignment.id) {
+  const close = () => {
+    if (patches.length === 0 && setEdit) {
+      setEdit(false);
+    } else if (patches.length > 0 && setEdit) {
+      const confirmed = window.confirm(
+        'Sinulla on tallentamattomia muutoksia. Haluatko varmasti poistua?',
+      );
+      if (confirmed) {
+        setEdit(false);
+      }
+    }
+  };
+
+  if (paint && step === 'paint' && savedAssignment && savedAssignment.id) {
     return (
       <PaintAssignment
         paintAssignment={paintAssignment}
@@ -146,7 +167,10 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
 
   return (
     <form className="form-container" onSubmit={handleSubmit}>
-      <h1 className="text-2xl font-bold">Toimeksianto-lomake</h1>
+      <div className="same-row-repair">
+        <h1 className="text-2xl font-bold">Toimeksianto-lomake</h1>
+        {edit && <FontAwesomeIcon className="close-icon" onClick={() => close()} icon={faX} />}
+      </div>
       <div>
         <VehiclePdfUpload formData={formData} setFormData={setFormData} />
         <BasinInfo formData={formData} handleChange={handleChange} />
@@ -156,9 +180,11 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
         <OtherService formData={formData} handleChange={handleChange} setFormData={setFormData} />
         <BodyWork formData={formData} handleChange={handleChange} setFormData={setFormData} />
         <div className="form-section-title buttons">
-          <Button variant="danger" type="button" onClick={resetForm}>
-            Tyhjennä lomake
-          </Button>
+          {!edit && (
+            <Button variant="danger" type="button" onClick={resetForm}>
+              Tyhjennä lomake
+            </Button>
+          )}
           {!edit && (
             <Button variant="primary" type="submit">
               {paint ? 'Tallenna ja siirry maalaus lomakkelle' : 'Tallenna toimeksianto'}
@@ -167,16 +193,16 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
           {edit && setEdit && (
             <>
               <Button variant="danger" type="button" onClick={() => setEdit(false)}>
-                Peruuta
+                Sulje
               </Button>
-              <Button variant="primary" type="button" onClick={() => handleEdit()}>
-                Tallenna muutokset
-              </Button>
-              {paintAssignment.id && (
+              {paint && (
                 <Button variant="primary" type="button" onClick={() => handleEditAndPaint()}>
                   Muokkaa maalauslomaketta
                 </Button>
               )}
+              <Button variant="primary" type="button" onClick={() => handleEdit()}>
+                Tallenna
+              </Button>
             </>
           )}
         </div>

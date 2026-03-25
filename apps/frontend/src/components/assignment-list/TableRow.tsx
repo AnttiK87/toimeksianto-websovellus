@@ -4,7 +4,7 @@ import { collectRepairs, getRepairStats, groupRepairsByCategory } from '../../ut
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWrench, faCar, faCircleDot, faPen } from '@fortawesome/free-solid-svg-icons';
 
-import type { UsedCarForm, StatsGeneral } from '@shared/dist/index.js';
+import type { UsedCarForm, StatsGeneral } from '../../../../../packages/shared/src/index.js';
 
 interface TableRowProps {
   index: number;

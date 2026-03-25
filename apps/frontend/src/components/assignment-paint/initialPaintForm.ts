@@ -1,7 +1,6 @@
-import type { PaintForm } from '@shared/index.js';
+import type { PaintForm } from '../../../../../packages/shared/src/index.js';
 
 export const initialPaintForm: PaintForm = {
-  date: '',
   regNum: '',
 
   front: {

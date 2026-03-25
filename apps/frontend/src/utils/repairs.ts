@@ -1,4 +1,9 @@
-import type { UsedCarForm, CategorizedRepair, Repair, RepairCategory } from '@shared/dist/index';
+import type {
+  UsedCarForm,
+  CategorizedRepair,
+  Repair,
+  RepairCategory,
+} from '../../../../packages/shared/src/index.js';
 
 const pushIfRepair = (
   list: CategorizedRepair[],
@@ -98,7 +103,7 @@ export const collectRepairs = (form: UsedCarForm): CategorizedRepair[] => {
 
   pushIfRepair(
     repairs,
-    'Aurauskulmat',
+    'Pyöränkulmat',
     form.otherServiceWork.wheelAlignment.wheelAlignment,
     form.otherServiceWork.wheelAlignment.repair,
     'general',
@@ -186,7 +191,7 @@ export const groupRepairsByCategory = (repairs: CategorizedRepair[]) => ({
 export const isRepairHandled = (repair: Repair | null): boolean => {
   if (!repair) return false;
 
-  return repair.reservation.trim() !== '';
+  return repair.reservation !== '';
 };
 
 export const isRepairReady = (repair: Repair | null): boolean => {

@@ -1,7 +1,7 @@
 import CheckboxPaint from '../uiComponents/CheckboxPaint.js';
 import TextAreaField from '../uiComponents/TextAreaField.js';
 
-import type { PaintForm } from '@shared/index.js';
+import type { PaintForm } from '../../../../../packages/shared/src/index.js';
 
 import carFrontImage from '../../assets/carFrontImage.png';
 

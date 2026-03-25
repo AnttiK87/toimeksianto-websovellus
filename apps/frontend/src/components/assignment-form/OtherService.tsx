@@ -9,8 +9,9 @@ import CheckboxField from '../uiComponents/CheckboxField.js';
 import OtherRepairsList from './OtherRepairsList.js';
 
 import { resetHeater, resetAc, resetBulbChange } from './formResetters';
+import { useUpdateEffect } from '../../hooks/useUpdateEffect.js';
 
-import type { UsedCarForm } from '@shared/dist/index.js';
+import type { UsedCarForm } from '../../../../../packages/shared/src/index.js';
 
 interface OtherServiceProps {
   formData: UsedCarForm;
@@ -47,16 +48,17 @@ const OtherService: React.FC<OtherServiceProps> = ({ formData, handleChange, set
     handleChange(`otherServiceWork.otherRepairs`, updatedRepairs);
   };
 
-  useEffect(() => {
-    setFormData((prev) => resetHeater(prev));
+  useUpdateEffect(() => {
+    if (formData.otherServiceWork.heater.heater != 1) setFormData((prev) => resetHeater(prev));
   }, [formData.otherServiceWork.heater.heater]);
 
-  useEffect(() => {
-    setFormData((prev) => resetAc(prev));
+  useUpdateEffect(() => {
+    if (formData.otherServiceWork.ac.ac != 1) setFormData((prev) => resetAc(prev));
   }, [formData.otherServiceWork.ac.ac]);
 
-  useEffect(() => {
-    setFormData((prev) => resetBulbChange(prev));
+  useUpdateEffect(() => {
+    if (formData.otherServiceWork.bulbChange.bulbChange === false)
+      setFormData((prev) => resetBulbChange(prev));
   }, [formData.otherServiceWork.bulbChange.bulbChange]);
 
   return (
@@ -69,7 +71,7 @@ const OtherService: React.FC<OtherServiceProps> = ({ formData, handleChange, set
         value={formData.otherServiceWork.heater.heater}
         onChange={(v) => handleChange('otherServiceWork.heater.heater', v)}
       />
-      {formData.otherServiceWork.heater.heater === 2 && (
+      {formData.otherServiceWork.heater.heater === 1 && (
         <div className="bottom-divider">
           <CheckboxField
             label="Korjataan"
@@ -84,7 +86,7 @@ const OtherService: React.FC<OtherServiceProps> = ({ formData, handleChange, set
         value={formData.otherServiceWork.ac.ac}
         onChange={(v) => handleChange('otherServiceWork.ac.ac', v)}
       />
-      {formData.otherServiceWork.ac.ac === 2 && (
+      {formData.otherServiceWork.ac.ac === 1 && (
         <div className="bottom-divider">
           <CheckboxField
             label="Korjataan"

@@ -15,3 +15,11 @@ export const applyPatchToObject = <T extends object>(obj: T, path: string, value
 
   return clone;
 };
+
+export const getValueFromObject = (obj: any, path: string) => {
+  if (!obj || !path) return undefined;
+
+  return path.split('.').reduce((acc, key) => {
+    return acc?.[key];
+  }, obj);
+};

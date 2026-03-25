@@ -1,14 +1,22 @@
 import { useEffect } from 'react';
 
-import { tyreTypes, winterTyreTypes, usedTyres } from '../../utils/formOptions.js';
+import { tyreTypes, winterTyreTypes, useTyres, ordered } from '../../utils/formOptions.js';
 
 import SelectField from '../uiComponents/SelectField.js';
 import TextField from '../uiComponents/TextField.js';
 import CheckboxField from '../uiComponents/CheckboxField.js';
 
-import { resetTyres, resetBalancing, resetUsed, resetUsedState } from './formResetters';
+import {
+  resetTyres,
+  resetTyres2,
+  resetDiffer,
+  resetOrder,
+  resetOrder2,
+  resetBalancing,
+} from './formResetters';
+import { useUpdateEffect } from '../../hooks/useUpdateEffect.js';
 
-import type { UsedCarForm } from '@shared/dist/index.js';
+import type { UsedCarForm } from '../../../../../packages/shared/src/index.js';
 
 interface TyresProps {
   formData: UsedCarForm;
@@ -17,20 +25,29 @@ interface TyresProps {
 }
 
 const Tyres: React.FC<TyresProps> = ({ formData, handleChange, setFormData }) => {
-  useEffect(() => {
-    setFormData((prev) => resetTyres(prev));
+  useUpdateEffect(() => {
+    if (formData.tyres.newTyres.newTyres === false) setFormData((prev) => resetTyres(prev));
   }, [formData.tyres.newTyres.newTyres]);
 
-  useEffect(() => {
-    setFormData((prev) => resetUsed(prev));
-  }, [formData.tyres.newTyres.usedChecked]);
+  useUpdateEffect(() => {
+    if (formData.tyres.newTyres.tyreType != 2) setFormData((prev) => resetTyres2(prev));
+  }, [formData.tyres.newTyres.tyreType]);
 
-  useEffect(() => {
-    setFormData((prev) => resetUsedState(prev));
+  useUpdateEffect(() => {
+    if (formData.tyres.newTyres.difference === false) setFormData((prev) => resetDiffer(prev));
+  }, [formData.tyres.newTyres.difference]);
+
+  useUpdateEffect(() => {
+    if (formData.tyres.newTyres.usedState != 1) setFormData((prev) => resetOrder(prev));
   }, [formData.tyres.newTyres.usedState]);
 
-  useEffect(() => {
-    setFormData((prev) => resetBalancing(prev));
+  useUpdateEffect(() => {
+    if (formData.tyres.newTyres.usedState2 != 1) setFormData((prev) => resetOrder2(prev));
+  }, [formData.tyres.newTyres.usedState2]);
+
+  useUpdateEffect(() => {
+    if (formData.tyres.balancingNeeded.balancingNeeded === false)
+      setFormData((prev) => resetBalancing(prev));
   }, [formData.tyres.balancingNeeded.balancingNeeded]);
 
   return (
@@ -90,43 +107,103 @@ const Tyres: React.FC<TyresProps> = ({ formData, handleChange, setFormData }) =>
               value={formData.tyres.newTyres.tyreType}
               onChange={(v) => handleChange('tyres.newTyres.tyreType', v)}
             />
-            <TextField
-              label="Rengaskoko"
-              value={formData.tyres.newTyres.tyreSize}
-              onChange={(v) => handleChange('tyres.newTyres.tyreSize', v)}
+            <CheckboxField
+              label="Erikoko renkaat"
+              checked={formData.tyres.newTyres.difference}
+              onChange={(v) => handleChange('tyres.newTyres.difference', v)}
             />
           </div>
-          <CheckboxField
-            label="Tarkastettu käytetyt"
-            checked={formData.tyres.newTyres.usedChecked}
-            onChange={(v) => handleChange('tyres.newTyres.usedChecked', v)}
-          />
-          {formData.tyres.newTyres.usedChecked && (
-            <div>
-              <SelectField
-                label="Varastossa"
-                options={usedTyres}
-                value={formData.tyres.newTyres.usedState}
-                onChange={(v) => handleChange('tyres.newTyres.usedState', v)}
-                unit="sopivia käytettyjä renkaita"
+          {formData.tyres.newTyres.tyreType === 2 && <h4>Kesärenkaat:</h4>}
+          <div className="same-row">
+            <TextField
+              label={formData.tyres.newTyres.difference ? 'Rengaskoko etu' : 'Rengaskoko'}
+              value={formData.tyres.newTyres.tyreSize1}
+              onChange={(v) => handleChange('tyres.newTyres.tyreSize1', v)}
+            />
+            {formData.tyres.newTyres.difference && (
+              <TextField
+                label="Rengaskoko taka"
+                value={formData.tyres.newTyres.tyreSize2}
+                onChange={(v) => handleChange('tyres.newTyres.tyreSize2', v)}
               />
-              {formData.tyres.newTyres.usedState === 2 && (
-                <div className="same-row">
+            )}
+          </div>
+          <div className="same-row">
+            <SelectField
+              label="Asennettavat renkaat"
+              options={useTyres}
+              value={formData.tyres.newTyres.usedState}
+              onChange={(v) => handleChange('tyres.newTyres.usedState', v)}
+            />
+            {formData.tyres.newTyres.usedState === 0 && (
+              <SelectField
+                label="Renkaat on"
+                options={ordered}
+                value={formData.tyres.newTyres.ordered}
+                onChange={(v) => handleChange('tyres.newTyres.ordered', v)}
+              />
+            )}
+          </div>
+          <div className="same-row">
+            <TextField
+              label="Sijainti"
+              value={formData.tyres.newTyres.storage}
+              onChange={(v) => handleChange('tyres.newTyres.storage', v)}
+            />
+            <TextField
+              label="Merkki ja malli"
+              value={formData.tyres.newTyres.usedTyre}
+              onChange={(v) => handleChange('tyres.newTyres.usedTyre', v)}
+              custom="tyres-input-width-2"
+            />
+          </div>
+          {formData.tyres.newTyres.tyreType === 2 && (
+            <>
+              <h4>Talvirenkaat:</h4>
+              <div className="same-row">
+                <TextField
+                  label={formData.tyres.newTyres.difference ? 'Rengaskoko etu' : 'Rengaskoko'}
+                  value={formData.tyres.newTyres.tyreSize3}
+                  onChange={(v) => handleChange('tyres.newTyres.tyreSize3', v)}
+                />
+                {formData.tyres.newTyres.difference && (
                   <TextField
-                    label="Varasto"
-                    value={formData.tyres.newTyres.storage}
-                    onChange={(v) => handleChange('tyres.newTyres.storage', v)}
-                    custom="tyres-input-width"
+                    label="Rengaskoko taka"
+                    value={formData.tyres.newTyres.tyreSize4}
+                    onChange={(v) => handleChange('tyres.newTyres.tyreSize4', v)}
                   />
-                  <TextField
-                    label="Renkaat"
-                    value={formData.tyres.newTyres.usedTyre}
-                    onChange={(v) => handleChange('tyres.newTyres.usedTyre', v)}
-                    custom="tyres-input-width-2"
+                )}
+              </div>
+              <div className="same-row">
+                <SelectField
+                  label="Asennettavat renkaat"
+                  options={useTyres}
+                  value={formData.tyres.newTyres.usedState2}
+                  onChange={(v) => handleChange('tyres.newTyres.usedState2', v)}
+                />
+                {formData.tyres.newTyres.usedState2 === 0 && (
+                  <SelectField
+                    label="Renkaat on"
+                    options={ordered}
+                    value={formData.tyres.newTyres.ordered2}
+                    onChange={(v) => handleChange('tyres.newTyres.ordered2', v)}
                   />
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+              <div className="same-row">
+                <TextField
+                  label="Sijainti"
+                  value={formData.tyres.newTyres.storage2}
+                  onChange={(v) => handleChange('tyres.newTyres.storage2', v)}
+                />
+                <TextField
+                  label="Merkki ja malli"
+                  value={formData.tyres.newTyres.usedTyre2}
+                  onChange={(v) => handleChange('tyres.newTyres.usedTyre2', v)}
+                  custom="tyres-input-width-2"
+                />
+              </div>
+            </>
           )}
         </div>
       )}

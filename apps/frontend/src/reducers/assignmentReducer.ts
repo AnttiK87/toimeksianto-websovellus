@@ -11,7 +11,8 @@ import type {
   AssignmentResponse,
   PaintForm,
   RepairPatch,
-} from '@shared/dist/index.js';
+  editPatch,
+} from '../../../../packages/shared/src/index';
 
 interface AssignmentState {
   allAssignments: UsedCarForm[];
@@ -154,12 +155,13 @@ export const submitAssignment = (formData: UsedCarForm) => {
   };
 };
 
-export const editAssignment = (formData: UsedCarForm) => {
+export const editAssignment = (id: number, patch: editPatch[]) => {
   return async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
-      const response: AssignmentResponse = await assignmentService.update(formData);
+      const response = await assignmentService.update(id, patch);
       if (response.data) {
+        //console.log(response.data);
         dispatch(updateAssignment(response.data));
         dispatch(setSavedAssignment(response.data));
       }

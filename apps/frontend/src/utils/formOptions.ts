@@ -5,45 +5,52 @@ export const salesMen = [
 ];
 
 export const locations = [
-  { id: 1, label: 'Takapihalla' },
-  { id: 2, label: 'Myyntihallissa' },
-  { id: 3, label: 'Ulkona myyntirivissä' },
-  { id: 4, label: 'Nurmiparkissa' },
-  { id: 5, label: 'Fiksissä' },
-  { id: 6, label: 'Maalarilla' },
-  { id: 7, label: 'Asiakkaalla' },
+  { id: 0, label: 'Takapihalla' },
+  { id: 1, label: 'Myyntihallissa' },
+  { id: 2, label: 'Ulkona myyntirivissä' },
+  { id: 3, label: 'Nurmiparkissa' },
+  { id: 4, label: 'Fiksissä' },
+  { id: 5, label: 'Maalarilla' },
+  { id: 6, label: 'Asiakkaalla' },
 ];
 
 export const ecarOpt = [
-  { id: 1, label: 'Sähköauto' },
-  { id: 2, label: 'Plug-in hybridi' },
-  { id: 3, label: 'Täyshybridi' },
-  { id: 4, label: 'Kevythybridi' },
+  { id: 0, label: 'Sähköauto' },
+  { id: 1, label: 'Plug-in hybridi' },
+  { id: 2, label: 'Täyshybridi' },
+  { id: 3, label: 'Kevythybridi' },
 ];
 
 export const emissionStandard = [
-  { id: 1, label: 'NEDC' },
-  { id: 2, label: 'WLTP' },
+  { id: 0, label: 'NEDC' },
+  { id: 1, label: 'WLTP' },
 ];
 
 export const winterTyreTypes = [
-  { id: 1, label: 'Nasta' },
-  { id: 2, label: 'Kitka' },
+  { id: 0, label: 'Nasta' },
+  { id: 1, label: 'Kitka' },
 ];
 
 export const tyreTypes = [
-  { id: 1, label: 'Kesä' },
-  { id: 2, label: 'Talvi' },
+  { id: 0, label: 'Kesä' },
+  { id: 1, label: 'Talvi' },
+  { id: 2, label: 'Molemmat' },
 ];
 
-export const usedTyres = [
-  { id: 1, label: 'ei ole' },
-  { id: 2, label: 'on' },
+export const useTyres = [
+  { id: 0, label: 'Uudet' },
+  { id: 1, label: 'Käytetyt' },
+];
+
+export const ordered = [
+  { id: 0, label: 'Varastossa' },
+  { id: 1, label: 'Tilattu' },
+  { id: 2, label: 'Tilattava' },
 ];
 
 export const serviceTypes = [
-  { id: 1, label: 'huolto-ohjelman' },
-  { id: 2, label: 'erittelyn' },
+  { id: 0, label: 'huolto-ohjelman' },
+  { id: 1, label: 'erittelyn' },
 ];
 
 export const serviceOptions = [
@@ -63,42 +70,42 @@ export const serviceOptions = [
 ];
 
 export const engineTimingTypes = [
-  { id: 1, label: 'Jakohihnalla' },
-  { id: 2, label: 'Jakoketjulla' },
+  { id: 0, label: 'Jakohihnalla' },
+  { id: 1, label: 'Jakoketjulla' },
 ];
 
 export const yesOrNo = [
-  { id: 1, label: 'kyllä' },
-  { id: 2, label: 'ei' },
+  { id: 0, label: 'kyllä' },
+  { id: 1, label: 'ei' },
 ];
 
 export const windshWorkshops = [
-  { id: 1, label: 'Omassa korjaamossa' },
-  { id: 2, label: 'Toisessa korjaamossa' },
+  { id: 0, label: 'Omassa korjaamossa' },
+  { id: 1, label: 'Toisessa korjaamossa' },
 ];
 
 export const payers = [
-  { id: 1, label: 'Asiakas' },
-  { id: 2, label: 'Myynti' },
+  { id: 0, label: 'Asiakas' },
+  { id: 1, label: 'Myynti' },
 ];
 
 export const insuranceCompanies = [
-  { id: 1, label: 'Pohjola' },
-  { id: 2, label: 'LähiTapiola' },
-  { id: 3, label: 'Fennia' },
-  { id: 4, label: 'Turva' },
-  { id: 5, label: 'Pohjantähti' },
-  { id: 6, label: 'IF' },
-  { id: 7, label: 'Suomen Vahinkovakuutus' },
-  { id: 8, label: 'muu' },
+  { id: 0, label: 'Pohjola' },
+  { id: 1, label: 'LähiTapiola' },
+  { id: 2, label: 'Fennia' },
+  { id: 3, label: 'Turva' },
+  { id: 4, label: 'Pohjantähti' },
+  { id: 5, label: 'IF' },
+  { id: 6, label: 'Suomen Vahinkovakuutus' },
+  { id: 7, label: 'muu' },
 ];
 
 export const repairTypes = [
-  { id: 1, label: 'Vakuutusyhtiön' },
-  { id: 2, label: 'Myynnin' },
+  { id: 0, label: 'Vakuutusyhtiön' },
+  { id: 1, label: 'Myynnin' },
 ];
 
 export const painters = [
-  { id: 1, label: 'Töhönen' },
-  { id: 2, label: 'Keinänen' },
+  { id: 0, label: 'Töhönen' },
+  { id: 1, label: 'Keinänen' },
 ];

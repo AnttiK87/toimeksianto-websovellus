@@ -1,6 +1,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../utils/db.js';
-import type { UsedCarForm } from '../../../../packages/shared/src/dist/index.js';
+import type { UsedCarForm } from '../../../../packages/shared/src/index.js';
 
 type UsedCarFormDB = Omit<UsedCarForm, 'id'> & {
   id: number;

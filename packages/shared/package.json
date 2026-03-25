@@ -1,6 +1,9 @@
 {
-  "name": "@toimeksianto-websovellus/shared",
+  "name": "@assignment/shared",
   "version": "1.0.0",
   "main": "index.ts",
-  "types": "index.ts"
+  "types": "index.ts",
+  "scripts": {
+    "build": "tsc -b"
+  }
 }

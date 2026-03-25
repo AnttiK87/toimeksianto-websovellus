@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '../../reducers/store.js';
 import { submitPaintAssignment, updatePaintAssignment } from '../../reducers/assignmentReducer.js';
 
-import type { PaintForm } from '@shared/index.js';
+import type { PaintForm } from '../../../../../packages/shared/src/index.js';
 import { initialPaintForm } from './initialPaintForm.js';
 
 import CarTop from './CarTop.js';

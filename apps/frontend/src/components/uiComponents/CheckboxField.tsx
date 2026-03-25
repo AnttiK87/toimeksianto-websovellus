@@ -5,18 +5,9 @@ type CheckboxFieldProps = {
   checked: boolean;
   onChange: (value: boolean) => void;
   custom?: string;
-  x?: string;
-  y?: string;
 };
 
-const CheckboxField: React.FC<CheckboxFieldProps> = ({
-  label,
-  checked,
-  onChange,
-  custom,
-  x,
-  y,
-}) => {
+const CheckboxField: React.FC<CheckboxFieldProps> = ({ label, checked, onChange, custom }) => {
   return (
     <Form.Group className="formGroup">
       <Form.Check

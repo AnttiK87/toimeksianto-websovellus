@@ -58,11 +58,19 @@ export interface UsedCarForm {
     newTyres: {
       newTyres: boolean;
       tyreType: number | null;
-      tyreSize: string;
-      usedChecked: boolean;
+      difference: boolean;
+      tyreSize1: string;
+      tyreSize2: string;
       usedState: number | null;
       storage: string;
       usedTyre: string;
+      ordered: number | null;
+      tyreSize3: string;
+      tyreSize4: string;
+      usedState2: number | null;
+      storage2: string;
+      usedTyre2: string;
+      ordered2: number | null;
       repair: Repair | null;
     };
   };
@@ -112,6 +120,9 @@ export interface UsedCarForm {
 
   windshield: {
     change: boolean;
+    camera: boolean;
+    heated: boolean;
+    hud: boolean;
     workshop: number | null;
     subcontractor: string;
     insurance: boolean;

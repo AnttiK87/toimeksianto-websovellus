@@ -8,8 +8,9 @@ import TextField from '../uiComponents/TextField.js';
 import CheckboxField from '../uiComponents/CheckboxField.js';
 
 import { resetService, resetServiceSelected, resetTiming } from './formResetters';
+import { useUpdateEffect } from '../../hooks/useUpdateEffect.js';
 
-import type { UsedCarForm } from '@shared/dist/index.js';
+import type { UsedCarForm } from '../../../../../packages/shared/src/index.js';
 
 interface ServiceProps {
   formData: UsedCarForm;
@@ -20,16 +21,16 @@ interface ServiceProps {
 const Service: React.FC<ServiceProps> = ({ formData, handleChange, setFormData }) => {
   const today = new Date().toISOString().split('T')[0];
 
-  useEffect(() => {
-    setFormData((prev) => resetService(prev));
+  useUpdateEffect(() => {
+    if (formData.service.needed === false) setFormData((prev) => resetService(prev));
   }, [formData.service.needed]);
 
-  useEffect(() => {
-    setFormData((prev) => resetServiceSelected(prev));
+  useUpdateEffect(() => {
+    if (formData.service.type != 1) setFormData((prev) => resetServiceSelected(prev));
   }, [formData.service.type]);
 
-  useEffect(() => {
-    setFormData((prev) => resetTiming(prev));
+  useUpdateEffect(() => {
+    setFormData((prev) => resetServiceSelected(prev));
   }, [formData.timing.type]);
 
   return (
@@ -80,7 +81,7 @@ const Service: React.FC<ServiceProps> = ({ formData, handleChange, setFormData }
             onChange={(v) => handleChange('service.type', v)}
             unit="mukaisesti."
           />
-          {formData.service.type === 2 && (
+          {formData.service.type === 1 && (
             <div className="service-options">
               {serviceOptions.map((service) => (
                 <CheckboxField
@@ -101,7 +102,7 @@ const Service: React.FC<ServiceProps> = ({ formData, handleChange, setFormData }
         value={formData.timing.type}
         onChange={(v) => handleChange('timing.type', v)}
       />
-      {formData.timing.type === 1 && (
+      {formData.timing.type === 0 && (
         <div>
           <div className="same-row no-gap">
             <TextField
@@ -130,7 +131,7 @@ const Service: React.FC<ServiceProps> = ({ formData, handleChange, setFormData }
             <DateField
               label="ja pvm"
               value={formData.timing.lastBeltChangeTime}
-              onChange={(v) => handleChange('lastBeltChangeTime', v)}
+              onChange={(v) => handleChange('timing.lastBeltChangeTime', v)}
             />
           </div>
           <CheckboxField
@@ -140,7 +141,7 @@ const Service: React.FC<ServiceProps> = ({ formData, handleChange, setFormData }
           />
         </div>
       )}
-      {formData.timing.type === 2 && (
+      {formData.timing.type === 1 && (
         <CheckboxField
           label="Jakoketjun vaihto"
           checked={formData.timing.chainChangeNeeded}

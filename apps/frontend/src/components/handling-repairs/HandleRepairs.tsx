@@ -18,7 +18,7 @@ import { collectRepairs, groupRepairsByCategory, getRepairStats } from '../../ut
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWrench, faCar, faCircleDot, faX } from '@fortawesome/free-solid-svg-icons';
 
-import type { StatsGeneral, RepairPatch } from '@shared/dist/index.js';
+import type { StatsGeneral, RepairPatch } from '../../../../../packages/shared/src/index.js';
 
 import './HandleRepairs.css';
 

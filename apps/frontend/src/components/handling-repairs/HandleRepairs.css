@@ -15,8 +15,9 @@
   margin: 0;
 }
 
-.centerItem {
-  text-align: center;
+.centerItem > .formGroup {
+  width: 100%;
+  justify-content: center;
 }
 
 .tr-repair > td,

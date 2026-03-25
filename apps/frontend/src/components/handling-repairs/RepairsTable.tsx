@@ -5,8 +5,13 @@ import Table from 'react-bootstrap/Table';
 import DateField from '../uiComponents/DateField.js';
 import TextField from '../uiComponents/TextField.js';
 import CheckboxField from '../uiComponents/CheckboxField.js';
+import AnimatedCheckbox from '../uiComponents/AnimatedCheckbox.js';
 
-import type { CategorizedRepair, Repair, RepairPatch } from '@shared/dist/index';
+import type {
+  CategorizedRepair,
+  Repair,
+  RepairPatch,
+} from '../../../../../packages/shared/src/index.js';
 
 interface RepairsTableProps {
   repairs: CategorizedRepair[];
@@ -64,13 +69,15 @@ const RepairsTable: React.FC<RepairsTableProps> = ({ repairs, localRepairs, setL
               />
             </td>
             <td>
-              <TextField
-                value={getRepairValue(item, 'workorder') as string}
-                onChange={(v) => handleEdit(item, 'workorder', v)}
-              />
+              {item.name != 'Katsastus' && (
+                <TextField
+                  value={getRepairValue(item, 'workorder') as string}
+                  onChange={(v) => handleEdit(item, 'workorder', v)}
+                />
+              )}
             </td>
-            <td>
-              <CheckboxField
+            <td className="centerItem">
+              <AnimatedCheckbox
                 checked={getRepairValue(item, 'ready') as boolean}
                 onChange={(v) => handleEdit(item, 'ready', v)}
               />

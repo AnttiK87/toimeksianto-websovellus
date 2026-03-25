@@ -11,7 +11,7 @@ import { fetchAllAssignments } from '../../reducers/assignmentReducer.js';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../reducers/store.js';
 
-import type { UsedCarForm } from '@shared/dist/index.js';
+import type { UsedCarForm } from '../../../../../packages/shared/src/index.js';
 import { useNavigate } from 'react-router-dom';
 
 import TableRow from './TableRow.js';

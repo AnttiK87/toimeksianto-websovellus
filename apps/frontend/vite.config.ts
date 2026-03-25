@@ -9,6 +9,11 @@ export default defineConfig({
     outDir: path.resolve(__dirname, 'dist'), // tämä luo dist kansioon frontendin juureen
     emptyOutDir: true, // tyhjentää dist kansion ennen buildia
   },
+  resolve: {
+    alias: {
+      '@assignment/shared': path.resolve(__dirname, '../../packages/shared/src'),
+    },
+  },
   server: {
     proxy: {
       '/api': {

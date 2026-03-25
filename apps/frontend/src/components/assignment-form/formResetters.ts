@@ -1,5 +1,5 @@
 // formResetters.ts
-import type { UsedCarForm } from '@shared/dist/index.js';
+import type { UsedCarForm } from '../../../../../packages/shared/src/index.js';
 
 export const resetTyres = (form: UsedCarForm) => ({
   ...form,
@@ -8,38 +8,70 @@ export const resetTyres = (form: UsedCarForm) => ({
     newTyres: {
       ...form.tyres.newTyres,
       tyreType: null,
-      tyreSize: '',
-      usedChecked: false,
+      difference: false,
+      tyreSize1: '',
+      tyreSize2: '',
       usedState: null,
       storage: '',
       usedTyre: '',
+      ordered: null,
+      tyreSize3: '',
+      tyreSize4: '',
+      usedState2: null,
+      storage2: '',
+      usedTyre2: '',
+      ordered2: null,
       repair: null,
     },
   },
 });
 
-export const resetUsed = (form: UsedCarForm) => ({
+export const resetDiffer = (form: UsedCarForm) => ({
   ...form,
   tyres: {
     ...form.tyres,
     newTyres: {
       ...form.tyres.newTyres,
-      usedState: null,
-      storage: '',
-      usedTyre: '',
-      repair: null,
+      tyreSize2: '',
+      tyreSize4: '',
     },
   },
 });
 
-export const resetUsedState = (form: UsedCarForm) => ({
+export const resetOrder = (form: UsedCarForm) => ({
   ...form,
   tyres: {
     ...form.tyres,
     newTyres: {
       ...form.tyres.newTyres,
-      storage: '',
-      usedTyre: '',
+      ordered: null,
+    },
+  },
+});
+
+export const resetOrder2 = (form: UsedCarForm) => ({
+  ...form,
+  tyres: {
+    ...form.tyres,
+    newTyres: {
+      ...form.tyres.newTyres,
+      ordered2: null,
+    },
+  },
+});
+
+export const resetTyres2 = (form: UsedCarForm) => ({
+  ...form,
+  tyres: {
+    ...form.tyres,
+    newTyres: {
+      ...form.tyres.newTyres,
+      tyreSize3: '',
+      tyreSize4: '',
+      usedState2: null,
+      storage2: '',
+      usedTyre2: '',
+      ordered2: null,
       repair: null,
     },
   },
@@ -145,6 +177,9 @@ export const resetWindshield = (form: UsedCarForm) => ({
   ...form,
   windshield: {
     ...form.windshield,
+    camera: false,
+    heated: false,
+    hud: false,
     workshop: null,
     subcontractor: '',
     insurance: false,
