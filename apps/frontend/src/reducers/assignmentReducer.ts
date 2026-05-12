@@ -57,6 +57,11 @@ const assignmentSlice = createSlice({
         assignment.id === updatedAssignment.id ? updatedAssignment : assignment,
       );
     },
+    deleteAssignment(state, action: PayloadAction<UsedCarForm>) {
+      state.allAssignments = state.allAssignments.filter(
+        (assignment) => assignment.id !== action.payload.id,
+      );
+    },
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
@@ -71,6 +76,7 @@ export const {
   setSavedAssignment,
   appendAssignment,
   updateAssignment,
+  deleteAssignment,
   setLoading,
   setError,
   setPaintAssignment,
@@ -115,6 +121,7 @@ export const fetchPaintAssignment = (id: number) => {
     try {
       const data = await assignmentService.getPaintAssignmentById(id);
       if (data) dispatch(setPaintAssignment(data));
+      else if (data === null) dispatch(setPaintAssignment(initialPaintForm));
       dispatch(setLoading(false));
     } catch (err: unknown) {
       const error = err as AxiosError;
@@ -141,7 +148,7 @@ export const submitAssignment = (formData: UsedCarForm) => {
             text: 'Toimeksianto tallennettu onnistuneesti!',
             type: 'success',
           },
-          5,
+          3,
         ),
       );
       dispatch(setLoading(false));
@@ -175,7 +182,7 @@ export const editAssignment = (id: number, patch: editPatch[]) => {
               text: 'Toimeksianto päivitetty onnistuneesti!',
               type: 'success',
             },
-            5,
+            3,
           ),
         );
       }
@@ -189,11 +196,47 @@ export const editAssignment = (id: number, patch: editPatch[]) => {
   };
 };
 
+export const removeAssignrment = (assignment: UsedCarForm) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      if (assignment.id) {
+        const deletedAssignment = await assignmentService.deleteAssignment(assignment.id);
+        dispatch(deleteAssignment(assignment));
+
+        dispatch(
+          showMessage(
+            {
+              text: deletedAssignment.message,
+              type: 'success',
+            },
+            1,
+          ),
+        );
+      }
+    } catch (err: unknown) {
+      const error = err as AxiosError;
+
+      if (error.response && error.response.status === 404) {
+        dispatch(deleteAssignment(assignment));
+      }
+    }
+  };
+};
+
 export const submitPaintAssignment = (formData: PaintForm) => {
   return async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
       await assignmentService.newPaintAssignment(formData);
+      dispatch(
+        showMessage(
+          {
+            text: 'Maalauslomake tallennettu!',
+            type: 'success',
+          },
+          3,
+        ),
+      );
       dispatch(setLoading(false));
     } catch (err: unknown) {
       const error = err as AxiosError;
@@ -209,6 +252,15 @@ export const updatePaintAssignment = (formData: PaintForm) => {
     dispatch(setLoading(true));
     try {
       await assignmentService.updatePaint(formData);
+      dispatch(
+        showMessage(
+          {
+            text: 'Maalauslomake päivitetty!',
+            type: 'success',
+          },
+          3,
+        ),
+      );
       dispatch(setLoading(false));
     } catch (err: unknown) {
       const error = err as AxiosError;

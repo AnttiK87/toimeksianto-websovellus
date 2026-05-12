@@ -282,7 +282,7 @@ export interface StatsGeneral {
 
 export interface RepairPatch {
   path: string;
-  value: string | boolean;
+  value: string | number | boolean | null;
 }
 
 export interface editPatch {

@@ -2,7 +2,7 @@ import { locations } from '../../utils/formOptions.js';
 import { collectRepairs, getRepairStats, groupRepairsByCategory } from '../../utils/repairs.js';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWrench, faCar, faCircleDot, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faWrench, faCar, faCircleDot, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import type { UsedCarForm, StatsGeneral } from '../../../../../packages/shared/src/index.js';
 
@@ -10,10 +10,17 @@ interface TableRowProps {
   index: number;
   assignment: UsedCarForm;
   editAssignment: (assignment: UsedCarForm) => void;
+  deleteAssignment: (assignment: UsedCarForm) => void;
   editRepair: (id: number | undefined) => void;
 }
 
-const TableRow: React.FC<TableRowProps> = ({ index, assignment, editAssignment, editRepair }) => {
+const TableRow: React.FC<TableRowProps> = ({
+  index,
+  assignment,
+  editAssignment,
+  editRepair,
+  deleteAssignment,
+}) => {
   const repairs = collectRepairs(assignment);
   const stats = getRepairStats(repairs);
   const grouped = groupRepairsByCategory(repairs);
@@ -48,7 +55,9 @@ const TableRow: React.FC<TableRowProps> = ({ index, assignment, editAssignment, 
     <tr key={index}>
       <td>{assignment.regNum}</td>
       <td>{assignment.car.makeAndModel}</td>
-      <td>{locations.find((l) => l.id === assignment.location)?.label ?? '-'}</td>
+      <td onClick={() => editLocation(assignment.id)} style={{ cursor: 'pointer' }}>
+        {locations.find((l) => l.id === assignment.location)?.label ?? '-'}
+      </td>
       <td className="centerItem">
         {stats.handled} / {stats.total}
       </td>
@@ -76,6 +85,11 @@ const TableRow: React.FC<TableRowProps> = ({ index, assignment, editAssignment, 
           icon={faPen}
           onClick={() => editAssignment(assignment)}
           style={{ cursor: 'pointer' }}
+        />
+        <FontAwesomeIcon
+          icon={faTrash}
+          onClick={() => deleteAssignment(assignment)}
+          style={{ cursor: 'pointer', color: 'red', marginLeft: '10px' }}
         />
       </td>
     </tr>

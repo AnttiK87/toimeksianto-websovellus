@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
+import { salesMen, locations } from '../../utils/formOptions.js';
 
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../hooks/useRedux.js';
@@ -11,6 +12,7 @@ import type { RootState } from '../../reducers/store.js';
 
 import RepairsTable from './RepairsTable.js';
 import Button from '../uiComponents/Button.js';
+import SelectField from '../uiComponents/SelectField.js';
 
 import { useParams } from 'react-router-dom';
 import { collectRepairs, groupRepairsByCategory, getRepairStats } from '../../utils/repairs.js';
@@ -50,6 +52,12 @@ const HandleRepairs = () => {
   useEffect(() => {
     dispatch(fetchAssignment(idNumber));
   }, [index]);
+
+  const [location, setLocation] = useState(savedAssignment.location);
+
+  useEffect(() => {
+    setLocation(savedAssignment.location);
+  }, [savedAssignment]);
 
   const [repairs, setRepairs] = useState(collectRepairs(savedAssignment));
   const [grouped, setGrouped] = useState(groupRepairsByCategory(repairs));
@@ -105,12 +113,52 @@ const HandleRepairs = () => {
           </div>
           <h3 className="noMargin">{savedAssignment.car.makeAndModel}</h3>
           <div className="same-row">
+            <p className="noMargin">Alustanumero: {savedAssignment.vin}</p>
             <p className="noMargin">Ajomäärä: {savedAssignment.car.mileage} km</p>
-            <p className="noMargin">Rek.pvm: {savedAssignment.car.regDate}</p>
-            {savedAssignment.warranty.enabled && <p>TEHDAS TAKUU VOIMASSA</p>}
           </div>
+          <div className="same-row">
+            <p className="noMargin">Rek.pvm: {savedAssignment.car.regDate}</p>
+            {savedAssignment.warranty.enabled && (
+              <p className="noMargin bold">TEHDAS TAKUU VOIMASSA</p>
+            )}
+          </div>
+          {savedAssignment.sold && (
+            <div className="same-row">
+              <p className="noMargin bold" style={{ color: 'red' }}>
+                AUTO ON MYYTY, KORJAUKSIA EI SAA SIIRTÄÄ!
+              </p>
+
+              <p className="noMargin" style={{ color: 'red' }}>
+                Luovutus päivä: {savedAssignment.handOverDate}
+              </p>
+            </div>
+          )}
           <h2>Ajoneuvolle määritetyt korjaustyöt:</h2>
           <div className="border-top">
+            <div className="same-row">
+              <SelectField
+                label="Ajoneuvon sijainti"
+                options={locations}
+                value={location}
+                classSelect="location-select"
+                classLabel="location-label"
+                onChange={(v) => {
+                  setLocation(v);
+                  setLocalRepairs((prev) => {
+                    const filtered = prev.filter((p) => p.path !== 'location');
+
+                    return [
+                      ...filtered,
+                      {
+                        path: 'location',
+                        value: v,
+                      },
+                    ];
+                  });
+                }}
+              />
+            </div>
+            {repairs.length === 0 && <p>Ajoneuvolle ei ole määritetty korjauksia.</p>}
             {grouped.general.length > 0 && (
               <>
                 <h3>
@@ -170,6 +218,7 @@ const HandleRepairs = () => {
                 />
               </>
             )}
+
             <div className="save-button">
               <Button variant="primary" type="button" onClick={() => handleSave(idNumber)}>
                 Tallenna

@@ -148,7 +148,7 @@ export const collectRepairs = (form: UsedCarForm): CategorizedRepair[] => {
   pushIfRepair(
     repairs,
     'Vauriokorjaus',
-    form.damage.damaged,
+    form.damage.repairType === 0 || form.damage.disassembly,
     form.damage.repair,
     'body',
     'damage.repair',
@@ -189,9 +189,9 @@ export const groupRepairsByCategory = (repairs: CategorizedRepair[]) => ({
 });
 
 export const isRepairHandled = (repair: Repair | null): boolean => {
-  if (!repair) return false;
-
-  return repair.reservation !== '';
+  if (!repair || repair.reservation === '' || repair.reservation === undefined) return false;
+  else if (repair.reservation != '') return true;
+  else return false;
 };
 
 export const isRepairReady = (repair: Repair | null): boolean => {

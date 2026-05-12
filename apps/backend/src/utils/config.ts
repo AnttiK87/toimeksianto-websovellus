@@ -16,3 +16,5 @@ export const DB_HOST: string = process.env.DB_HOST!;
 export const SECRET: string = process.env.SECRET!;
 export const ADMIN_PASSWORD: string = process.env.ADMIN_PASSWORD!;
 export const DB_PORT: number = Number(process.env.DB_PORT);
+
+console.log('user:', MYSQL_USER);

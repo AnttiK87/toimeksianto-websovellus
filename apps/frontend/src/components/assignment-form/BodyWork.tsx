@@ -18,6 +18,7 @@ import {
   resetOtherInsurance,
   resetDamage,
   resetDamageInsurance,
+  resetDamageSales,
   resetDamageOtherInsurance,
   resetBodyWarranty,
   resetBodyWarrantyPainter,
@@ -55,14 +56,19 @@ const BodyWork: React.FC<BodyWorkProps> = ({ formData, handleChange, setFormData
 
   useUpdateEffect(() => {
     if (formData.damage.damaged === false) setFormData((prev) => resetDamage(prev));
+    console.log('damage', formData.damage);
   }, [formData.damage.damaged]);
 
   useUpdateEffect(() => {
-    setFormData((prev) => resetDamageInsurance(prev));
+    if (formData.damage.repairType != 0) setFormData((prev) => resetDamageInsurance(prev));
   }, [formData.damage.repairType]);
 
   useUpdateEffect(() => {
-    if (formData.windshield.insuranceCompany != 7)
+    if (formData.damage.repairType != 1) setFormData((prev) => resetDamageSales(prev));
+  }, [formData.damage.repairType]);
+
+  useUpdateEffect(() => {
+    if (formData.damage.insuranceCompany != 7)
       setFormData((prev) => resetDamageOtherInsurance(prev));
   }, [formData.damage.insuranceCompany]);
 

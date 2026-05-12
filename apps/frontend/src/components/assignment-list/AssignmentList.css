@@ -14,7 +14,11 @@
 .assignment-title {
   margin-bottom: 20px;
   font-weight: 600;
-  margin-left: 20px;
+  margin-left: 10px;
+}
+
+.table {
+  width: 100%;
 }
 
 .table-message {
@@ -50,4 +54,33 @@ td {
 
 .centerItem {
   text-align: center;
+}
+
+.headerAndSearch {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.searchCont {
+  width: 250px;
+  max-width: 90%;
+  display: flex;
+  height: fit-content;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  padding: 0 0.7em 0.2em 0.5em;
+  border-bottom: 2px solid black;
+  margin-right: 10px;
+}
+
+.search {
+  all: unset;
+  text-align: start;
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }

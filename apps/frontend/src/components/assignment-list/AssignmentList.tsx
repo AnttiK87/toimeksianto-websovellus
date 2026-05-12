@@ -3,11 +3,14 @@ import Table from 'react-bootstrap/Table';
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+
 import UsedCarAssignment from '../assignment-form/UsedCarAssignment';
 import { initialUsedCarForm } from '../assignment-form/initialUsedCarForm.js';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux.js';
-import { fetchAllAssignments } from '../../reducers/assignmentReducer.js';
+import { fetchAllAssignments, removeAssignrment } from '../../reducers/assignmentReducer.js';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../reducers/store.js';
 
@@ -35,6 +38,7 @@ const AssignmentList = () => {
   const [isError, setIsError] = useState(false);
   const [edit, setEdit] = useState(false);
   const [selected, setSelected] = useState<UsedCarForm>(initialUsedCarForm);
+  const [search, setSearch] = useState('');
 
   const allAssignments = useAppSelector((state) => state.assignment.allAssignments);
 
@@ -55,6 +59,15 @@ const AssignmentList = () => {
     setEdit(true);
   };
 
+  const deleteAssignment = async (assignment: UsedCarForm) => {
+    const confirmed = window.confirm(
+      `Haluatko varmasti poistaa toimeksiannon rekisterinumerolla: ${assignment.regNum}?`,
+    );
+    if (confirmed) {
+      await dispatch(removeAssignrment(assignment));
+    }
+  };
+
   const editRepairs = (id: number | undefined) => {
     navigate(`/toimeksiannot/${id}`);
   };
@@ -63,11 +76,29 @@ const AssignmentList = () => {
     return <UsedCarAssignment assignment={selected} edit={edit} setEdit={setEdit} />;
   }
 
+  const filteredAssignments = allAssignments.filter((a) => {
+    const query = search.toLowerCase();
+
+    return a.regNum?.toLowerCase().includes(query) || a.vin?.toLowerCase().includes(query);
+  });
+
   return (
     <div className="assignment-container">
       <Card className="assignment-card">
         <Card.Body>
-          <h2 className="assignment-title">Toimeksiannot</h2>
+          <div className="headerAndSearch">
+            <h2 className="assignment-title">Toimeksiannot</h2>
+            <div className="searchCont">
+              <input
+                className="search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                type="text"
+                placeholder="Search"
+              />
+              <FontAwesomeIcon icon={faMagnifyingGlass} />
+            </div>
+          </div>
 
           <Table hover>
             <thead>
@@ -109,13 +140,14 @@ const AssignmentList = () => {
 
               {!isLoading &&
                 !isError &&
-                allAssignments.map((assignment, index) => (
+                filteredAssignments.map((assignment, index) => (
                   <>
                     <TableRow
                       index={index}
                       assignment={assignment}
                       editAssignment={editAssignment}
                       editRepair={editRepairs}
+                      deleteAssignment={deleteAssignment}
                     />
                   </>
                 ))}

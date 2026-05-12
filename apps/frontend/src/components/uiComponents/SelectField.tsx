@@ -11,6 +11,8 @@ type SelectFieldProps = {
   options: Option[];
   value: number | null;
   onChange: (value: number | null) => void;
+  classSelect?: string;
+  classLabel?: string;
   placeholder?: string;
   unit?: string;
 };
@@ -20,6 +22,8 @@ const SelectField: React.FC<SelectFieldProps> = ({
   options,
   value,
   onChange,
+  classSelect,
+  classLabel,
   placeholder = '',
   unit,
 }) => {
@@ -30,9 +34,9 @@ const SelectField: React.FC<SelectFieldProps> = ({
 
   return (
     <Form.Group className="formGroup">
-      <Form.Label>{label}: </Form.Label>
+      <Form.Label className={classLabel}>{label}: </Form.Label>
       <InputGroup>
-        <Form.Select value={value ?? ''} onChange={handleChange}>
+        <Form.Select className={classSelect} value={value ?? ''} onChange={handleChange}>
           <option value="">{placeholder}</option>
 
           {options.map((opt) => (

@@ -141,4 +141,42 @@ router.patch(
   }),
 );
 
+// GET /api/assignments/:id
+router.delete(
+  '/:id',
+  asyncHandler(async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    if (isNaN(id)) throw new AppError('Invalid ID', 400);
+
+    const assignment = await UsedCarAssignment.findOne({
+      where: { id: id },
+    });
+
+    if (!assignment) throw new AppError('Assignment not found', 404);
+
+    await assignment.destroy();
+
+    res.status(200).json({ message: 'Toimeksianto poistettu onnistuneesti' });
+  }),
+);
+
+// GET /api/assignments/paint/:id
+router.delete(
+  '/paint/:id',
+  asyncHandler(async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    if (isNaN(id)) throw new AppError('Invalid ID', 400);
+
+    const paintAssignment = await PaintAssignment.findOne({
+      where: { assignmentId: id },
+    });
+
+    if (!paintAssignment) throw new AppError('Maalaustoimeksiantoa ei löytynyt!', 404);
+
+    await paintAssignment.destroy();
+
+    res.status(200).json({ message: 'Maalaustoimeksianto poistettu onnistuneesti!' });
+  }),
+);
+
 export default router;

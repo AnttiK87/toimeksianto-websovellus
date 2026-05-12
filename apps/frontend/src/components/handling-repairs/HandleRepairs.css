@@ -12,7 +12,7 @@
 }
 
 .noMargin {
-  margin: 0;
+  margin: 4px 0;
 }
 
 .centerItem > .formGroup {
@@ -79,4 +79,20 @@
 .save-button {
   display: flex;
   justify-content: flex-end;
+}
+
+.location-select {
+  font-size: 1.1em;
+  font-weight: 500;
+  height: auto;
+}
+
+.location-label {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #000;
+}
+
+.bold {
+  font-weight: bold;
 }

@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { salesMen, locations } from '../../utils/formOptions.js';
 
 import DateField from '../uiComponents/DateField.js';

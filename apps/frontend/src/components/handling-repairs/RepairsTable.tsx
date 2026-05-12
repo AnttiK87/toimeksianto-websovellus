@@ -21,8 +21,11 @@ interface RepairsTableProps {
 
 const RepairsTable: React.FC<RepairsTableProps> = ({ repairs, localRepairs, setLocalRepairs }) => {
   //console.log(repairs);
-  const getRepairValue = (item: CategorizedRepair, key: keyof Repair): string | boolean => {
-    const path = `${item.repairPath}.${key}`; // täsmällinen patch path
+  const getRepairValue = (
+    item: CategorizedRepair,
+    key: keyof Repair,
+  ): string | boolean | number | null => {
+    const path = `${item.repairPath}.${key}`;
     const localPatch = localRepairs.find((p) => p.path === path);
 
     if (localPatch && localPatch.value !== undefined) return localPatch.value;

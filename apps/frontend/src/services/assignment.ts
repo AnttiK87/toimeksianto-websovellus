@@ -30,6 +30,11 @@ const update = async (id: number, patch: editPatch[]): Promise<AssignmentRespons
   return response.data;
 };
 
+const deleteAssignment = async (id: number): Promise<BasicResponse> => {
+  const response = await axios.delete<BasicResponse>(`${baseUrl}/${id}`);
+  return response.data;
+};
+
 const getPaintAssignmentById = async (assignmentId: number): Promise<PaintForm> => {
   const response = await axios.get<PaintForm>(`${baseUrl}/paint/${assignmentId}`);
   return response.data;
@@ -48,6 +53,11 @@ const updatePaint = async (content: PaintForm): Promise<BasicResponse> => {
   return response.data;
 };
 
+const deletePaintAssignment = async (assignmentId: number): Promise<BasicResponse> => {
+  const response = await axios.delete<BasicResponse>(`${baseUrl}/paint/${assignmentId}`);
+  return response.data;
+};
+
 const editRepairs = async (id: number, patch: RepairPatch[]): Promise<AssignmentResponse> => {
   const response = await axios.patch<AssignmentResponse>(`${baseUrl}/repairs/${id}`, patch);
   return response.data;
@@ -62,4 +72,6 @@ export default {
   newPaintAssignment,
   updatePaint,
   editRepairs,
+  deleteAssignment,
+  deletePaintAssignment,
 };

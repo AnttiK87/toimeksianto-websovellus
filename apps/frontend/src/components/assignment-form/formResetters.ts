@@ -220,6 +220,20 @@ export const resetOtherInsurance = (form: UsedCarForm) => ({
   },
 });
 
+export const initialDamageState = {
+  damaged: false,
+  repairType: null,
+  insuranceCompany: null,
+  otherInsuranceCompany: '',
+  damageDate: '',
+  repairFee: '',
+  damageId: '',
+  feePayer: null,
+  painter: null,
+  disassembly: false,
+  repair: null,
+};
+
 export const resetDamage = (form: UsedCarForm) => ({
   ...form,
   damage: {
@@ -244,9 +258,16 @@ export const resetDamageInsurance = (form: UsedCarForm) => ({
     damageDate: '',
     repairFee: '',
     feePayer: null,
-    description: '',
     insuranceCompany: null,
     otherInsuranceCompany: '',
+    repair: null,
+  },
+});
+
+export const resetDamageSales = (form: UsedCarForm) => ({
+  ...form,
+  damage: {
+    ...form.damage,
     painter: null,
     disassembly: false,
     repair: null,

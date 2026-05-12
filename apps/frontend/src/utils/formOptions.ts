@@ -10,8 +10,9 @@ export const locations = [
   { id: 2, label: 'Ulkona myyntirivissä' },
   { id: 3, label: 'Nurmiparkissa' },
   { id: 4, label: 'Fiksissä' },
-  { id: 5, label: 'Maalarilla' },
-  { id: 6, label: 'Asiakkaalla' },
+  { id: 5, label: 'Korjaamossa' },
+  { id: 6, label: 'Maalarilla' },
+  { id: 7, label: 'Asiakkaalla' },
 ];
 
 export const ecarOpt = [
