@@ -1,9 +1,3 @@
-export const salesMen = [
-  { id: 1, label: 'Juha' },
-  { id: 2, label: 'Mika' },
-  { id: 3, label: 'Jaakko' },
-];
-
 export const locations = [
   { id: 0, label: 'Takapihalla' },
   { id: 1, label: 'Myyntihallissa' },

@@ -4,7 +4,6 @@ import Table from 'react-bootstrap/Table';
 
 import DateField from '../uiComponents/DateField.js';
 import TextField from '../uiComponents/TextField.js';
-import CheckboxField from '../uiComponents/CheckboxField.js';
 import AnimatedCheckbox from '../uiComponents/AnimatedCheckbox.js';
 
 import type {

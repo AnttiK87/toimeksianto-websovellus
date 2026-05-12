@@ -63,6 +63,11 @@ const editRepairs = async (id: number, patch: RepairPatch[]): Promise<Assignment
   return response.data;
 };
 
+const editLocation = async (id: number, patch: RepairPatch[]): Promise<AssignmentResponse> => {
+  const response = await axios.patch<AssignmentResponse>(`${baseUrl}/location/${id}`, patch);
+  return response.data;
+};
+
 export default {
   getAllAssignments,
   getAssignmentById,
@@ -74,4 +79,5 @@ export default {
   editRepairs,
   deleteAssignment,
   deletePaintAssignment,
+  editLocation,
 };

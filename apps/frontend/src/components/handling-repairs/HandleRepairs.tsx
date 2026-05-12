@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
-import { salesMen, locations } from '../../utils/formOptions.js';
+import { locations } from '../../utils/formOptions.js';
 
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../hooks/useRedux.js';
 import type { AppDispatch } from '../../reducers/store.js';
 import { fetchAssignment, editRepairs } from '../../reducers/assignmentReducer.js';
+import { fetchSalesUsers } from '../../reducers/usersReducer.js';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../reducers/store.js';
 
@@ -20,7 +21,7 @@ import { collectRepairs, groupRepairsByCategory, getRepairStats } from '../../ut
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWrench, faCar, faCircleDot, faX } from '@fortawesome/free-solid-svg-icons';
 
-import type { StatsGeneral, RepairPatch } from '../../../../../packages/shared/src/index.js';
+import type { StatsGeneral, RepairPatch, User } from '../../../../../packages/shared/src/index.js';
 
 import './HandleRepairs.css';
 
@@ -53,6 +54,12 @@ const HandleRepairs = () => {
     dispatch(fetchAssignment(idNumber));
   }, [index]);
 
+  const salesUsers: User[] = useAppSelector((state) => state.users.salesUsers);
+
+  useEffect(() => {
+    dispatch(fetchSalesUsers());
+  }, [dispatch]);
+
   const [location, setLocation] = useState(savedAssignment.location);
 
   useEffect(() => {
@@ -81,6 +88,16 @@ const HandleRepairs = () => {
     return 'orange';
   };
 
+  const formatFiDate = (dateStr?: string | null) => {
+    if (!dateStr) return 'Ei määritetty';
+
+    const date = new Date(dateStr);
+
+    if (isNaN(date.getTime())) return 'Ei määritetty';
+
+    return new Intl.DateTimeFormat('fi-FI').format(date);
+  };
+
   const close = () => {
     if (localRepairs.length === 0) {
       navigate(`/toimeksiannot`);
@@ -90,6 +107,7 @@ const HandleRepairs = () => {
       );
       if (confirmed) {
         navigate(`/toimeksiannot`);
+        setLocalRepairs([]);
       }
     }
   };
@@ -113,26 +131,48 @@ const HandleRepairs = () => {
           </div>
           <h3 className="noMargin">{savedAssignment.car.makeAndModel}</h3>
           <div className="same-row">
-            <p className="noMargin">Alustanumero: {savedAssignment.vin}</p>
-            <p className="noMargin">Ajomäärä: {savedAssignment.car.mileage} km</p>
+            <p className="noMargin">
+              <strong>Alustanumero:</strong> {savedAssignment.vin}
+            </p>
+            <p className="noMargin">
+              <strong>Ajomäärä:</strong> {savedAssignment.car.mileage} km
+            </p>
           </div>
           <div className="same-row">
-            <p className="noMargin">Rek.pvm: {savedAssignment.car.regDate}</p>
+            <p className="noMargin">
+              <strong>Rek.pvm:</strong> {formatFiDate(savedAssignment.car.regDate)}
+            </p>
             {savedAssignment.warranty.enabled && (
-              <p className="noMargin bold">TEHDAS TAKUU VOIMASSA</p>
+              <>
+                <p className="noMargin bold">TEHDAS TAKUU ON VOIMASSA</p>
+                <p className="noMargin">
+                  {savedAssignment.warranty.until
+                    ? formatFiDate(savedAssignment.warranty.until) + ' asti'
+                    : 'Päättymispäivä ei ole merkattu'}
+                </p>
+              </>
             )}
           </div>
           {savedAssignment.sold && (
             <div className="same-row">
               <p className="noMargin bold" style={{ color: 'red' }}>
-                AUTO ON MYYTY, KORJAUKSIA EI SAA SIIRTÄÄ!
+                TÄMÄ AUTO ON MYYTY!
               </p>
-
               <p className="noMargin" style={{ color: 'red' }}>
-                Luovutus päivä: {savedAssignment.handOverDate}
+                <strong>Luovutus päivä:</strong> {formatFiDate(savedAssignment.handOverDate)}
               </p>
             </div>
           )}
+          <div className="same-row">
+            <p className="noMargin">
+              <strong>Myyjä:</strong>{' '}
+              {salesUsers.find((u) => u.id === savedAssignment.salesMan)?.name}
+            </p>
+            <p className="noMargin">
+              <strong>Toimeksianto:</strong> {formatFiDate(savedAssignment.date)},{' '}
+              {savedAssignment.assigneer}
+            </p>
+          </div>
           <h2>Ajoneuvolle määritetyt korjaustyöt:</h2>
           <div className="border-top">
             <div className="same-row">
@@ -219,7 +259,10 @@ const HandleRepairs = () => {
               </>
             )}
 
-            <div className="save-button">
+            <div className="save-button buttons">
+              <Button variant="danger" type="button" onClick={() => close()}>
+                Sulje
+              </Button>
               <Button variant="primary" type="button" onClick={() => handleSave(idNumber)}>
                 Tallenna
               </Button>

@@ -84,3 +84,15 @@ td {
   margin: 0 !important;
   padding: 0 !important;
 }
+
+.table-danger {
+  background-color: #db64574a;
+}
+
+.table-danger:hover {
+  background-color: #e31d074a;
+}
+
+table {
+  border-spacing: 0;
+}

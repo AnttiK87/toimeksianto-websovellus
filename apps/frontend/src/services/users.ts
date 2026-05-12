@@ -56,9 +56,15 @@ const updateInfo = async (content: UserInfoUpdateInput): Promise<UserUpdateRespo
   return response.data;
 };
 
+const getSalesUsers = async () => {
+  const response = await axios.get(`${baseUrl}/sales`);
+  return response.data;
+};
+
 export default {
   getAll,
   getUserById,
   changePassword,
   updateInfo,
+  getSalesUsers,
 };

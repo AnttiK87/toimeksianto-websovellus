@@ -291,4 +291,33 @@ export const editRepairs = (id: number, patch: RepairPatch[]) => {
   };
 };
 
+export const editLocation = (id: number, patch: RepairPatch[]) => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await assignmentService.editLocation(id, patch);
+      if (response.data) {
+        //console.log(response.data);
+        dispatch(updateAssignment(response.data));
+        dispatch(setAssignment(response.data));
+        dispatch(
+          showMessage(
+            {
+              text: response.message,
+              type: 'success',
+            },
+            1,
+          ),
+        );
+      }
+      dispatch(setLoading(false));
+    } catch (err: unknown) {
+      const error = err as AxiosError;
+      dispatch(setError(error.message));
+      dispatch(setLoading(false));
+      handleError(error, dispatch);
+    }
+  };
+};
+
 export default assignmentSlice.reducer;

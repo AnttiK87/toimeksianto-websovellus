@@ -6,6 +6,7 @@ type AnimatedCheckboxProps = {
   onChange: (value: boolean) => void;
   size?: number;
   className?: string;
+  disabled?: boolean;
 };
 
 const AnimatedCheckbox: React.FC<AnimatedCheckboxProps> = ({
@@ -14,6 +15,7 @@ const AnimatedCheckbox: React.FC<AnimatedCheckboxProps> = ({
   onChange,
   size = 20,
   className = '',
+  disabled,
 }) => {
   return (
     <Form.Group className={`formGroup ${className}`}>
@@ -21,7 +23,12 @@ const AnimatedCheckbox: React.FC<AnimatedCheckboxProps> = ({
         className="checkbox-wrapper-19"
         style={{ '--checkbox-height': `${size}px` } as React.CSSProperties}
       >
-        <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} />
+        <input
+          type="checkbox"
+          disabled={disabled}
+          checked={checked}
+          onChange={(e) => onChange(e.target.checked)}
+        />
 
         <span className={`check-box ${checked ? 'checked' : ''}`} />
 

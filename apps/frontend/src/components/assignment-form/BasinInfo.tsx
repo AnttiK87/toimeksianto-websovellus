@@ -1,19 +1,21 @@
-import { salesMen, locations } from '../../utils/formOptions.js';
+import { locations } from '../../utils/formOptions.js';
 
 import DateField from '../uiComponents/DateField.js';
 import SelectField from '../uiComponents/SelectField.js';
 import TextField from '../uiComponents/TextField.js';
 import CheckboxField from '../uiComponents/CheckboxField.js';
 
-import type { UsedCarForm } from '../../../../../packages/shared/src/index.js';
+import type { UsedCarForm, User } from '../../../../../packages/shared/src/index.js';
 
 interface BasinInfoProps {
   formData: UsedCarForm;
   handleChange: (path: string, value: unknown) => void;
+  salesUsers: User[];
 }
 
-const BasinInfo: React.FC<BasinInfoProps> = ({ formData, handleChange }) => {
+const BasinInfo: React.FC<BasinInfoProps> = ({ formData, handleChange, salesUsers }) => {
   const today = new Date().toISOString().split('T')[0];
+
   return (
     <>
       <div className="same-row">
@@ -32,7 +34,10 @@ const BasinInfo: React.FC<BasinInfoProps> = ({ formData, handleChange }) => {
       <div className="same-row">
         <SelectField
           label="Myyjä"
-          options={salesMen}
+          options={salesUsers.map((u) => ({
+            id: u.id,
+            label: u.name,
+          }))}
           value={formData.salesMan}
           onChange={(v) => handleChange('salesMan', v)}
         />

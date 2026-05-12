@@ -134,4 +134,18 @@ router.delete('/:id', tokenExtractor, userFinder, async (req: Request, res: Resp
     .end();
 });
 
+// GET /api/users
+//route for getting users with role Myyjä
+router.get('/sales', async (_req, res) => {
+  const users = await User.findAll({
+    where: {
+      role: 'Myyjä',
+    },
+    attributes: ['id', 'name', 'email'],
+    order: [['name', 'ASC']],
+  });
+
+  res.json(users);
+});
+
 export default router;

@@ -12,6 +12,8 @@ interface TableRowProps {
   editAssignment: (assignment: UsedCarForm) => void;
   deleteAssignment: (assignment: UsedCarForm) => void;
   editRepair: (id: number | undefined) => void;
+  openLocationEdit: (assignment: UsedCarForm) => void;
+  showInfo: (id: number | undefined) => void;
 }
 
 const TableRow: React.FC<TableRowProps> = ({
@@ -20,6 +22,8 @@ const TableRow: React.FC<TableRowProps> = ({
   editAssignment,
   editRepair,
   deleteAssignment,
+  openLocationEdit,
+  showInfo,
 }) => {
   const repairs = collectRepairs(assignment);
   const stats = getRepairStats(repairs);
@@ -52,10 +56,16 @@ const TableRow: React.FC<TableRowProps> = ({
   ].filter(Boolean);
 
   return (
-    <tr key={index}>
-      <td>{assignment.regNum}</td>
+    <tr className={assignment.sold ? 'table-danger' : 'table-normal'} key={index}>
+      <td
+        className="centerItem"
+        onClick={() => showInfo(assignment.id)}
+        style={{ cursor: 'pointer' }}
+      >
+        {assignment.regNum}
+      </td>
       <td>{assignment.car.makeAndModel}</td>
-      <td onClick={() => editLocation(assignment.id)} style={{ cursor: 'pointer' }}>
+      <td onClick={() => openLocationEdit(assignment)} style={{ cursor: 'pointer' }}>
         {locations.find((l) => l.id === assignment.location)?.label ?? '-'}
       </td>
       <td className="centerItem">

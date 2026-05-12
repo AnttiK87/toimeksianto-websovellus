@@ -13,6 +13,7 @@ import {
   setSavedAssignment,
   fetchPaintAssignment,
 } from '../../reducers/assignmentReducer.js';
+import { fetchSalesUsers } from '../../reducers/usersReducer.js';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../reducers/store.js';
 import assignmentService from '../../services/assignment.js';
@@ -44,6 +45,8 @@ interface UsedCarAssignmentProps {
 const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit, setEdit }) => {
   console.log(assignment, edit, setEdit);
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
   const [formData, setFormData] = useState<UsedCarForm>(initialUsedCarForm);
   const [patches, setPatches] = useState<editPatch[]>([]);
 
@@ -62,7 +65,11 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
   const savedAssignment = useAppSelector((state) => state.assignment.savedAssignment);
   const paintAssignment = useAppSelector((state) => state.assignment.paintAssignment);
 
-  const isPersisted = !!savedAssignment?.id;
+  const salesUsers = useAppSelector((state) => state.users.salesUsers);
+
+  useEffect(() => {
+    dispatch(fetchSalesUsers());
+  }, [dispatch]);
 
   useEffect(() => {
     if (edit && assignment) {
@@ -86,8 +93,6 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
       setFormData(initialUsedCarForm);
     }
   };
-
-  const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -176,7 +181,7 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
       </div>
       <div>
         <VehiclePdfUpload formData={formData} setFormData={setFormData} />
-        <BasinInfo formData={formData} handleChange={handleChange} />
+        <BasinInfo formData={formData} handleChange={handleChange} salesUsers={salesUsers} />
         <ElectricCar formData={formData} handleChange={handleChange} setFormData={setFormData} />
         <Tyres formData={formData} handleChange={handleChange} setFormData={setFormData} />
         <Service formData={formData} handleChange={handleChange} setFormData={setFormData} />

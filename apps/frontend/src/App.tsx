@@ -4,6 +4,7 @@ import AssignmentList from './components/assignment-list/AssignmentList';
 import Navbar from './components/navbar/Navbar';
 import Notification from './components/uiComponents/Notification';
 import HandleRepairs from './components/handling-repairs/HandleRepairs';
+import VehicleInfo from './components/vehicle-info/VehicleInfo';
 
 import { Routes, Route, useLocation } from 'react-router-dom';
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/toimeksianto-lomake" element={<UsedCarAssignment />} />
         <Route path="/toimeksiannot" element={<AssignmentList />} />
         <Route path="/toimeksiannot/:index" element={<HandleRepairs />} />
+        <Route path="/ajoneuvon-tiedot/:index" element={<VehicleInfo />} />
       </Routes>
     </>
   );

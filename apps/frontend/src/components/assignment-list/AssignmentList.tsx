@@ -18,6 +18,7 @@ import type { UsedCarForm } from '../../../../../packages/shared/src/index.js';
 import { useNavigate } from 'react-router-dom';
 
 import TableRow from './TableRow.js';
+import QuickLocationEdit from '../location-edit/QuickLocationEdit.js';
 
 import './AssignmentList.css';
 
@@ -39,6 +40,20 @@ const AssignmentList = () => {
   const [edit, setEdit] = useState(false);
   const [selected, setSelected] = useState<UsedCarForm>(initialUsedCarForm);
   const [search, setSearch] = useState('');
+
+  const [locationEdit, setLocationEdit] = useState<null | UsedCarForm>(null);
+  const [show, setShow] = useState(false);
+
+  const openLocationEdit = (assignment: UsedCarForm) => {
+    console.log('kutsutaan');
+    setLocationEdit(assignment);
+    setShow(true);
+  };
+
+  const closeLocationEdit = () => {
+    setLocationEdit(null);
+    setShow(false);
+  };
 
   const allAssignments = useAppSelector((state) => state.assignment.allAssignments);
 
@@ -70,6 +85,10 @@ const AssignmentList = () => {
 
   const editRepairs = (id: number | undefined) => {
     navigate(`/toimeksiannot/${id}`);
+  };
+
+  const showInfo = (id: number | undefined) => {
+    navigate(`/ajoneuvon-tiedot/${id}`);
   };
 
   if (edit) {
@@ -148,6 +167,8 @@ const AssignmentList = () => {
                       editAssignment={editAssignment}
                       editRepair={editRepairs}
                       deleteAssignment={deleteAssignment}
+                      openLocationEdit={openLocationEdit}
+                      showInfo={showInfo}
                     />
                   </>
                 ))}
@@ -155,6 +176,13 @@ const AssignmentList = () => {
           </Table>
         </Card.Body>
       </Card>
+      {locationEdit && (
+        <QuickLocationEdit
+          show={show}
+          currentAssignment={locationEdit}
+          closeLocationEdit={closeLocationEdit}
+        />
+      )}
     </div>
   );
 };
