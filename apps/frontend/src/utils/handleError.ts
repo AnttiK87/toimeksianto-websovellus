@@ -1,8 +1,8 @@
 import { isAxiosError } from 'axios';
-import { showMessage } from '../reducers/messageReducer';
-import { clearUser } from '../reducers/userReducer';
+import { showMessage } from '../reducers/messageReducer.js';
+import { clearUser } from '../reducers/userReducer.js';
 
-import type { AppDispatch } from '../reducers/store';
+import type { AppDispatch } from '../reducers/store.js';
 import type { NavigateFunction } from 'react-router-dom';
 
 export const handleError = (

@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import CheckboxPaint from '../uiComponents/CheckboxPaint.js';
 import TextAreaField from '../uiComponents/TextAreaField.js';
 

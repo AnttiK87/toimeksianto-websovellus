@@ -2,7 +2,14 @@ import { locations } from '../../utils/formOptions.js';
 import { collectRepairs, getRepairStats, groupRepairsByCategory } from '../../utils/repairs.js';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWrench, faCar, faCircleDot, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faWrench,
+  faCar,
+  faCircleDot,
+  faPen,
+  faTrash,
+  faMoneyBillWave,
+} from '@fortawesome/free-solid-svg-icons';
 
 import type { UsedCarForm, StatsGeneral } from '../../../../../packages/shared/src/index.js';
 
@@ -62,6 +69,9 @@ const TableRow: React.FC<TableRowProps> = ({
         onClick={() => showInfo(assignment.id)}
         style={{ cursor: 'pointer' }}
       >
+        {assignment.sold && (
+          <FontAwesomeIcon icon={faMoneyBillWave} style={{ marginRight: 5, color: 'green' }} />
+        )}
         {assignment.regNum}
       </td>
       <td>{assignment.car.makeAndModel}</td>

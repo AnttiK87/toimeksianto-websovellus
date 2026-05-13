@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import type { AppDispatch } from "./store";
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import type { AppDispatch } from './store.js';
 
 interface Message {
   text: string;
-  type: "success" | "error";
+  type: 'success' | 'error';
 }
 
 type MessageState = Message | null;
@@ -12,7 +12,7 @@ type MessageState = Message | null;
 const initialState: MessageState = null;
 
 const messageSlice = createSlice({
-  name: "message",
+  name: 'message',
   initialState: initialState as MessageState,
   reducers: {
     setMessage(_state, action: PayloadAction<Message | null>) {

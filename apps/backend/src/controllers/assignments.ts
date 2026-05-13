@@ -126,6 +126,8 @@ router.patch(
     const id = Number(req.params.id);
     const patches = req.body;
 
+    console.log(patches);
+
     const assignment = await UsedCarAssignment.findByPk(id);
     if (!assignment) throw new AppError('Assignment not found', 404);
 
@@ -134,7 +136,7 @@ router.patch(
     }
 
     const updatedAssignment = await assignment.save();
-    //console.log(updatedAssignment);
+    console.log(updatedAssignment.tyres.newTyres);
     res
       .status(200)
       .json({ data: updatedAssignment, message: 'Toimeksianto päivitetty onnistuneesti' });

@@ -1,10 +1,10 @@
-import LoginForm from './components/login/LoginForm';
-import UsedCarAssignment from './components/assignment-form/UsedCarAssignment';
-import AssignmentList from './components/assignment-list/AssignmentList';
-import Navbar from './components/navbar/Navbar';
-import Notification from './components/uiComponents/Notification';
-import HandleRepairs from './components/handling-repairs/HandleRepairs';
-import VehicleInfo from './components/vehicle-info/VehicleInfo';
+import LoginForm from './components/login/LoginForm.js';
+import UsedCarAssignment from './components/assignment-form/UsedCarAssignment.js';
+import AssignmentList from './components/assignment-list/AssignmentList.js';
+import Navbar from './components/navbar/Navbar.js';
+import Notification from './components/uiComponents/Notification.js';
+import HandleRepairs from './components/handling-repairs/HandleRepairs.js';
+import VehicleInfo from './components/vehicle-info/VehicleInfo.js';
 
 import { Routes, Route, useLocation } from 'react-router-dom';
 

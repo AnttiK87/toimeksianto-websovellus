@@ -1,10 +1,9 @@
-import { useEffect } from 'react';
-
 import { tyreTypes, winterTyreTypes, useTyres, ordered } from '../../utils/formOptions.js';
 
 import SelectField from '../uiComponents/SelectField.js';
 import TextField from '../uiComponents/TextField.js';
 import CheckboxField from '../uiComponents/CheckboxField.js';
+import DateField from '../uiComponents/DateField.js';
 
 import {
   resetTyres,
@@ -13,7 +12,7 @@ import {
   resetOrder,
   resetOrder2,
   resetBalancing,
-} from './formResetters';
+} from './formResetters.js';
 import { useUpdateEffect } from '../../hooks/useUpdateEffect.js';
 
 import type { UsedCarForm } from '../../../../../packages/shared/src/index.js';
@@ -49,6 +48,9 @@ const Tyres: React.FC<TyresProps> = ({ formData, handleChange, setFormData }) =>
     if (formData.tyres.balancingNeeded.balancingNeeded === false)
       setFormData((prev) => resetBalancing(prev));
   }, [formData.tyres.balancingNeeded.balancingNeeded]);
+
+  console.log(ordered);
+  console.log(formData.tyres.newTyres.ordered);
 
   return (
     <>
@@ -136,12 +138,19 @@ const Tyres: React.FC<TyresProps> = ({ formData, handleChange, setFormData }) =>
               onChange={(v) => handleChange('tyres.newTyres.usedState', v)}
             />
             {formData.tyres.newTyres.usedState === 0 && (
-              <SelectField
-                label="Renkaat on"
-                options={ordered}
-                value={formData.tyres.newTyres.ordered}
-                onChange={(v) => handleChange('tyres.newTyres.ordered', v)}
-              />
+              <>
+                <SelectField
+                  label="Renkaat on"
+                  options={ordered}
+                  value={formData.tyres.newTyres.ordered}
+                  onChange={(v) => handleChange('tyres.newTyres.ordered', v)}
+                />
+                <DateField
+                  label="Tilauspvm"
+                  value={formData.tyres.newTyres.orderDate}
+                  onChange={(v) => handleChange('tyres.newTyres.orderDate', v)}
+                />
+              </>
             )}
           </div>
           <div className="same-row">
@@ -182,12 +191,19 @@ const Tyres: React.FC<TyresProps> = ({ formData, handleChange, setFormData }) =>
                   onChange={(v) => handleChange('tyres.newTyres.usedState2', v)}
                 />
                 {formData.tyres.newTyres.usedState2 === 0 && (
-                  <SelectField
-                    label="Renkaat on"
-                    options={ordered}
-                    value={formData.tyres.newTyres.ordered2}
-                    onChange={(v) => handleChange('tyres.newTyres.ordered2', v)}
-                  />
+                  <>
+                    <SelectField
+                      label="Renkaat on"
+                      options={ordered}
+                      value={formData.tyres.newTyres.ordered2}
+                      onChange={(v) => handleChange('tyres.newTyres.ordered2', v)}
+                    />
+                    <DateField
+                      label="Tilauspvm"
+                      value={formData.tyres.newTyres.orderDate2}
+                      onChange={(v) => handleChange('tyres.newTyres.orderDate2', v)}
+                    />
+                  </>
                 )}
               </div>
               <div className="same-row">

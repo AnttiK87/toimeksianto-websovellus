@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Card from 'react-bootstrap/Card';
+import { Card } from 'react-bootstrap';
 
 import { locations } from '../../utils/formOptions.js';
 

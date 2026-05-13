@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import userService from '../services/users.js';
-import { AppDispatch } from './store';
+import { AppDispatch } from './store.js';
 
 const usersSlice = createSlice({
   name: 'users',

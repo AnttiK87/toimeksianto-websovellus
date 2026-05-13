@@ -97,3 +97,35 @@
 .bold {
   font-weight: bold;
 }
+
+.tyre-title {
+  text-decoration: underline;
+}
+
+.additional-info {
+  margin-bottom: 1em !important;
+}
+
+.border-info {
+  border-bottom: #000 2px solid;
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+}
+
+.info-icon {
+  position: relative;
+  top: 2px;
+  font-size: 1.3em;
+  margin-right: 0.3em;
+  color: green;
+}
+
+.info-text-repair {
+  margin-left: 1em;
+}
+
+.info-label-repair {
+  font-size: 1em;
+  font-weight: bolder;
+  margin-left: 1em;
+}

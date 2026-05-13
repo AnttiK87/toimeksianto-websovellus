@@ -8,7 +8,7 @@ import TextField from '../uiComponents/TextField.js';
 import CheckboxField from '../uiComponents/CheckboxField.js';
 import OtherRepairsList from './OtherRepairsList.js';
 
-import { resetHeater, resetAc, resetBulbChange } from './formResetters';
+import { resetHeater, resetAc, resetBulbChange } from './formResetters.js';
 import { useUpdateEffect } from '../../hooks/useUpdateEffect.js';
 
 import type { UsedCarForm } from '../../../../../packages/shared/src/index.js';

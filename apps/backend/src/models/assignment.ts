@@ -1,6 +1,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../utils/db.js';
-import type { UsedCarForm } from '../../../../packages/shared/src/index.js';
+import type { UsedCarForm } from '@assignment/shared/index.js';
 
 type UsedCarFormDB = Omit<UsedCarForm, 'id'> & {
   id: number;
@@ -39,6 +39,7 @@ class UsedCarAssignment
   declare windshield: UsedCarForm['windshield'];
   declare damage: UsedCarForm['damage'];
   declare bodyWarranty: UsedCarForm['bodyWarranty'];
+  declare additionalInfo: UsedCarForm['additionalInfo'];
 
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
@@ -130,6 +131,10 @@ UsedCarAssignment.init(
     bodyWarranty: {
       type: DataTypes.JSON,
       allowNull: false,
+    },
+    additionalInfo: {
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
   },
   {

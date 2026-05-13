@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import Table from 'react-bootstrap/Table';
+import { Table } from 'react-bootstrap';
 
 import DateField from '../uiComponents/DateField.js';
 import TextField from '../uiComponents/TextField.js';
@@ -16,9 +16,15 @@ interface RepairsTableProps {
   repairs: CategorizedRepair[];
   localRepairs: RepairPatch[];
   setLocalRepairs: React.Dispatch<React.SetStateAction<RepairPatch[]>>;
+  openRepairModal: (repair: CategorizedRepair) => void;
 }
 
-const RepairsTable: React.FC<RepairsTableProps> = ({ repairs, localRepairs, setLocalRepairs }) => {
+const RepairsTable: React.FC<RepairsTableProps> = ({
+  repairs,
+  localRepairs,
+  setLocalRepairs,
+  openRepairModal,
+}) => {
   //console.log(repairs);
   const getRepairValue = (
     item: CategorizedRepair,
@@ -61,7 +67,11 @@ const RepairsTable: React.FC<RepairsTableProps> = ({ repairs, localRepairs, setL
       <tbody>
         {repairs.map((item, index) => (
           <tr className="tr-repair" key={index}>
-            <td className="repair">
+            <td
+              className="repair"
+              onClick={() => openRepairModal(item)}
+              style={{ cursor: 'pointer' }}
+            >
               <b>{item.name}</b>
             </td>
             <td>

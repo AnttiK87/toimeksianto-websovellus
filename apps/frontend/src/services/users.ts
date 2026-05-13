@@ -1,5 +1,5 @@
 import axios from 'axios';
-import loginService from './login';
+import loginService from './login.js';
 import type {
   User,
   PasswordChangeInput,

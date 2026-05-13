@@ -28,7 +28,8 @@ import Service from './Service.js';
 import Tyres from './Tyres.js';
 import OtherService from './OtherService.js';
 import BodyWork from './BodyWork.js';
-import PaintAssignment from '../assignment-paint/PaintAssignment';
+import AdditionalInfo from './AdditionalInfo.js';
+import PaintAssignment from '../assignment-paint/PaintAssignment.js';
 
 import Button from '../uiComponents/Button.js';
 
@@ -187,6 +188,7 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
         <Service formData={formData} handleChange={handleChange} setFormData={setFormData} />
         <OtherService formData={formData} handleChange={handleChange} setFormData={setFormData} />
         <BodyWork formData={formData} handleChange={handleChange} setFormData={setFormData} />
+        <AdditionalInfo formData={formData} handleChange={handleChange} />
         <div className="form-section-title buttons">
           {!edit && (
             <Button variant="danger" type="button" onClick={resetForm}>

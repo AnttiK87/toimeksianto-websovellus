@@ -6,7 +6,7 @@ import type {
   BasicResponse,
   RepairPatch,
   editPatch,
-} from '../../../../packages/shared/src/index';
+} from '../../../../packages/shared/src/index.js';
 
 const baseUrl = '/api/assignments';
 
@@ -41,7 +41,9 @@ const getPaintAssignmentById = async (assignmentId: number): Promise<PaintForm> 
 };
 
 const newPaintAssignment = async (formData: PaintForm): Promise<BasicResponse> => {
+  console.log('lähtevä posti:', formData);
   const response = await axios.post<BasicResponse>(`${baseUrl}/paint`, formData);
+  console.log('paluu posti:', response);
   return response.data;
 };
 

@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react';
-import Table from 'react-bootstrap/Table';
-import Card from 'react-bootstrap/Card';
-import Spinner from 'react-bootstrap/Spinner';
+import { useEffect, useState, useMemo } from 'react';
+import { Table, Card, Spinner } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
-import UsedCarAssignment from '../assignment-form/UsedCarAssignment';
+import UsedCarAssignment from '../assignment-form/UsedCarAssignment.js';
 import { initialUsedCarForm } from '../assignment-form/initialUsedCarForm.js';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux.js';
@@ -91,15 +89,19 @@ const AssignmentList = () => {
     navigate(`/ajoneuvon-tiedot/${id}`);
   };
 
+  const filteredAssignments = useMemo(() => {
+    const query = search.toLowerCase();
+
+    return [...allAssignments]
+      .filter((a: UsedCarForm) => {
+        return a.regNum?.toLowerCase().startsWith(query) || a.vin?.toLowerCase().startsWith(query);
+      })
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }, [allAssignments, search]);
+
   if (edit) {
     return <UsedCarAssignment assignment={selected} edit={edit} setEdit={setEdit} />;
   }
-
-  const filteredAssignments = allAssignments.filter((a) => {
-    const query = search.toLowerCase();
-
-    return a.regNum?.toLowerCase().includes(query) || a.vin?.toLowerCase().includes(query);
-  });
 
   return (
     <div className="assignment-container">
@@ -113,7 +115,7 @@ const AssignmentList = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 type="text"
-                placeholder="Search"
+                placeholder="Haku rek.nro tai VIN..."
               />
               <FontAwesomeIcon icon={faMagnifyingGlass} />
             </div>

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import assignmentService from '../services/assignment.js';
 import { showMessage } from './messageReducer.js';
 import { handleError } from '../utils/handleError.js';
-import type { AppDispatch } from './store';
+import type { AppDispatch } from './store.js';
 import type { AxiosError } from 'axios';
 import { initialUsedCarForm } from '../components/assignment-form/initialUsedCarForm.js';
 import { initialPaintForm } from '../components/assignment-paint/initialPaintForm.js';
@@ -12,7 +12,7 @@ import type {
   PaintForm,
   RepairPatch,
   editPatch,
-} from '../../../../packages/shared/src/index';
+} from '../../../../packages/shared/src/index.js';
 
 interface AssignmentState {
   allAssignments: UsedCarForm[];
@@ -148,7 +148,7 @@ export const submitAssignment = (formData: UsedCarForm) => {
             text: 'Toimeksianto tallennettu onnistuneesti!',
             type: 'success',
           },
-          3,
+          1,
         ),
       );
       dispatch(setLoading(false));
@@ -182,7 +182,7 @@ export const editAssignment = (id: number, patch: editPatch[]) => {
               text: 'Toimeksianto päivitetty onnistuneesti!',
               type: 'success',
             },
-            3,
+            1,
           ),
         );
       }
@@ -234,7 +234,7 @@ export const submitPaintAssignment = (formData: PaintForm) => {
             text: 'Maalauslomake tallennettu!',
             type: 'success',
           },
-          3,
+          1,
         ),
       );
       dispatch(setLoading(false));
@@ -251,6 +251,7 @@ export const updatePaintAssignment = (formData: PaintForm) => {
   return async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     try {
+      console.log('lähtö reducer:', formData);
       await assignmentService.updatePaint(formData);
       dispatch(
         showMessage(
@@ -258,7 +259,7 @@ export const updatePaintAssignment = (formData: PaintForm) => {
             text: 'Maalauslomake päivitetty!',
             type: 'success',
           },
-          3,
+          1,
         ),
       );
       dispatch(setLoading(false));
@@ -280,6 +281,15 @@ export const editRepairs = (id: number, patch: RepairPatch[]) => {
         //console.log(response.data);
         dispatch(updateAssignment(response.data));
         dispatch(setAssignment(response.data));
+        dispatch(
+          showMessage(
+            {
+              text: 'Tallennus onnistui',
+              type: 'success',
+            },
+            1,
+          ),
+        );
       }
       dispatch(setLoading(false));
     } catch (err: unknown) {

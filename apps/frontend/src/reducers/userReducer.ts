@@ -4,7 +4,7 @@ import loginService from '../services/login.js';
 import { showMessage } from './messageReducer.js';
 import { handleError } from '../utils/handleError.js';
 
-import type { AppDispatch } from './store';
+import type { AppDispatch } from './store.js';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { AxiosError } from 'axios';
 

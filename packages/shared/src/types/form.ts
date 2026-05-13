@@ -71,12 +71,14 @@ export interface UsedCarForm {
       storage: string;
       usedTyre: string;
       ordered: number | null;
+      orderDate: string;
       tyreSize3: string;
       tyreSize4: string;
       usedState2: number | null;
       storage2: string;
       usedTyre2: string;
       ordered2: number | null;
+      orderDate2: string;
       repair: Repair | null;
     };
   };
@@ -160,6 +162,8 @@ export interface UsedCarForm {
     repair: Repair | null;
     painter: number | null;
   };
+
+  additionalInfo: string;
 }
 
 export interface Repair {

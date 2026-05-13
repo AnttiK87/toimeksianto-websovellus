@@ -1,4 +1,4 @@
-import Form from 'react-bootstrap/Form';
+import { Form } from 'react-bootstrap';
 
 type TextAreaFieldProps = {
   label: string;
@@ -7,6 +7,7 @@ type TextAreaFieldProps = {
   rows?: number;
   placeholder?: string;
   custom?: string;
+  customLabel?: string;
   customGroup?: string;
 };
 
@@ -17,11 +18,12 @@ const TextAreaField: React.FC<TextAreaFieldProps> = ({
   rows = 3,
   placeholder,
   custom,
+  customLabel,
   customGroup,
 }) => {
   return (
     <Form.Group className={`formGroup text-area-group ${customGroup}`}>
-      <Form.Label>{label}: </Form.Label>
+      <Form.Label className={customLabel}>{label}: </Form.Label>
       <Form.Control
         className={custom}
         as="textarea"

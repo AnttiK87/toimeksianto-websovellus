@@ -22,7 +22,7 @@ import {
   resetDamageOtherInsurance,
   resetBodyWarranty,
   resetBodyWarrantyPainter,
-} from './formResetters';
+} from './formResetters.js';
 
 import { useUpdateEffect } from '../../hooks/useUpdateEffect.js';
 

@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+import { Button } from 'react-bootstrap';
 
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '../../reducers/store.js';

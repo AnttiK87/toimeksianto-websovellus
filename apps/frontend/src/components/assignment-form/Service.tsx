@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { serviceTypes, serviceOptions, engineTimingTypes } from '../../utils/formOptions.js';
 
 import DateField from '../uiComponents/DateField.js';
@@ -7,7 +5,7 @@ import SelectField from '../uiComponents/SelectField.js';
 import TextField from '../uiComponents/TextField.js';
 import CheckboxField from '../uiComponents/CheckboxField.js';
 
-import { resetService, resetServiceSelected, resetTiming } from './formResetters';
+import { resetService, resetServiceSelected, resetTiming } from './formResetters.js';
 import { useUpdateEffect } from '../../hooks/useUpdateEffect.js';
 
 import type { UsedCarForm } from '../../../../../packages/shared/src/index.js';
@@ -88,7 +86,13 @@ const Service: React.FC<ServiceProps> = ({ formData, handleChange, setFormData }
                   key={service}
                   label={service}
                   checked={formData.service.selected.includes(service)}
-                  onChange={(v) => handleChange('service.selected.includes(service)', v)}
+                  onChange={(checked) => {
+                    const nextSelected = checked
+                      ? [...formData.service.selected, service]
+                      : formData.service.selected.filter((s) => s !== service);
+
+                    handleChange('service.selected', nextSelected);
+                  }}
                 />
               ))}
             </div>

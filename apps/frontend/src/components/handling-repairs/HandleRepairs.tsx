@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Card from 'react-bootstrap/Card';
+import { Card } from 'react-bootstrap';
 import { locations } from '../../utils/formOptions.js';
 
 import { useDispatch } from 'react-redux';
@@ -12,16 +12,24 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../../reducers/store.js';
 
 import RepairsTable from './RepairsTable.js';
+import RepairInfoModal from './RepairInfoModal.js';
 import Button from '../uiComponents/Button.js';
+import TextAreaField from '../uiComponents/TextAreaField.js';
 import SelectField from '../uiComponents/SelectField.js';
 
 import { useParams } from 'react-router-dom';
 import { collectRepairs, groupRepairsByCategory, getRepairStats } from '../../utils/repairs.js';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWrench, faCar, faCircleDot, faX } from '@fortawesome/free-solid-svg-icons';
+import { faWrench, faCar, faCircleDot, faX, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-import type { StatsGeneral, RepairPatch, User } from '../../../../../packages/shared/src/index.js';
+import type {
+  StatsGeneral,
+  RepairPatch,
+  User,
+  UsedCarForm,
+  CategorizedRepair,
+} from '../../../../../packages/shared/src/index.js';
 
 import './HandleRepairs.css';
 
@@ -48,7 +56,9 @@ const HandleRepairs = () => {
   const idNumber: number = id;
 
   const dispatch = useDispatch<AppDispatch>();
-  const savedAssignment = useAppSelector((state) => state.assignment.selectedAssignment);
+  const savedAssignment: UsedCarForm = useAppSelector(
+    (state) => state.assignment.selectedAssignment,
+  );
 
   useEffect(() => {
     dispatch(fetchAssignment(idNumber));
@@ -61,9 +71,11 @@ const HandleRepairs = () => {
   }, [dispatch]);
 
   const [location, setLocation] = useState(savedAssignment.location);
+  const [additionalInfo, setAdditionalInfo] = useState(savedAssignment.additionalInfo || '');
 
   useEffect(() => {
     setLocation(savedAssignment.location);
+    setAdditionalInfo(savedAssignment.additionalInfo || '');
   }, [savedAssignment]);
 
   const [repairs, setRepairs] = useState(collectRepairs(savedAssignment));
@@ -98,6 +110,20 @@ const HandleRepairs = () => {
     return new Intl.DateTimeFormat('fi-FI').format(date);
   };
 
+  const isInspectionSoon = (dateStr?: string | null) => {
+    if (!dateStr) return false;
+
+    const today = new Date();
+    const inspectionDate = new Date(dateStr);
+
+    if (isNaN(inspectionDate.getTime())) return false;
+
+    const diffMs = inspectionDate.getTime() - today.getTime();
+    const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+    return diffDays <= 30;
+  };
+
   const close = () => {
     if (localRepairs.length === 0) {
       navigate(`/toimeksiannot`);
@@ -119,6 +145,20 @@ const HandleRepairs = () => {
 
     await dispatch(editRepairs(formId, localRepairs));
     setLocalRepairs([]);
+  };
+
+  const [currentRepair, setCurrentRepair] = useState<null | CategorizedRepair>(null);
+  const [show, setShow] = useState(false);
+
+  const openRepairModal = (repair: CategorizedRepair) => {
+    console.log('kutsutaan');
+    setCurrentRepair(repair);
+    setShow(true);
+  };
+
+  const closeRepairModal = () => {
+    setCurrentRepair(null);
+    setShow(false);
   };
 
   return (
@@ -148,10 +188,22 @@ const HandleRepairs = () => {
                 <p className="noMargin">
                   {savedAssignment.warranty.until
                     ? formatFiDate(savedAssignment.warranty.until) + ' asti'
-                    : 'Päättymispäivä ei ole merkattu'}
+                    : 'Päättymispäivää ei ole merkattu'}
                 </p>
               </>
             )}
+          </div>
+          <div className="same-row">
+            <p
+              className="noMargin"
+              style={{
+                color: isInspectionSoon(savedAssignment.inspection.date) ? 'red' : undefined,
+                fontWeight: isInspectionSoon(savedAssignment.inspection.date) ? 'bold' : undefined,
+              }}
+            >
+              <strong style={{ color: 'black' }}>Seuraava katsastus:</strong>{' '}
+              {formatFiDate(savedAssignment.inspection.date)}
+            </p>
           </div>
           {savedAssignment.sold && (
             <div className="same-row">
@@ -215,6 +267,7 @@ const HandleRepairs = () => {
                   repairs={grouped.general}
                   localRepairs={localRepairs}
                   setLocalRepairs={setLocalRepairs}
+                  openRepairModal={openRepairModal}
                 />
               </>
             )}
@@ -235,6 +288,7 @@ const HandleRepairs = () => {
                   repairs={grouped.tyres}
                   localRepairs={localRepairs}
                   setLocalRepairs={setLocalRepairs}
+                  openRepairModal={openRepairModal}
                 />
               </>
             )}
@@ -255,10 +309,39 @@ const HandleRepairs = () => {
                   repairs={grouped.body}
                   localRepairs={localRepairs}
                   setLocalRepairs={setLocalRepairs}
+                  openRepairModal={openRepairModal}
                 />
               </>
             )}
+            <div className="border-info">
+              <h3 className="additional-info">
+                {' '}
+                <FontAwesomeIcon className="info-icon" icon={faInfoCircle} />
+                Lisätietoja:
+              </h3>
+              <TextAreaField
+                label="Muita tietoa ajoneuvosta tai korjauksista"
+                value={additionalInfo}
+                onChange={(v) => {
+                  setAdditionalInfo(v);
+                  setLocalRepairs((prev) => {
+                    const filtered = prev.filter((p) => p.path !== 'additionalInfo');
 
+                    return [
+                      ...filtered,
+                      {
+                        path: 'additionalInfo',
+                        value: v,
+                      },
+                    ];
+                  });
+                }}
+                rows={10}
+                custom="text-area info-text info-text-repair"
+                customLabel="info-label-repair"
+                customGroup="paint-description-top"
+              />
+            </div>
             <div className="save-button buttons">
               <Button variant="danger" type="button" onClick={() => close()}>
                 Sulje
@@ -270,6 +353,14 @@ const HandleRepairs = () => {
           </div>
         </Card.Body>
       </Card>
+      {show && (
+        <RepairInfoModal
+          show={show}
+          currentRepair={currentRepair}
+          closeModal={closeRepairModal}
+          currentAssignment={savedAssignment}
+        />
+      )}
     </div>
   );
 };

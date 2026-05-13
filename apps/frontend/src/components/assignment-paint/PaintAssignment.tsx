@@ -38,7 +38,6 @@ const PaintAssignment: React.FC<PaintAssignmentProps> = ({
   setEdit,
   setStep,
 }) => {
-  console.log('PaintAssignment propsit:', { assignmentId, regNro, edit, setEdit, setStep });
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
@@ -93,7 +92,6 @@ const PaintAssignment: React.FC<PaintAssignmentProps> = ({
   const handleReturn = (e?: React.SyntheticEvent) => {
     e?.preventDefault();
 
-    console.log(setEdit, setStep);
     if (!setStep) return;
 
     if (isChanged) {
@@ -132,8 +130,6 @@ const PaintAssignment: React.FC<PaintAssignmentProps> = ({
   const handleSubmitForm = async (e?: React.SyntheticEvent) => {
     e?.preventDefault();
 
-    console.log('tämä', formData);
-
     if (!isChanged) return;
 
     await dispatch(submitPaintAssignment(formData));
@@ -146,7 +142,8 @@ const PaintAssignment: React.FC<PaintAssignmentProps> = ({
     e?.preventDefault();
 
     if (!isChanged) return;
-    if (paintAssignment && !paintAssignment.id) {
+
+    if (paintAssignment && paintAssignment.id) {
       await dispatch(updatePaintAssignment(formData));
     }
 

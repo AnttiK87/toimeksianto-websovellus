@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../reducers/userReducer.js';
-import type { AppDispatch } from '../../reducers/store';
+import type { AppDispatch } from '../../reducers/store.js';
 
 import './Navbar.css';
 
