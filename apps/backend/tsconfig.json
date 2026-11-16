@@ -6,8 +6,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "types": ["node"],
-    "ignoreDeprecations": "5.0",
-    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "paths": {
       "@assignment/shared/*": ["../../packages/shared/src/*"]
     }
