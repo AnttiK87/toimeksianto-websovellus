@@ -5,6 +5,7 @@ import Navbar from './components/navbar/Navbar.js';
 import Notification from './components/uiComponents/Notification.js';
 import HandleRepairs from './components/handling-repairs/HandleRepairs.js';
 import VehicleInfo from './components/vehicle-info/VehicleInfo.js';
+import PaintAssignment from './components/assignment-paint/PaintAssignment.js';
 
 import { Routes, Route, useLocation } from 'react-router-dom';
 
@@ -25,6 +26,7 @@ function App() {
         <Route path="/toimeksiannot" element={<AssignmentList />} />
         <Route path="/toimeksiannot/:index" element={<HandleRepairs />} />
         <Route path="/ajoneuvon-tiedot/:index" element={<VehicleInfo />} />
+        <Route path="/toimeksiannot/maalaus/:id" element={<PaintAssignment />} />
       </Routes>
     </>
   );

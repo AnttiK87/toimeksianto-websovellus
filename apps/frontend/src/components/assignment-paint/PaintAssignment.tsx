@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAppSelector } from '../../hooks/useRedux.js';
 import { useDispatch } from 'react-redux';
@@ -24,11 +24,11 @@ import Button from '../uiComponents/Button.js';
 import './PaintAssignment.css';
 
 interface PaintAssignmentProps {
-  regNro: string;
-  assignmentId: number;
+  regNro?: string;
+  assignmentId?: number;
   edit?: boolean;
   setEdit?: React.Dispatch<React.SetStateAction<boolean>>;
-  setStep: React.Dispatch<React.SetStateAction<Step>>;
+  setStep?: React.Dispatch<React.SetStateAction<Step>>;
 }
 
 const PaintAssignment: React.FC<PaintAssignmentProps> = ({
@@ -43,12 +43,16 @@ const PaintAssignment: React.FC<PaintAssignmentProps> = ({
 
   const paintAssignment = useAppSelector((state) => state.assignment.paintAssignment);
 
+  const { id: routeId } = useParams<{ id: string }>();
+
+  const currentAssignmentId = assignmentId ?? (Number(routeId) || 0);
+  const currentRegNro = regNro || '';
+
   const [formData, setFormData] = useState<PaintForm>({
     ...initialPaintForm,
-    regNum: regNro,
-    assignmentId,
+    regNum: currentRegNro,
+    assignmentId: currentAssignmentId,
   });
-
   const [originalData, setOriginalData] = useState<PaintForm>(formData);
 
   /**
@@ -57,10 +61,34 @@ const PaintAssignment: React.FC<PaintAssignmentProps> = ({
    * --------------------------------------------------
    */
   useEffect(() => {
-    if (edit && assignmentId) {
-      dispatch(fetchPaintAssignment(assignmentId));
+    if (currentAssignmentId > 0) {
+      dispatch(fetchPaintAssignment(currentAssignmentId));
     }
-  }, [edit, assignmentId, dispatch]);
+  }, [currentAssignmentId, dispatch]);
+
+  useEffect(() => {
+    if (
+      currentAssignmentId > 0 &&
+      paintAssignment?.id &&
+      Number(paintAssignment.id) === currentAssignmentId
+    ) {
+      setFormData(paintAssignment);
+      setOriginalData(paintAssignment);
+    }
+  }, [paintAssignment, currentAssignmentId]);
+
+  useEffect(() => {
+    if (currentAssignmentId > 0 && paintAssignment?.assignmentId === currentAssignmentId) {
+      console.log('Päivitetään formData');
+
+      setFormData(paintAssignment);
+      setOriginalData(paintAssignment);
+    }
+  }, [paintAssignment, currentAssignmentId]);
+
+  console.log('URL ID:', routeId);
+  console.log('Current ID:', currentAssignmentId);
+  console.log('Redux paintAssignment:', paintAssignment);
 
   /**
    * --------------------------------------------------
@@ -92,8 +120,6 @@ const PaintAssignment: React.FC<PaintAssignmentProps> = ({
   const handleReturn = (e?: React.SyntheticEvent) => {
     e?.preventDefault();
 
-    if (!setStep) return;
-
     if (isChanged) {
       const confirmed = window.confirm(
         'Sinulla on tallentamattomia muutoksia. Haluatko varmasti poistua?',
@@ -102,7 +128,12 @@ const PaintAssignment: React.FC<PaintAssignmentProps> = ({
       if (!confirmed) return;
     }
 
-    setStep('form');
+    if (setStep) {
+      setStep('form');
+    } else {
+      navigate('/toimeksiannot');
+    }
+
     setFormData(initialPaintForm);
   };
 
@@ -117,8 +148,12 @@ const PaintAssignment: React.FC<PaintAssignmentProps> = ({
       if (!confirmed) return;
     }
 
-    navigate('/toimeksiannot');
-    setEdit?.(false);
+    if (edit) {
+      navigate('/toimeksiannot');
+      setEdit?.(false);
+    } else {
+      navigate(-1);
+    }
     setFormData(initialPaintForm);
   };
 
@@ -132,10 +167,16 @@ const PaintAssignment: React.FC<PaintAssignmentProps> = ({
 
     if (!isChanged) return;
 
-    await dispatch(submitPaintAssignment(formData));
-    // päivitetään baseline onnistuneen tallennuksen jälkeen
-    setOriginalData(formData);
-    navigate('/toimeksiannot');
+    try {
+      const savedData = await dispatch(submitPaintAssignment(formData));
+
+      if (savedData) {
+        setFormData(savedData);
+        setOriginalData(savedData);
+      }
+    } catch (error) {
+      console.error('Maalauslomakkeen tallennus epäonnistui:', error);
+    }
   };
 
   const handleEdit = async (e?: React.SyntheticEvent) => {
@@ -163,7 +204,7 @@ const PaintAssignment: React.FC<PaintAssignmentProps> = ({
         <form className="form-container paint" onSubmit={handleSubmitForm}>
           <div className="paint-headers">
             <h1 className="text-2xl font-bold">Maalauslomake</h1>
-            <h2>Rekisteritunnus: {regNro}</h2>
+            <h2>Rekisteritunnus: {regNro ? regNro : formData.regNum}</h2>
           </div>
 
           <div className="left-and-front">
@@ -182,7 +223,7 @@ const PaintAssignment: React.FC<PaintAssignmentProps> = ({
 
       <div className="no-print">
         <div className="form-section-title buttons">
-          {(!edit || !formData.id) && (
+          {!formData.id ? (
             <>
               <Button variant="danger" type="button" onClick={handleReturn}>
                 Peruuta
@@ -196,9 +237,7 @@ const PaintAssignment: React.FC<PaintAssignmentProps> = ({
                 Tallenna
               </Button>
             </>
-          )}
-
-          {edit && setEdit && formData.id && (
+          ) : (
             <>
               <Button variant="danger" type="button" onClick={handleClose}>
                 Sulje

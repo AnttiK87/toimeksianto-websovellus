@@ -226,8 +226,12 @@ export const removeAssignrment = (assignment: UsedCarForm) => {
 export const submitPaintAssignment = (formData: PaintForm) => {
   return async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
+
     try {
-      await assignmentService.newPaintAssignment(formData);
+      const response: PaintForm = await assignmentService.newPaintAssignment(formData);
+
+      dispatch(setPaintAssignment(response));
+
       dispatch(
         showMessage(
           {
@@ -237,12 +241,15 @@ export const submitPaintAssignment = (formData: PaintForm) => {
           1,
         ),
       );
-      dispatch(setLoading(false));
+
+      return response;
     } catch (err: unknown) {
       const error = err as AxiosError;
       dispatch(setError(error.message));
-      dispatch(setLoading(false));
       handleError(error, dispatch);
+      throw error;
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 };

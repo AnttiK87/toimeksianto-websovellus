@@ -40,10 +40,13 @@ const getPaintAssignmentById = async (assignmentId: number): Promise<PaintForm> 
   return response.data;
 };
 
-const newPaintAssignment = async (formData: PaintForm): Promise<BasicResponse> => {
+const newPaintAssignment = async (formData: PaintForm): Promise<PaintForm> => {
   console.log('lähtevä posti:', formData);
-  const response = await axios.post<BasicResponse>(`${baseUrl}/paint`, formData);
-  console.log('paluu posti:', response);
+
+  const response = await axios.post<PaintForm>(`${baseUrl}/paint`, formData);
+
+  console.log('paluu posti:', response.data);
+
   return response.data;
 };
 

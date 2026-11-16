@@ -90,9 +90,9 @@ router.post(
   asyncHandler(async (req: Request, res: Response) => {
     const formData = req.body;
 
-    await PaintAssignment.create(formData);
+    const savedAssignment = await PaintAssignment.create(formData);
 
-    res.status(201).json({ message: 'Maalaustoimeksianto lisätty' });
+    res.status(201).json(savedAssignment);
   }),
 );
 

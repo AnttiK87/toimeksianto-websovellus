@@ -118,15 +118,38 @@ const UsedCarAssignment: React.FC<UsedCarAssignmentProps> = ({ assignment, edit,
     if (!setEdit) return;
     if (!assignment.id) return;
 
-    const patches = createPatches(originalData, formData);
-    if (patches.length === 0) return;
+    // Varmistetaan maalauslomakkeen poistaminen ennen tallennusta
+    if (!paint && paintAssignment.id) {
+      const confirmed = window.confirm(
+        'Olemassa oleva maalauslomake poistetaan myös tallennetuista tiedoista. Haluatko varmasti jatkaa?',
+      );
 
-    console.log('lähetetään patchit', patches);
-    await dispatch(editAssignment(assignment.id, patches));
+      if (!confirmed && originalData) {
+        setFormData((prev) => ({
+          ...prev,
+          damage: originalData.damage,
+          bodyWarranty: originalData.bodyWarranty,
+        }));
+
+        return;
+      }
+    }
+
+    const patches = createPatches(originalData, formData);
+
+    if (patches.length === 0 && paint) return;
+
+    if (patches.length > 0) {
+      console.log('lähetetään patchit', patches);
+      await dispatch(editAssignment(assignment.id, patches));
+    }
+
     if (!paint && paintAssignment.id) {
       await assignmentService.deletePaintAssignment(assignment.id);
     }
+
     setPatches([]);
+
     if (!paint) {
       setEdit(false);
     } else if (paint && !paintAssignment.id) {

@@ -8,7 +8,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch } from '../../reducers/store.js';
 import type { RootState } from '../../reducers/store.js';
 
-import { fetchAssignment, editRepairs } from '../../reducers/assignmentReducer.js';
+import {
+  fetchAssignment,
+  editRepairs,
+  fetchPaintAssignment,
+} from '../../reducers/assignmentReducer.js';
 
 import { fetchSalesUsers } from '../../reducers/usersReducer.js';
 
@@ -35,6 +39,7 @@ const VehicleInfo = () => {
   const user = useSelector((state: RootState) => state.user);
 
   const savedAssignment = useSelector((state: RootState) => state.assignment.selectedAssignment);
+  const paintAssignment = useSelector((state: RootState) => state.assignment.paintAssignment);
 
   const salesUsers: User[] = useSelector((state: RootState) => state.users.salesUsers);
 
@@ -55,6 +60,12 @@ const VehicleInfo = () => {
 
   useEffect(() => {
     if (!isNaN(id)) dispatch(fetchAssignment(id));
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    if (!isNaN(id)) {
+      dispatch(fetchPaintAssignment(id));
+    }
   }, [id, dispatch]);
 
   useEffect(() => {
@@ -203,7 +214,16 @@ const VehicleInfo = () => {
               />
             </div>
 
-            <div className="save-button buttons">
+            <div className="save-button buttons margin-top">
+              {paintAssignment.id && (
+                <Button
+                  variant="primary"
+                  type="button"
+                  onClick={() => navigate(`/toimeksiannot/maalaus/${savedAssignment.id}`)}
+                >
+                  Katso auton maalauslomake
+                </Button>
+              )}
               <Button variant="danger" type="button" onClick={() => close()}>
                 Sulje
               </Button>

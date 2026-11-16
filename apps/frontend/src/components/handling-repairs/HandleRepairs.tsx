@@ -6,7 +6,11 @@ import { locations } from '../../utils/formOptions.js';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../hooks/useRedux.js';
 import type { AppDispatch } from '../../reducers/store.js';
-import { fetchAssignment, editRepairs } from '../../reducers/assignmentReducer.js';
+import {
+  fetchAssignment,
+  editRepairs,
+  fetchPaintAssignment,
+} from '../../reducers/assignmentReducer.js';
 import { fetchSalesUsers } from '../../reducers/usersReducer.js';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../reducers/store.js';
@@ -65,10 +69,17 @@ const HandleRepairs = () => {
   }, [index]);
 
   const salesUsers: User[] = useAppSelector((state) => state.users.salesUsers);
+  const paintAssignment = useSelector((state: RootState) => state.assignment.paintAssignment);
 
   useEffect(() => {
     dispatch(fetchSalesUsers());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!isNaN(id)) {
+      dispatch(fetchPaintAssignment(id));
+    }
+  }, [id, dispatch]);
 
   const [location, setLocation] = useState(savedAssignment.location);
   const [additionalInfo, setAdditionalInfo] = useState(savedAssignment.additionalInfo || '');
@@ -311,6 +322,16 @@ const HandleRepairs = () => {
                   setLocalRepairs={setLocalRepairs}
                   openRepairModal={openRepairModal}
                 />
+
+                {paintAssignment.id && (
+                  <Button
+                    variant="primary"
+                    type="button"
+                    onClick={() => navigate(`/toimeksiannot/maalaus/${savedAssignment.id}`)}
+                  >
+                    Katso auton maalauslomake
+                  </Button>
+                )}
               </>
             )}
             <div className="border-info">

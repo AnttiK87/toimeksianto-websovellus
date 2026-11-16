@@ -67,12 +67,14 @@ export const initialUsedCarForm: UsedCarForm = {
       storage: '',
       usedTyre: '',
       ordered: null,
+      orderDate: '',
       tyreSize3: '',
       tyreSize4: '',
       usedState2: null,
       storage2: '',
       usedTyre2: '',
       ordered2: null,
+      orderDate2: '',
       repair: null,
     },
   },
@@ -155,4 +157,6 @@ export const initialUsedCarForm: UsedCarForm = {
     painter: null,
     repair: null,
   },
+
+  additionalInfo: '',
 };
