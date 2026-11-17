@@ -6,10 +6,8 @@
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "skipLibCheck": true,
-
-    "baseUrl": ".",
     "paths": {
-      "@assignment/shared": ["packages/shared/src/*"]
+      "@assignment/shared": ["./packages/shared/src/index.ts"]
     }
   }
 }

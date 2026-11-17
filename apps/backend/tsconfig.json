@@ -6,9 +6,9 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "types": ["node"],
-    "ignoreDeprecations": "6.0",
     "paths": {
-      "@assignment/shared/*": ["../../packages/shared/src/*"]
+      "@assignment/shared/*": ["../../packages/shared/src/*"],
+      "@assignment/shared": ["../../packages/shared/src/index.ts"]
     }
   },
   "include": ["src"]

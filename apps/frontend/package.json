@@ -24,8 +24,8 @@
     "redux-thunk": "^3.1.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-react-swc": "4.2.2",
-    "@swc/core": "1.15.33",
+    "@swc/core": "^1.15.33",
+    "@vitejs/plugin-react-swc": "^4.2.2",
     "vite": "^7.3.8"
   }
 }

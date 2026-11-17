@@ -7,7 +7,7 @@
     "dev:frontend": "npm run dev -w frontend",
     "build:frontend": "npm run build -w frontend",
     "build:backend": "npm run build -w backend",
-    "build": "npm run build -w shared && npm run build -w backend && npm run build -w frontend",
+    "build": "npm run build -w @assignment/shared && npm run build -w backend && npm run build -w frontend",
     "start:backend": "cross-env NODE_ENV=production npm run start -w backend",
     "start:frontend": "npm run preview -w frontend",
     "lint": "eslint .",
@@ -43,5 +43,10 @@
   },
   "overrides": {
     "ajv": "^8.18.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "@swc/core@1.16.22": true,
+    "@swc/core@1.15.33": true
   }
 }
