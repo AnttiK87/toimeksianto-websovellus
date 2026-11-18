@@ -4,9 +4,13 @@ import { asyncHandler } from '../middleware/errorHandlers.js';
 import { AppError } from '../errors/AppError.js';
 import { patchRepair } from '../utils/editRepair.js';
 
+import { tokenExtractor } from '../middleware/tokenExtractor.js';
+import { userExtractor } from '../middleware/userExtractor.js';
+
 const { UsedCarAssignment, PaintAssignment } = models;
 
 const router = express.Router();
+router.use(tokenExtractor, userExtractor);
 
 // GET /api/assignments
 router.get(

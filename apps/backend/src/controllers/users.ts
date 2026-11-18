@@ -21,7 +21,7 @@ const router = express.Router();
 
 // GET /api/users
 //route for getting all users
-router.get('/', async (_req: Request, res: Response) => {
+router.get('/', tokenExtractor, userExtractor, async (_req: Request, res: Response) => {
   const users = await User.findAll({
     attributes: { exclude: ['passwordHash'] },
   });
@@ -136,7 +136,7 @@ router.delete('/:id', tokenExtractor, userFinder, async (req: Request, res: Resp
 
 // GET /api/users
 //route for getting users with role Myyjä
-router.get('/sales', async (_req, res) => {
+router.get('/sales', tokenExtractor, userExtractor, async (_req, res) => {
   const users = await User.findAll({
     where: {
       role: 'Myyjä',

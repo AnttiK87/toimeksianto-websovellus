@@ -2,9 +2,12 @@ import { VehiclePdfData } from '../../../../packages/shared/src/index.js';
 import express, { Request, Response } from 'express';
 import { PDFParse } from 'pdf-parse';
 
+import { tokenExtractor } from '../middleware/tokenExtractor.js';
+import { userExtractor } from '../middleware/userExtractor.js';
+
 const router = express.Router();
 
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', tokenExtractor, userExtractor, async (req: Request, res: Response) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'PDF tiedosto puuttuu' });

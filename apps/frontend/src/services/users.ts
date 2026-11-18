@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from './api.js';
 import loginService from './login.js';
 import type {
   User,
@@ -10,12 +10,12 @@ import type {
 const baseUrl = '/api/users';
 
 const getAll = async (): Promise<User[]> => {
-  const response = await axios.get<User[]>(baseUrl);
+  const response = await api.get<User[]>(baseUrl);
   return response.data;
 };
 
 const getUserById = async (id: number): Promise<User> => {
-  const response = await axios.get<User>(`${baseUrl}/${id}`);
+  const response = await api.get<User>(`${baseUrl}/${id}`);
   return response.data;
 };
 
@@ -32,7 +32,7 @@ const changePassword = async (content: PasswordChangeInput): Promise<UserUpdateR
     newPassword2: content.newPassword2,
   };
 
-  const response = await axios.put<UserUpdateResponse>(
+  const response = await api.put<UserUpdateResponse>(
     `${baseUrl}/changePassword`,
     newObject,
     config,
@@ -52,12 +52,12 @@ const updateInfo = async (content: UserInfoUpdateInput): Promise<UserUpdateRespo
     email: content.email,
   };
 
-  const response = await axios.put<UserUpdateResponse>(`${baseUrl}/updateInfo`, newObject, config);
+  const response = await api.put<UserUpdateResponse>(`${baseUrl}/updateInfo`, newObject, config);
   return response.data;
 };
 
 const getSalesUsers = async () => {
-  const response = await axios.get(`${baseUrl}/sales`);
+  const response = await api.get(`${baseUrl}/sales`);
   return response.data;
 };
 

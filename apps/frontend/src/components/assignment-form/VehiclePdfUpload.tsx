@@ -1,4 +1,5 @@
 import type { UsedCarForm } from '../../../../../packages/shared/src/index.js';
+import loginService from '../../services/login.js';
 
 interface VehiclePdfUploadProps {
   formData: UsedCarForm;
@@ -16,6 +17,9 @@ const VehiclePdfUpload: React.FC<VehiclePdfUploadProps> = ({ formData, setFormDa
 
     try {
       const res = await fetch('/api/parse-vehicle-data', {
+        headers: {
+          Authorization: loginService.getToken() || '',
+        },
         method: 'POST',
         body: formDataToSend,
       });
